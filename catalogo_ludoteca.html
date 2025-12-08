@@ -123,16 +123,34 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
+      gap: 16px;
       margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
+
+    .logo-amar {
+      height: 80px;
+      border-radius: 50%;
+      box-shadow: 0 0 6px rgba(0,0,0,0.25);
+      background: #fff;
+    }
+
+    .header-text-block {
+      text-align: center;
+    }
+
+    .header-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
     }
 
     .xmas-icon {
-      font-size: 2rem;
+      font-size: 1.8rem;
     }
 
     h1 {
-      text-align: center;
       margin: 0;
       font-size: 2rem;
       color: var(--rosso-natale);
@@ -143,6 +161,7 @@
       text-align: center;
       font-size: 0.9rem;
       color: #555;
+      margin-top: 4px;
       margin-bottom: 18px;
     }
 
@@ -197,7 +216,7 @@
       background-color: #fffaf5;
     }
 
-    /* leggero highlight per disponibili / in prestito */
+    /* highlight per disponibili / in prestito */
     table.dataTable tbody tr.disponibile-row {
       background: linear-gradient(90deg, #f7fff7, #ffffff);
     }
@@ -250,6 +269,9 @@
         flex-direction: column;
         align-items: stretch;
       }
+      .header-flex {
+        flex-direction: column;
+      }
     }
   </style>
 </head>
@@ -264,7 +286,7 @@
 <!-- Fiocchi di neve -->
 <div class="snowflake">❄</div>
 <div class="snowflake">✻</div>
-<div class="snowflake">❅</div>
+div class="snowflake">❅</div>
 <div class="snowflake">❆</div>
 <div class="snowflake">❄</div>
 <div class="snowflake">✵</div>
@@ -272,12 +294,17 @@
 
 <div id="wrapper">
   <div class="header-flex">
-    <span class="xmas-icon">🎲</span>
-    <h1>Catalogo Giochi – AmarBoard</h1>
-    <span class="xmas-icon">🎄</span>
-  </div>
-  <div class="subtitle">
-    <span>Speciale Natale:</span> trova il gioco giusto da mettere sotto l’albero o sul tavolo della ludoteca.
+    <img src="amarboard_logo.png" alt="AmarBoard Romagna" class="logo-amar">
+    <div class="header-text-block">
+      <div class="header-title-row">
+        <span class="xmas-icon">🎲</span>
+        <h1>Catalogo Giochi – AmarBoard</h1>
+        <span class="xmas-icon">🎄</span>
+      </div>
+      <div class="subtitle">
+        <span>Speciale Natale:</span> trova il gioco giusto da mettere sotto l’albero o sul tavolo della ludoteca.
+      </div>
+    </div>
   </div>
 
   <!-- FILTRI -->
