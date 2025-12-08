@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <title>Catalogo Giochi – Ludoteca AmarBoard</title>
+  <title>Catalogo Giochi – AmarBoard Natale</title>
 
   <!-- DataTables CSS -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
@@ -21,6 +21,7 @@
       --rosso-natale: #b02030;
       --verde-natale: #1f7a3a;
       --oro-soft:    #f3d08a;
+      --bg-chiaro:   #fffaf3;
     }
 
     * {
@@ -31,68 +32,111 @@
       font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
       margin: 0;
       padding: 0;
-      background: radial-gradient(circle at top, #fff8f0, #f0f4ff 60%, #e6f2ff 100%);
-      position: relative;
+      background: radial-gradient(circle at top, #ffe9e9, #fdf5e6 45%, #e4f5ea 100%);
       min-height: 100vh;
       overflow-x: hidden;
+      position: relative;
     }
 
-    /* Fiocchi di neve semplici */
+    /* Fiocchi di neve decorativi */
     .snowflake {
       position: fixed;
       top: -10px;
       color: #ffffff;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       pointer-events: none;
       animation-name: fall;
       animation-timing-function: linear;
       animation-iteration-count: infinite;
       opacity: 0.85;
       z-index: 1;
+      text-shadow: 0 0 3px rgba(0,0,0,0.3);
     }
 
-    .snowflake:nth-child(1)  { left: 10%;  animation-duration: 9s;  animation-delay: 0s; }
-    .snowflake:nth-child(2)  { left: 25%; animation-duration: 12s; animation-delay: 2s; }
-    .snowflake:nth-child(3)  { left: 40%; animation-duration: 10s; animation-delay: 4s; }
-    .snowflake:nth-child(4)  { left: 55%; animation-duration: 14s; animation-delay: 1s; }
-    .snowflake:nth-child(5)  { left: 70%; animation-duration: 11s; animation-delay: 3s; }
-    .snowflake:nth-child(6)  { left: 85%; animation-duration: 13s; animation-delay: 5s; }
+    .snowflake:nth-child(1)  { left: 5%;  animation-duration: 12s; animation-delay: 0s; }
+    .snowflake:nth-child(2)  { left: 18%; animation-duration: 15s; animation-delay: 2s; }
+    .snowflake:nth-child(3)  { left: 32%; animation-duration: 11s; animation-delay: 4s; }
+    .snowflake:nth-child(4)  { left: 46%; animation-duration: 13s; animation-delay: 1s; }
+    .snowflake:nth-child(5)  { left: 60%; animation-duration: 16s; animation-delay: 3s; }
+    .snowflake:nth-child(6)  { left: 74%; animation-duration: 10s; animation-delay: 5s; }
+    .snowflake:nth-child(7)  { left: 88%; animation-duration: 14s; animation-delay: 1s; }
 
     @keyframes fall {
-      0%   { transform: translateY(0); opacity: 0.9; }
+      0%   { transform: translateY(0); opacity: 0.95; }
       100% { transform: translateY(110vh); opacity: 0; }
+    }
+
+    /* Ghirlanda in alto */
+    .garland {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 60px;
+      background: radial-gradient(circle at center, rgba(31,122,58,0.7), rgba(0,0,0,0.3));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: #ffe;
+      font-size: 1.4rem;
+      z-index: 2;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .garland span {
+      animation: blink 2.2s linear infinite;
+    }
+    .garland span:nth-child(odd) {
+      animation-delay: 0.7s;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 0.4; transform: translateY(0); }
+      50%      { opacity: 1;   transform: translateY(1px); }
     }
 
     #wrapper {
       max-width: 1200px;
-      margin: 20px auto 40px;
+      margin: 90px auto 40px;
       padding: 24px 26px 30px;
-      background: #ffffffee;
-      border-radius: 18px;
-      box-shadow: 0 6px 22px rgba(0,0,0,0.12);
+      background: rgba(255,250,243,0.96);
+      border-radius: 20px;
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.8),
+                  0 0 18px rgba(176,32,48,0.4);
       position: relative;
-      z-index: 2; /* sopra i fiocchi */
-      border: 2px solid rgba(176,32,48,0.12);
+      z-index: 3;
+      border: 2px solid rgba(176,32,48,0.35);
+    }
+
+    /* Bordino lucine */
+    #wrapper::before {
+      content: "";
+      position: absolute;
+      inset: 8px;
+      border-radius: 16px;
+      border: 2px dashed rgba(243,208,138,0.7);
+      pointer-events: none;
     }
 
     .header-flex {
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 16px;
+      gap: 12px;
       margin-bottom: 6px;
     }
 
     .xmas-icon {
-      font-size: 1.8rem;
+      font-size: 2rem;
     }
 
     h1 {
       text-align: center;
       margin: 0;
-      font-size: 1.9rem;
+      font-size: 2rem;
       color: var(--rosso-natale);
-      text-shadow: 0 1px 0 #fff;
+      text-shadow: 0 1px 0 #fff, 0 0 6px rgba(176,32,48,0.35);
     }
 
     .subtitle {
@@ -115,7 +159,7 @@
       align-items: center;
       justify-content: flex-start;
       padding: 10px 12px;
-      border-radius: 10px;
+      border-radius: 12px;
       background: linear-gradient(90deg, #fffdf7, #f7fff7);
       border: 1px solid rgba(31,122,58,0.18);
     }
@@ -137,6 +181,7 @@
       border: 1px solid #ccc;
       font-size: 0.85rem;
       min-width: 120px;
+      background: #fff;
     }
 
     #tblCatalogo_wrapper {
@@ -144,12 +189,20 @@
     }
 
     table.dataTable thead th {
-      background: linear-gradient(180deg,#f4f4f4,#e6e6e6);
+      background: linear-gradient(180deg,#f7f7f7,#e3e3e3);
       border-bottom: 2px solid var(--rosso-natale);
     }
 
     table.dataTable tbody tr:nth-child(even) {
-      background-color: #fafafa;
+      background-color: #fffaf5;
+    }
+
+    /* leggero highlight per disponibili / in prestito */
+    table.dataTable tbody tr.disponibile-row {
+      background: linear-gradient(90deg, #f7fff7, #ffffff);
+    }
+    table.dataTable tbody tr.prestato-row {
+      background: linear-gradient(90deg, #fff7f7, #ffffff);
     }
 
     .badge {
@@ -158,6 +211,7 @@
       font-size: 0.75rem;
       font-weight: 600;
       display: inline-block;
+      white-space: nowrap;
     }
     .badge-disponibile {
       background: #d4edda;
@@ -180,9 +234,16 @@
       text-decoration: underline;
     }
 
+    .footer-note {
+      margin-top: 10px;
+      font-size: 0.8rem;
+      color: #777;
+      text-align: right;
+    }
+
     @media(max-width: 768px) {
       #wrapper {
-        margin: 10px;
+        margin: 80px 10px 20px;
         padding: 14px;
       }
       .filters {
@@ -195,22 +256,28 @@
 
 <body>
 
-<!-- Fiocchi di neve decorativi -->
+<!-- Ghirlanda -->
+<div class="garland">
+  <span>✨</span><span>🎄</span><span>⭐</span><span>🕯️</span><span>🎁</span><span>⭐</span><span>🎄</span><span>✨</span>
+</div>
+
+<!-- Fiocchi di neve -->
 <div class="snowflake">❄</div>
 <div class="snowflake">✻</div>
 <div class="snowflake">❅</div>
-<div class="snowflake">❄</div>
 <div class="snowflake">❆</div>
+<div class="snowflake">❄</div>
 <div class="snowflake">✵</div>
+<div class="snowflake">❄</div>
 
 <div id="wrapper">
   <div class="header-flex">
-    <span class="xmas-icon">🎄</span>
+    <span class="xmas-icon">🎲</span>
     <h1>Catalogo Giochi – AmarBoard</h1>
-    <span class="xmas-icon">🎁</span>
+    <span class="xmas-icon">🎄</span>
   </div>
   <div class="subtitle">
-    <span>Speciale Natale:</span> cerca tra i giochi della ludoteca e scopri cosa è disponibile sotto l’albero.
+    <span>Speciale Natale:</span> trova il gioco giusto da mettere sotto l’albero o sul tavolo della ludoteca.
   </div>
 
   <!-- FILTRI -->
@@ -239,7 +306,7 @@
     <div class="filter-block">
       <span class="filter-label">Suggerimento</span>
       <span style="font-size:0.8rem;color:#555;">
-        Usa anche la ricerca globale di DataTables (in alto a destra) per titolo, editore, durata, ecc.
+        Usa la ricerca globale (in alto a destra) per titolo, editore, durata…
       </span>
     </div>
   </div>
@@ -260,6 +327,10 @@
     </thead>
     <tbody></tbody>
   </table>
+
+  <div class="footer-note">
+    🎅 Catalogo generato dalla ludoteca AmarBoard – versione natalizia
+  </div>
 </div>
 
 <script>
@@ -267,22 +338,21 @@
   const CSV_BASE_URL =
     "https://raw.githubusercontent.com/sakana2893/Ludoteca-Amarboard/main/catalogo_ludoteca.csv";
 
-  // per evitare cache: aggiungo un parametro finto basato sul tempo
+  // evita cache
   const CSV_URL = CSV_BASE_URL + "?v=" + Date.now();
 
   function statoBadge(stato) {
     stato = (stato || "").toLowerCase().trim();
     if (stato === "disponibile") {
-      return '<span class="badge badge-disponibile">Disponibile</span>';
+      return '<span class="badge badge-disponibile">🎄 Disponibile</span>';
     }
     if (stato === "in prestito") {
-      return '<span class="badge badge-prestato">In prestito</span>';
+      return '<span class="badge badge-prestato">🎁 In prestito</span>';
     }
     return stato;
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-
     Papa.parse(CSV_URL, {
       download: true,
       header: true,
@@ -347,6 +417,14 @@
           order: [[0, "asc"]],
           language: {
             url: "https://cdn.datatables.net/plug-ins/1.13.8/i18n/it-IT.json"
+          },
+          createdRow: function (row, rowData) {
+            const stato = (rowData.Stato || "").toLowerCase().trim();
+            if (stato === "disponibile") {
+              row.classList.add("disponibile-row");
+            } else if (stato === "in prestito") {
+              row.classList.add("prestato-row");
+            }
           }
         });
 
