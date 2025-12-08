@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <title>Catalogo Giochi Ludoteca</title>
+  <title>Catalogo Giochi – Ludoteca AmarBoard</title>
 
   <!-- DataTables CSS -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
@@ -17,57 +17,139 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
   <style>
+    :root {
+      --rosso-natale: #b02030;
+      --verde-natale: #1f7a3a;
+      --oro-soft:    #f3d08a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
       margin: 0;
       padding: 0;
-      background: #f4f4f4;
+      background: radial-gradient(circle at top, #fff8f0, #f0f4ff 60%, #e6f2ff 100%);
+      position: relative;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Fiocchi di neve semplici */
+    .snowflake {
+      position: fixed;
+      top: -10px;
+      color: #ffffff;
+      font-size: 1.1rem;
+      pointer-events: none;
+      animation-name: fall;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      opacity: 0.85;
+      z-index: 1;
+    }
+
+    .snowflake:nth-child(1)  { left: 10%;  animation-duration: 9s;  animation-delay: 0s; }
+    .snowflake:nth-child(2)  { left: 25%; animation-duration: 12s; animation-delay: 2s; }
+    .snowflake:nth-child(3)  { left: 40%; animation-duration: 10s; animation-delay: 4s; }
+    .snowflake:nth-child(4)  { left: 55%; animation-duration: 14s; animation-delay: 1s; }
+    .snowflake:nth-child(5)  { left: 70%; animation-duration: 11s; animation-delay: 3s; }
+    .snowflake:nth-child(6)  { left: 85%; animation-duration: 13s; animation-delay: 5s; }
+
+    @keyframes fall {
+      0%   { transform: translateY(0); opacity: 0.9; }
+      100% { transform: translateY(110vh); opacity: 0; }
     }
 
     #wrapper {
       max-width: 1200px;
-      margin: 20px auto;
-      padding: 25px;
-      background: #fff;
-      border-radius: 14px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      margin: 20px auto 40px;
+      padding: 24px 26px 30px;
+      background: #ffffffee;
+      border-radius: 18px;
+      box-shadow: 0 6px 22px rgba(0,0,0,0.12);
+      position: relative;
+      z-index: 2; /* sopra i fiocchi */
+      border: 2px solid rgba(176,32,48,0.12);
+    }
+
+    .header-flex {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      margin-bottom: 6px;
+    }
+
+    .xmas-icon {
+      font-size: 1.8rem;
     }
 
     h1 {
       text-align: center;
-      margin-bottom: 5px;
+      margin: 0;
+      font-size: 1.9rem;
+      color: var(--rosso-natale);
+      text-shadow: 0 1px 0 #fff;
     }
 
     .subtitle {
       text-align: center;
       font-size: 0.9rem;
-      color: #666;
-      margin-bottom: 20px;
+      color: #555;
+      margin-bottom: 18px;
+    }
+
+    .subtitle span {
+      color: var(--verde-natale);
+      font-weight: 600;
     }
 
     .filters {
       display: flex;
       flex-wrap: wrap;
       gap: 14px;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       align-items: center;
       justify-content: flex-start;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: linear-gradient(90deg, #fffdf7, #f7fff7);
+      border: 1px solid rgba(31,122,58,0.18);
+    }
+
+    .filter-block {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
     }
 
     .filter-label {
       color: #444;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
     }
 
     select, input[type="text"] {
-      padding: 6px 8px;
+      padding: 5px 8px;
       border-radius: 6px;
       border: 1px solid #ccc;
       font-size: 0.85rem;
+      min-width: 120px;
+    }
+
+    #tblCatalogo_wrapper {
+      margin-top: 6px;
     }
 
     table.dataTable thead th {
-      background: #ececec;
+      background: linear-gradient(180deg,#f4f4f4,#e6e6e6);
+      border-bottom: 2px solid var(--rosso-natale);
+    }
+
+    table.dataTable tbody tr:nth-child(even) {
+      background-color: #fafafa;
     }
 
     .badge {
@@ -75,46 +157,73 @@
       border-radius: 999px;
       font-size: 0.75rem;
       font-weight: 600;
+      display: inline-block;
     }
     .badge-disponibile {
-      background: #d4edda; color:#155724;
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #b1dfbb;
     }
     .badge-prestato {
-      background: #f8d7da; color:#721c24;
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f1b0b7;
     }
 
     a.bgg-link {
-      color: #004aaa;
+      color: var(--rosso-natale);
       font-size: 0.8rem;
       text-decoration: none;
+      font-weight: 600;
     }
     a.bgg-link:hover {
       text-decoration: underline;
     }
 
     @media(max-width: 768px) {
-      #wrapper { margin: 10px; padding: 12px; }
-      .filters { flex-direction: column; align-items: flex-start; }
+      #wrapper {
+        margin: 10px;
+        padding: 14px;
+      }
+      .filters {
+        flex-direction: column;
+        align-items: stretch;
+      }
     }
   </style>
 </head>
 
 <body>
+
+<!-- Fiocchi di neve decorativi -->
+<div class="snowflake">❄</div>
+<div class="snowflake">✻</div>
+<div class="snowflake">❅</div>
+<div class="snowflake">❄</div>
+<div class="snowflake">❆</div>
+<div class="snowflake">✵</div>
+
 <div id="wrapper">
-  <h1>Catalogo Giochi</h1>
-  <div class="subtitle">Ricerca rapida in alto a destra · filtri qui sotto</div>
+  <div class="header-flex">
+    <span class="xmas-icon">🎄</span>
+    <h1>Catalogo Giochi – AmarBoard</h1>
+    <span class="xmas-icon">🎁</span>
+  </div>
+  <div class="subtitle">
+    <span>Speciale Natale:</span> cerca tra i giochi della ludoteca e scopri cosa è disponibile sotto l’albero.
+  </div>
 
   <!-- FILTRI -->
   <div class="filters">
-    <div>
-      <span class="filter-label">Categoria:</span>
+    <div class="filter-block">
+      <span class="filter-label">Categoria</span>
       <select id="filtroCategoria">
         <option value="">Tutte</option>
       </select>
     </div>
 
-    <div>
-      <span class="filter-label">Stato:</span>
+    <div class="filter-block">
+      <span class="filter-label">Stato</span>
       <select id="filtroStato">
         <option value="">Tutti</option>
         <option value="Disponibile">Disponibile</option>
@@ -122,9 +231,16 @@
       </select>
     </div>
 
-    <div>
-      <span class="filter-label">Giocatori contiene:</span>
+    <div class="filter-block">
+      <span class="filter-label">Giocatori (contiene)</span>
       <input type="text" id="filtroGiocatori" placeholder="es. 2-4">
+    </div>
+
+    <div class="filter-block">
+      <span class="filter-label">Suggerimento</span>
+      <span style="font-size:0.8rem;color:#555;">
+        Usa anche la ricerca globale di DataTables (in alto a destra) per titolo, editore, durata, ecc.
+      </span>
     </div>
   </div>
 
@@ -147,17 +263,21 @@
 </div>
 
 <script>
-  // 👉 METTI QUI IL TUO LINK RAW CSV
+  // 👉 METTI QUI IL TUO LINK RAW CSV (senza ?v=...)
   const CSV_BASE_URL =
     "https://raw.githubusercontent.com/sakana2893/Ludoteca-Amarboard/main/catalogo_ludoteca.csv";
 
-  // per evitare la cache ogni volta
+  // per evitare cache: aggiungo un parametro finto basato sul tempo
   const CSV_URL = CSV_BASE_URL + "?v=" + Date.now();
 
   function statoBadge(stato) {
-    stato = (stato || "").toLowerCase();
-    if (stato === "disponibile") return '<span class="badge badge-disponibile">Disponibile</span>';
-    if (stato === "in prestito") return '<span class="badge badge-prestato">In prestito</span>';
+    stato = (stato || "").toLowerCase().trim();
+    if (stato === "disponibile") {
+      return '<span class="badge badge-disponibile">Disponibile</span>';
+    }
+    if (stato === "in prestito") {
+      return '<span class="badge badge-prestato">In prestito</span>';
+    }
     return stato;
   }
 
@@ -190,10 +310,10 @@
           });
         });
 
-        // Popola categorie
+        // Popola filtro categoria
         const selCat = document.getElementById("filtroCategoria");
         [...categorie].sort().forEach(cat => {
-          let opt = document.createElement("option");
+          const opt = document.createElement("option");
           opt.value = cat;
           opt.textContent = cat;
           selCat.appendChild(opt);
@@ -218,7 +338,9 @@
             },
             {
               data: "BGG",
-              render: d => d ? `<a class="bgg-link" href="${d}" target="_blank">Scheda</a>` : ""
+              orderable: false,
+              render: d =>
+                d ? `<a class="bgg-link" href="${d}" target="_blank">Scheda</a>` : ""
             }
           ],
           pageLength: 25,
@@ -228,28 +350,35 @@
           }
         });
 
-        // FILTRO CATEGORIA
+        // Filtro categoria
         selCat.addEventListener("change", function () {
+          const val = this.value;
           table.column(4).search(
-            this.value ? "^" + this.value + "$" : "",
+            val ? "^" + $.fn.dataTable.util.escapeRegex(val) + "$" : "",
             true,
             false
           ).draw();
         });
 
-        // FILTRO STATO
+        // Filtro stato
         document.getElementById("filtroStato").addEventListener("change", function () {
+          const val = this.value;
           table.column(7).search(
-            this.value ? "^" + this.value + "$" : "",
+            val ? "^" + $.fn.dataTable.util.escapeRegex(val) + "$" : "",
             true,
             false
           ).draw();
         });
 
-        // FILTRO GIOCATORI (contiene)
+        // Filtro giocatori (contiene)
         document.getElementById("filtroGiocatori").addEventListener("keyup", function () {
-          table.column(1).search(this.value, true, false).draw();
+          const val = this.value;
+          table.column(1).search(val, true, false).draw();
         });
+      },
+      error: function (err) {
+        console.error("Errore nel caricamento del CSV:", err);
+        alert("Impossibile caricare il catalogo. Controlla l'URL CSV.");
       }
     });
   });
