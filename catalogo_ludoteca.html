@@ -173,20 +173,26 @@
 
 <script>
   // 👉 Sostituisci con il link RAW del CSV su GitHub
-  const CSV_URL = "https://raw.githubusercontent.com/sakana2893/Ludoteca-Amarboard/main/catalogo_ludoteca.csv";
+// URL base del CSV
+const CSV_BASE_URL = "https://raw.githubusercontent.com/sakana2893/Ludoteca-Amarboard/main/catalogo_ludoteca.csv";
 
-  function statoBadge(stato) {
-    stato = (stato || "").toString().toLowerCase();
-    if (stato === "disponibile") {
-      return '<span class="badge badge-disponibile">Disponibile</span>';
-    } else if (stato === "in prestito") {
-      return '<span class="badge badge-prestato">In prestito</span>';
-    } else if (stato.trim() !== "") {
-      return '<span class="badge">' + stato + '</span>';
-    } else {
-      return "";
+document.addEventListener("DOMContentLoaded", function () {
+  // aggiunge un parametro finto per evitare la cache (?v=timestamp)
+  const csvUrl = CSV_BASE_URL + "?v=" + Date.now();
+
+  Papa.parse(csvUrl, {
+    download: true,
+    header: true,
+    complete: function (results) {
+      const raw = results.data || [];
+      // ... tutto il resto come prima ...
+    },
+    error: function (err) {
+      console.error("Errore nel caricamento del CSV:", err);
+      alert("Impossibile caricare il catalogo. Controlla l'URL CSV.");
     }
-  }
+  });
+});
 
   document.addEventListener("DOMContentLoaded", function () {
     Papa.parse(CSV_URL, {
