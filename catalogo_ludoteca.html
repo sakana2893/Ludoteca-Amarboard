@@ -24,9 +24,7 @@
       --bg-chiaro:   #fffaf3;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -38,7 +36,7 @@
       position: relative;
     }
 
-    /* Fiocchi di neve decorativi */
+    /* Fiocchi di neve */
     .snowflake {
       position: fixed;
       top: -10px;
@@ -52,7 +50,6 @@
       z-index: 1;
       text-shadow: 0 0 3px rgba(0,0,0,0.3);
     }
-
     .snowflake:nth-child(1)  { left: 5%;  animation-duration: 12s; animation-delay: 0s; }
     .snowflake:nth-child(2)  { left: 18%; animation-duration: 15s; animation-delay: 2s; }
     .snowflake:nth-child(3)  { left: 32%; animation-duration: 11s; animation-delay: 4s; }
@@ -66,7 +63,7 @@
       100% { transform: translateY(110vh); opacity: 0; }
     }
 
-    /* Ghirlanda in alto */
+    /* Ghirlanda */
     .garland {
       position: fixed;
       top: 0;
@@ -83,13 +80,8 @@
       z-index: 2;
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
     }
-
-    .garland span {
-      animation: blink 2.2s linear infinite;
-    }
-    .garland span:nth-child(odd) {
-      animation-delay: 0.7s;
-    }
+    .garland span { animation: blink 2.2s linear infinite; }
+    .garland span:nth-child(odd) { animation-delay: 0.7s; }
 
     @keyframes blink {
       0%, 100% { opacity: 0.4; transform: translateY(0); }
@@ -109,7 +101,6 @@
       border: 2px solid rgba(176,32,48,0.35);
     }
 
-    /* Bordino lucine */
     #wrapper::before {
       content: "";
       position: absolute;
@@ -123,36 +114,24 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 16px;
+      gap: 18px;
       margin-bottom: 6px;
-      flex-wrap: wrap;
     }
+
+    .xmas-icon { font-size: 2rem; }
 
     .logo-amar {
       height: 80px;
-      border-radius: 50%;
+      width: auto;
+      border-radius: 999px;
       box-shadow: 0 0 6px rgba(0,0,0,0.25);
       background: #fff;
     }
 
-    .header-text-block {
-      text-align: center;
-    }
-
-    .header-title-row {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-    }
-
-    .xmas-icon {
-      font-size: 1.8rem;
-    }
-
     h1 {
-      margin: 0;
-      font-size: 2rem;
+      text-align: center;
+      margin: 6px 0;
+      font-size: 1.8rem;
       color: var(--rosso-natale);
       text-shadow: 0 1px 0 #fff, 0 0 6px rgba(176,32,48,0.35);
     }
@@ -161,13 +140,51 @@
       text-align: center;
       font-size: 0.9rem;
       color: #555;
-      margin-top: 4px;
-      margin-bottom: 18px;
+      margin-bottom: 12px;
+    }
+    .subtitle span { color: var(--verde-natale); font-weight: 600; }
+
+    /* Barra statistiche */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 12px;
+      margin-bottom: 16px;
     }
 
-    .subtitle span {
-      color: var(--verde-natale);
-      font-weight: 600;
+    .stat-box {
+      background: linear-gradient(135deg,#fff,#fffdf7);
+      border-radius: 12px;
+      padding: 10px 12px;
+      border: 1px solid rgba(176,32,48,0.2);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+      font-size: 0.85rem;
+    }
+
+    .stat-label {
+      text-transform: uppercase;
+      color: #666;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    .stat-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--rosso-natale);
+    }
+
+    .stat-note {
+      font-size: 0.75rem;
+      color: #777;
+      margin-top: 3px;
+    }
+
+    .stat-top ol {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 0.8rem;
     }
 
     .filters {
@@ -183,11 +200,7 @@
       border: 1px solid rgba(31,122,58,0.18);
     }
 
-    .filter-block {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
+    .filter-block { display: flex; flex-direction: column; gap: 4px; }
 
     .filter-label {
       color: #444;
@@ -203,20 +216,13 @@
       background: #fff;
     }
 
-    #tblCatalogo_wrapper {
-      margin-top: 6px;
-    }
+    #tblCatalogo_wrapper { margin-top: 6px; }
 
     table.dataTable thead th {
       background: linear-gradient(180deg,#f7f7f7,#e3e3e3);
       border-bottom: 2px solid var(--rosso-natale);
     }
-
-    table.dataTable tbody tr:nth-child(even) {
-      background-color: #fffaf5;
-    }
-
-    /* highlight per disponibili / in prestito */
+    table.dataTable tbody tr:nth-child(even) { background-color: #fffaf5; }
     table.dataTable tbody tr.disponibile-row {
       background: linear-gradient(90deg, #f7fff7, #ffffff);
     }
@@ -249,15 +255,19 @@
       text-decoration: none;
       font-weight: 600;
     }
-    a.bgg-link:hover {
-      text-decoration: underline;
-    }
+    a.bgg-link:hover { text-decoration: underline; }
 
     .footer-note {
       margin-top: 10px;
       font-size: 0.8rem;
       color: #777;
       text-align: right;
+    }
+
+    @media(max-width: 900px) {
+      .stats-bar {
+        grid-template-columns: 1fr;
+      }
     }
 
     @media(max-width: 768px) {
@@ -269,33 +279,55 @@
         flex-direction: column;
         align-items: stretch;
       }
-      .header-flex {
-        flex-direction: column;
-      }
+      .header-flex { flex-direction: column; }
+      .logo-amar { height: 70px; }
     }
   </style>
 </head>
 
 <body>
 
-<!-- Ghirlanda -->
 <div class="garland">
-  <span>✨</span><span>🎄</span><span>⭐</span><span>🕯️</span><span>🎁</span><span>⭐</span><span>🎄</span><span>✨</span>
+  <span>✨</span><span>🎄</span><span>⭐</span><span>🕯️</span>
+  <span>🎲 AmarBoard Romagna 🎲</span>
+  <span>⭐</span><span>🎄</span><span>✨</span>
 </div>
 
+<!-- Fiocchi di neve -->
+<div class="snowflake">❄</div>
+<div class="snowflake">✻</div>
+<div class="snowflake">❅</div>
+<div class="snowflake">❆</div>
+<div class="snowflake">❄</div>
+<div class="snowflake">✵</div>
+<div class="snowflake">❄</div>
 
 <div id="wrapper">
   <div class="header-flex">
-    <img src="amarboard_logo.png" alt="AmarBoard Romagna" class="logo-amar">
-    <div class="header-text-block">
-      <div class="header-title-row">
-        <span class="xmas-icon">🎲</span>
-        <h1>Catalogo Giochi – AmarBoard</h1>
-        <span class="xmas-icon">🎄</span>
-      </div>
-      <div class="subtitle">
-        <span>Speciale Natale:</span> trova il gioco giusto (o fatti suggerire dai nostri Volontari) da poter intavolare con gli amici sui nostri tavoli.
-      </div>
+    <span class="xmas-icon">🎄</span>
+    <img class="logo-amar" src="logo_amarboard.png" alt="AmarBoard Romagna">
+    <span class="xmas-icon">🎲</span>
+  </div>
+  <h1>Catalogo Giochi – AmarBoard</h1>
+  <div class="subtitle">
+    <span>Speciale Natale:</span> trova il gioco giusto da mettere sotto l’albero o sul tavolo della ludoteca.
+  </div>
+
+  <!-- BARRA STATISTICHE -->
+  <div class="stats-bar">
+    <div class="stat-box">
+      <div class="stat-label">Giochi attualmente in prestito</div>
+      <div class="stat-value" id="cntAttivi">–</div>
+      <div class="stat-note">Numero di prestiti attivi in questo momento.</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-label">Prestiti totali effettuati</div>
+      <div class="stat-value" id="cntTotali">–</div>
+      <div class="stat-note">Conteggio cumulativo dei prestiti registrati.</div>
+    </div>
+    <div class="stat-box stat-top">
+      <div class="stat-label">Top 3 giochi più prestati ora</div>
+      <ol id="topList"></ol>
     </div>
   </div>
 
@@ -353,12 +385,16 @@
 </div>
 
 <script>
-  // 👉 METTI QUI IL TUO LINK RAW CSV (senza ?v=...)
+  // 👉 URL RAW del catalogo giochi
   const CSV_BASE_URL =
     "https://raw.githubusercontent.com/sakana2893/Ludoteca-Amarboard/main/catalogo_ludoteca.csv";
 
-  // evita cache
-  const CSV_URL = CSV_BASE_URL + "?v=" + Date.now();
+  // 👉 URL RAW delle stats
+  const STATS_BASE_URL =
+    "https://raw.githubusercontent.com/sakana2893/Ludoteca-Amarboard/main/stats_ludoteca.csv";
+
+  const CSV_URL   = CSV_BASE_URL   + "?v=" + Date.now();
+  const STATS_URL = STATS_BASE_URL + "?v=" + Date.now();
 
   function statoBadge(stato) {
     stato = (stato || "").toLowerCase().trim();
@@ -372,6 +408,40 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
+
+    // 1) Carica stats
+    Papa.parse(STATS_URL, {
+      download: true,
+      header: true,
+      complete: function (resStats) {
+        if ((resStats.data || []).length > 0) {
+          const s = resStats.data[0];
+          document.getElementById("cntAttivi").textContent =
+            s["PrestitiAttivi"] || "0";
+          document.getElementById("cntTotali").textContent =
+            s["PrestitiTotali"] || "0";
+
+          const topList = document.getElementById("topList");
+          topList.innerHTML = "";
+
+          function addTop(titoloKey, countKey) {
+            const titolo = s[titoloKey];
+            const cnt = s[countKey];
+            if (titolo && cnt && Number(cnt) > 0) {
+              const li = document.createElement("li");
+              li.textContent = titolo + " (" + cnt + ")";
+              topList.appendChild(li);
+            }
+          }
+
+          addTop("Top1Titolo", "Top1Prestiti");
+          addTop("Top2Titolo", "Top2Prestiti");
+          addTop("Top3Titolo", "Top3Prestiti");
+        }
+      }
+    });
+
+    // 2) Carica catalogo giochi
     Papa.parse(CSV_URL, {
       download: true,
       header: true,
@@ -399,7 +469,6 @@
           });
         });
 
-        // Popola filtro categoria
         const selCat = document.getElementById("filtroCategoria");
         [...categorie].sort().forEach(cat => {
           const opt = document.createElement("option");
@@ -447,7 +516,7 @@
           }
         });
 
-        // Filtro categoria
+        // Filtri
         selCat.addEventListener("change", function () {
           const val = this.value;
           table.column(4).search(
@@ -457,7 +526,6 @@
           ).draw();
         });
 
-        // Filtro stato
         document.getElementById("filtroStato").addEventListener("change", function () {
           const val = this.value;
           table.column(7).search(
@@ -467,7 +535,6 @@
           ).draw();
         });
 
-        // Filtro giocatori (contiene)
         document.getElementById("filtroGiocatori").addEventListener("keyup", function () {
           const val = this.value;
           table.column(1).search(val, true, false).draw();
@@ -475,7 +542,7 @@
       },
       error: function (err) {
         console.error("Errore nel caricamento del CSV:", err);
-        alert("Impossibile caricare il catalogo. Controlla l'URL CSV.");
+        alert("Impossibile caricare il catalogo. Controlla gli URL dei CSV.");
       }
     });
   });
