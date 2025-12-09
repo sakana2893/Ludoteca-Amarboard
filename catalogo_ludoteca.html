@@ -305,12 +305,17 @@
 <div id="wrapper">
   <div class="header-flex">
     <span class="xmas-icon">🎄</span>
-    <img class="logo-amar" src="logo_amarboard.png" alt="AmarBoard Romagna">
+
+    <!-- LOGO: cambia l'estensione se non è .png -->
+    <img class="logo-amar"
+         src="https://raw.githubusercontent.com/sakana2893/Ludoteca-Amarboard/main/logo_amarboard.png"
+         alt="AmarBoard Romagna">
+
     <span class="xmas-icon">🎲</span>
   </div>
   <h1>Catalogo Giochi – AmarBoard</h1>
   <div class="subtitle">
-    <span>Speciale Natale:</span> trova il gioco giusto da mettere sotto l’albero o sul tavolo della ludoteca.
+    <span>Speciale Natale:</span> trova il gioco giusto (o fatti suggerire dai nostri Volontari) da intavolare con gli amici sui nostri tavoli.
   </div>
 
   <!-- BARRA STATISTICHE -->
@@ -501,7 +506,12 @@
                 d ? `<a class="bgg-link" href="${d}" target="_blank">Scheda</a>` : ""
             }
           ],
-          pageLength: 25,
+
+          // niente pagine: mostra sempre tutto
+          paging: false,
+          info: false,
+          lengthChange: false,
+
           order: [[0, "asc"]],
           language: {
             url: "https://cdn.datatables.net/plug-ins/1.13.8/i18n/it-IT.json"
@@ -516,28 +526,22 @@
           }
         });
 
-        // Filtri
+        // FILTRO CATEGORIA (match semplice)
         selCat.addEventListener("change", function () {
           const val = this.value;
-          table.column(4).search(
-            val ? "^" + $.fn.dataTable.util.escapeRegex(val) + "$" : "",
-            true,
-            false
-          ).draw();
+          table.column(4).search(val, false, false).draw();
         });
 
+        // FILTRO STATO
         document.getElementById("filtroStato").addEventListener("change", function () {
           const val = this.value;
-          table.column(7).search(
-            val ? "^" + $.fn.dataTable.util.escapeRegex(val) + "$" : "",
-            true,
-            false
-          ).draw();
+          table.column(7).search(val, false, false).draw();
         });
 
+        // FILTRO GIOCATORI (contiene testo
         document.getElementById("filtroGiocatori").addEventListener("keyup", function () {
           const val = this.value;
-          table.column(1).search(val, true, false).draw();
+          table.column(1).search(val, false, false).draw();
         });
       },
       error: function (err) {
