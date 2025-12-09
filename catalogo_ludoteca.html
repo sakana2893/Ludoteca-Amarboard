@@ -4,6 +4,11 @@
   <meta charset="UTF-8">
   <title>Catalogo Giochi – AmarBoard Natale</title>
 
+  <!-- No cache per l'HTML -->
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+
   <!-- DataTables CSS -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
 
@@ -36,7 +41,6 @@
       position: relative;
     }
 
-    /* Fiocchi di neve */
     .snowflake {
       position: fixed;
       top: -10px;
@@ -63,7 +67,6 @@
       100% { transform: translateY(110vh); opacity: 0; }
     }
 
-    /* Ghirlanda */
     .garland {
       position: fixed;
       top: 0;
@@ -144,7 +147,6 @@
     }
     .subtitle span { color: var(--verde-natale); font-weight: 600; }
 
-    /* Barra statistiche */
     .stats-bar {
       display: grid;
       grid-template-columns: repeat(3, minmax(0,1fr));
@@ -193,11 +195,18 @@
       gap: 14px;
       margin-bottom: 16px;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: space-between;
       padding: 10px 12px;
       border-radius: 12px;
       background: linear-gradient(90deg, #fffdf7, #f7fff7);
       border: 1px solid rgba(31,122,58,0.18);
+    }
+
+    .filters-left {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      align-items: center;
     }
 
     .filter-block { display: flex; flex-direction: column; gap: 4px; }
@@ -214,6 +223,22 @@
       font-size: 0.85rem;
       min-width: 120px;
       background: #fff;
+    }
+
+    #btnRefresh {
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1px solid var(--verde-natale);
+      background: #e9fff0;
+      color: var(--verde-natale);
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    #btnRefresh:hover {
+      background: #d6ffe5;
     }
 
     #tblCatalogo_wrapper { margin-top: 6px; }
@@ -265,9 +290,7 @@
     }
 
     @media(max-width: 900px) {
-      .stats-bar {
-        grid-template-columns: 1fr;
-      }
+      .stats-bar { grid-template-columns: 1fr; }
     }
 
     @media(max-width: 768px) {
@@ -306,7 +329,7 @@
   <div class="header-flex">
     <span class="xmas-icon">🎄</span>
 
-    <!-- LOGO: cambia l'estensione se non è .png -->
+    <!-- LOGO (cambia estensione se necessario) -->
     <img class="logo-amar"
          src="https://raw.githubusercontent.com/sakana2893/Ludoteca-Amarboard/main/logo_amarboard.png"
          alt="AmarBoard Romagna">
@@ -315,7 +338,7 @@
   </div>
   <h1>Catalogo Giochi – AmarBoard</h1>
   <div class="subtitle">
-    <span>Speciale Natale:</span> trova il gioco giusto (o fatti suggerire dai nostri Volontari) da intavolare con gli amici sui nostri tavoli.
+    <span>Speciale Natale:</span> trova il gioco giusto (o fatti suggerire dai nostri Volontari) da intavolare con gli amici sui nostri tavoli.
   </div>
 
   <!-- BARRA STATISTICHE -->
@@ -336,35 +359,32 @@
     </div>
   </div>
 
-  <!-- FILTRI -->
+  <!-- FILTRI + BOTTONE AGGIORNA -->
   <div class="filters">
-    <div class="filter-block">
-      <span class="filter-label">Categoria</span>
-      <select id="filtroCategoria">
-        <option value="">Tutte</option>
-      </select>
+    <div class="filters-left">
+      <div class="filter-block">
+        <span class="filter-label">Categoria</span>
+        <select id="filtroCategoria">
+          <option value="">Tutte</option>
+        </select>
+      </div>
+
+      <div class="filter-block">
+        <span class="filter-label">Stato</span>
+        <select id="filtroStato">
+          <option value="">Tutti</option>
+          <option value="Disponibile">Disponibile</option>
+          <option value="In prestito">In prestito</option>
+        </select>
+      </div>
+
+      <div class="filter-block">
+        <span class="filter-label">Giocatori (contiene)</span>
+        <input type="text" id="filtroGiocatori" placeholder="es. 2-4">
+      </div>
     </div>
 
-    <div class="filter-block">
-      <span class="filter-label">Stato</span>
-      <select id="filtroStato">
-        <option value="">Tutti</option>
-        <option value="Disponibile">Disponibile</option>
-        <option value="In prestito">In prestito</option>
-      </select>
-    </div>
-
-    <div class="filter-block">
-      <span class="filter-label">Giocatori (contiene)</span>
-      <input type="text" id="filtroGiocatori" placeholder="es. 2-4">
-    </div>
-
-    <div class="filter-block">
-      <span class="filter-label">Suggerimento</span>
-      <span style="font-size:0.8rem;color:#555;">
-        Usa la ricerca globale (in alto a destra) per titolo, editore, durata…
-      </span>
-    </div>
+    <button id="btnRefresh" type="button">🔄 Aggiorna dati</button>
   </div>
 
   <table id="tblCatalogo" class="display" style="width:100%">
@@ -398,8 +418,7 @@
   const STATS_BASE_URL =
     "https://raw.githubusercontent.com/sakana2893/Ludoteca-Amarboard/main/stats_ludoteca.csv";
 
-  const CSV_URL   = CSV_BASE_URL   + "?v=" + Date.now();
-  const STATS_URL = STATS_BASE_URL + "?v=" + Date.now();
+  let table = null;  // DataTable riusabile
 
   function statoBadge(stato) {
     stato = (stato || "").toLowerCase().trim();
@@ -412,10 +431,9 @@
     return stato;
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
-
-    // 1) Carica stats
-    Papa.parse(STATS_URL, {
+  function caricaStats() {
+    const url = STATS_BASE_URL + "?v=" + Date.now(); // niente cache
+    Papa.parse(url, {
       download: true,
       header: true,
       complete: function (resStats) {
@@ -445,9 +463,11 @@
         }
       }
     });
+  }
 
-    // 2) Carica catalogo giochi
-    Papa.parse(CSV_URL, {
+  function caricaCatalogo() {
+    const url = CSV_BASE_URL + "?v=" + Date.now(); // niente cache
+    Papa.parse(url, {
       download: true,
       header: true,
       complete: function (results) {
@@ -474,7 +494,9 @@
           });
         });
 
+        // Popola categorie (sempre rinfrescate)
         const selCat = document.getElementById("filtroCategoria");
+        selCat.innerHTML = '<option value="">Tutte</option>';
         [...categorie].sort().forEach(cat => {
           const opt = document.createElement("option");
           opt.value = cat;
@@ -482,72 +504,88 @@
           selCat.appendChild(opt);
         });
 
-        const table = $("#tblCatalogo").DataTable({
-          data: data,
-          columns: [
-            { data: "Titolo" },
-            { data: "Giocatori" },
-            { data: "Durata" },
-            { data: "Eta" },
-            { data: "Categoria" },
-            { data: "Editore" },
-            {
-              data: "Disponibili",
-              render: d => `<strong>${d}</strong>`
+        if (!table) {
+          // Prima inizializzazione DataTable
+          table = $("#tblCatalogo").DataTable({
+            data: data,
+            columns: [
+              { data: "Titolo" },
+              { data: "Giocatori" },
+              { data: "Durata" },
+              { data: "Eta" },
+              { data: "Categoria" },
+              { data: "Editore" },
+              {
+                data: "Disponibili",
+                render: d => `<strong>${d}</strong>`
+              },
+              {
+                data: "Stato",
+                render: d => statoBadge(d)
+              },
+              {
+                data: "BGG",
+                orderable: false,
+                render: d =>
+                  d ? `<a class="bgg-link" href="${d}" target="_blank">Scheda</a>` : ""
+              }
+            ],
+
+            // niente pagine: mostra sempre tutto
+            paging: false,
+            info: false,
+            lengthChange: false,
+
+            order: [[0, "asc"]],
+            language: {
+              url: "https://cdn.datatables.net/plug-ins/1.13.8/i18n/it-IT.json"
             },
-            {
-              data: "Stato",
-              render: d => statoBadge(d)
-            },
-            {
-              data: "BGG",
-              orderable: false,
-              render: d =>
-                d ? `<a class="bgg-link" href="${d}" target="_blank">Scheda</a>` : ""
+            createdRow: function (row, rowData) {
+              const stato = (rowData.Stato || "").toLowerCase().trim();
+              if (stato === "disponibile") {
+                row.classList.add("disponibile-row");
+              } else if (stato === "in prestito") {
+                row.classList.add("prestato-row");
+              }
             }
-          ],
+          });
 
-          // niente pagine: mostra sempre tutto
-          paging: false,
-          info: false,
-          lengthChange: false,
+          // Collego i FILTRI solo la prima volta
+          document.getElementById("filtroCategoria").addEventListener("change", function () {
+            const val = this.value;
+            table.column(4).search(val, false, false).draw();
+          });
 
-          order: [[0, "asc"]],
-          language: {
-            url: "https://cdn.datatables.net/plug-ins/1.13.8/i18n/it-IT.json"
-          },
-          createdRow: function (row, rowData) {
-            const stato = (rowData.Stato || "").toLowerCase().trim();
-            if (stato === "disponibile") {
-              row.classList.add("disponibile-row");
-            } else if (stato === "in prestito") {
-              row.classList.add("prestato-row");
-            }
-          }
-        });
+          document.getElementById("filtroStato").addEventListener("change", function () {
+            const val = this.value;
+            table.column(7).search(val, false, false).draw();
+          });
 
-        // FILTRO CATEGORIA (match semplice)
-        selCat.addEventListener("change", function () {
-          const val = this.value;
-          table.column(4).search(val, false, false).draw();
-        });
+          document.getElementById("filtroGiocatori").addEventListener("keyup", function () {
+            const val = this.value;
+            table.column(1).search(val, false, false).draw();
+          });
 
-        // FILTRO STATO
-        document.getElementById("filtroStato").addEventListener("change", function () {
-          const val = this.value;
-          table.column(7).search(val, false, false).draw();
-        });
-
-        // FILTRO GIOCATORI (contiene testo
-        document.getElementById("filtroGiocatori").addEventListener("keyup", function () {
-          const val = this.value;
-          table.column(1).search(val, false, false).draw();
-        });
+        } else {
+          // Refresh dati senza reinizializzare DataTable
+          table.clear();
+          table.rows.add(data).draw();
+        }
       },
       error: function (err) {
         console.error("Errore nel caricamento del CSV:", err);
         alert("Impossibile caricare il catalogo. Controlla gli URL dei CSV.");
       }
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    caricaStats();
+    caricaCatalogo();
+
+    document.getElementById("btnRefresh").addEventListener("click", function () {
+      caricaStats();
+      caricaCatalogo();
     });
   });
 </script>
