@@ -1,606 +1,319 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <title>Catalogo Giochi – AmarBoard Natale</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Ludoteca Amarboard</title>
 
-  <!-- No cache per l'HTML -->
-  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
-
-  <!-- DataTables CSS -->
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
-
-  <!-- jQuery -->
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
-  <!-- DataTables JS -->
-  <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
-
-  <!-- PapaParse per leggere CSV -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <!-- Anti-cache browser -->
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
 
   <style>
-    :root {
-      --rosso-natale: #b02030;
-      --verde-natale: #1f7a3a;
-      --oro-soft:    #f3d08a;
-      --bg-chiaro:   #fffaf3;
-    }
-
-    * { box-sizing: border-box; }
-
     body {
-      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       margin: 0;
-      padding: 0;
-      background: radial-gradient(circle at top, #ffe9e9, #fdf5e6 45%, #e4f5ea 100%);
-      min-height: 100vh;
-      overflow-x: hidden;
-      position: relative;
+      background: #fafafa;
+      color: #111;
     }
 
-    .snowflake {
-      position: fixed;
-      top: -10px;
-      color: #ffffff;
-      font-size: 1.2rem;
-      pointer-events: none;
-      animation-name: fall;
-      animation-timing-function: linear;
-      animation-iteration-count: infinite;
-      opacity: 0.85;
-      z-index: 1;
-      text-shadow: 0 0 3px rgba(0,0,0,0.3);
-    }
-    .snowflake:nth-child(1)  { left: 5%;  animation-duration: 12s; animation-delay: 0s; }
-    .snowflake:nth-child(2)  { left: 18%; animation-duration: 15s; animation-delay: 2s; }
-    .snowflake:nth-child(3)  { left: 32%; animation-duration: 11s; animation-delay: 4s; }
-    .snowflake:nth-child(4)  { left: 46%; animation-duration: 13s; animation-delay: 1s; }
-    .snowflake:nth-child(5)  { left: 60%; animation-duration: 16s; animation-delay: 3s; }
-    .snowflake:nth-child(6)  { left: 74%; animation-duration: 10s; animation-delay: 5s; }
-    .snowflake:nth-child(7)  { left: 88%; animation-duration: 14s; animation-delay: 1s; }
-
-    @keyframes fall {
-      0%   { transform: translateY(0); opacity: 0.95; }
-      100% { transform: translateY(110vh); opacity: 0; }
-    }
-
-    .garland {
-      position: fixed;
+    header {
+      position: sticky;
       top: 0;
-      left: 0;
-      width: 100%;
-      height: 60px;
-      background: radial-gradient(circle at center, rgba(31,122,58,0.7), rgba(0,0,0,0.3));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      color: #ffe;
-      font-size: 1.4rem;
-      z-index: 2;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-    }
-    .garland span { animation: blink 2.2s linear infinite; }
-    .garland span:nth-child(odd) { animation-delay: 0.7s; }
-
-    @keyframes blink {
-      0%, 100% { opacity: 0.4; transform: translateY(0); }
-      50%      { opacity: 1;   transform: translateY(1px); }
-    }
-
-    #wrapper {
-      max-width: 1200px;
-      margin: 90px auto 40px;
-      padding: 24px 26px 30px;
-      background: rgba(255,250,243,0.96);
-      border-radius: 20px;
-      box-shadow: 0 0 0 3px rgba(255,255,255,0.8),
-                  0 0 18px rgba(176,32,48,0.4);
-      position: relative;
-      z-index: 3;
-      border: 2px solid rgba(176,32,48,0.35);
-    }
-
-    #wrapper::before {
-      content: "";
-      position: absolute;
-      inset: 8px;
-      border-radius: 16px;
-      border: 2px dashed rgba(243,208,138,0.7);
-      pointer-events: none;
-    }
-
-    .header-flex {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 18px;
-      margin-bottom: 6px;
-    }
-
-    .xmas-icon { font-size: 2rem; }
-
-    .logo-amar {
-      height: 80px;
-      width: auto;
-      border-radius: 999px;
-      box-shadow: 0 0 6px rgba(0,0,0,0.25);
-      background: #fff;
+      background: white;
+      border-bottom: 1px solid #e6e6e6;
+      padding: 14px 16px;
+      z-index: 10;
     }
 
     h1 {
-      text-align: center;
-      margin: 6px 0;
-      font-size: 1.8rem;
-      color: var(--rosso-natale);
-      text-shadow: 0 1px 0 #fff, 0 0 6px rgba(176,32,48,0.35);
+      margin: 0;
+      font-size: 20px;
     }
 
     .subtitle {
-      text-align: center;
-      font-size: 0.9rem;
+      margin-top: 6px;
+      font-size: 14px;
+      color: #333;
+    }
+
+    .sub {
+      margin-top: 10px;
+      font-size: 12px;
       color: #555;
-      margin-bottom: 12px;
-    }
-    .subtitle span { color: var(--verde-natale); font-weight: 600; }
-
-    .stats-bar {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .stat-box {
-      background: linear-gradient(135deg,#fff,#fffdf7);
-      border-radius: 12px;
-      padding: 10px 12px;
-      border: 1px solid rgba(176,32,48,0.2);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-      font-size: 0.85rem;
-    }
-
-    .stat-label {
-      text-transform: uppercase;
-      color: #666;
-      font-size: 0.75rem;
-      letter-spacing: 0.05em;
-      margin-bottom: 4px;
-    }
-
-    .stat-value {
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: var(--rosso-natale);
-    }
-
-    .stat-note {
-      font-size: 0.75rem;
-      color: #777;
-      margin-top: 3px;
-    }
-
-    .stat-top ol {
-      margin: 0;
-      padding-left: 18px;
-      font-size: 0.8rem;
-    }
-
-    .filters {
       display: flex;
+      gap: 10px;
       flex-wrap: wrap;
-      gap: 14px;
-      margin-bottom: 16px;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 12px;
-      border-radius: 12px;
-      background: linear-gradient(90deg, #fffdf7, #f7fff7);
-      border: 1px solid rgba(31,122,58,0.18);
-    }
-
-    .filters-left {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
       align-items: center;
     }
 
-    .filter-block { display: flex; flex-direction: column; gap: 4px; }
-
-    .filter-label {
-      color: #444;
-      font-size: 0.8rem;
-    }
-
-    select, input[type="text"] {
-      padding: 5px 8px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 0.85rem;
-      min-width: 120px;
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 10px;
+      border: 1px solid #e6e6e6;
+      border-radius: 999px;
       background: #fff;
     }
 
-    #btnRefresh {
-      padding: 6px 10px;
-      border-radius: 8px;
-      border: 1px solid var(--verde-natale);
-      background: #e9fff0;
-      color: var(--verde-natale);
-      font-size: 0.85rem;
+    main {
+      padding: 12px 16px 20px;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr 200px 200px;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    input, select {
+      font: inherit;
+      padding: 10px;
+      border: 1px solid #d8d8d8;
+      border-radius: 10px;
+      background: white;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border: 1px solid #e6e6e6;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    thead th {
+      position: sticky;
+      top: 140px;
+      background: #fff;
+      border-bottom: 1px solid #e6e6e6;
+      padding: 10px;
+      font-size: 12px;
+      text-align: left;
       cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-    }
-    #btnRefresh:hover {
-      background: #d6ffe5;
+      white-space: nowrap;
     }
 
-    #tblCatalogo_wrapper { margin-top: 6px; }
+    tbody td {
+      border-bottom: 1px solid #f1f1f1;
+      padding: 10px;
+      font-size: 13px;
+    }
 
-    table.dataTable thead th {
-      background: linear-gradient(180deg,#f7f7f7,#e3e3e3);
-      border-bottom: 2px solid var(--rosso-natale);
-    }
-    table.dataTable tbody tr:nth-child(even) { background-color: #fffaf5; }
-    table.dataTable tbody tr.disponibile-row {
-      background: linear-gradient(90deg, #f7fff7, #ffffff);
-    }
-    table.dataTable tbody tr.prestato-row {
-      background: linear-gradient(90deg, #fff7f7, #ffffff);
+    tbody tr:hover {
+      background: #fcfcff;
     }
 
     .badge {
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 0.75rem;
-      font-weight: 600;
       display: inline-block;
-      white-space: nowrap;
-    }
-    .badge-disponibile {
-      background: #d4edda;
-      color: #155724;
-      border: 1px solid #b1dfbb;
-    }
-    .badge-prestato {
-      background: #f8d7da;
-      color: #721c24;
-      border: 1px solid #f1b0b7;
+      padding: 3px 8px;
+      border-radius: 999px;
+      border: 1px solid #e6e6e6;
+      font-size: 12px;
+      background: #fff;
     }
 
-    a.bgg-link {
-      color: var(--rosso-natale);
-      font-size: 0.8rem;
-      text-decoration: none;
-      font-weight: 600;
-    }
-    a.bgg-link:hover { text-decoration: underline; }
-
-    .footer-note {
-      margin-top: 10px;
-      font-size: 0.8rem;
-      color: #777;
-      text-align: right;
+    .status {
+      font-size: 13px;
+      margin-bottom: 10px;
     }
 
-    @media(max-width: 900px) {
-      .stats-bar { grid-template-columns: 1fr; }
+    .error {
+      color: #b00020;
+      background: #fff;
+      border: 1px solid #ffd1d1;
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 10px;
     }
 
-    @media(max-width: 768px) {
-      #wrapper {
-        margin: 80px 10px 20px;
-        padding: 14px;
+    @media (max-width: 900px) {
+      .controls {
+        grid-template-columns: 1fr;
       }
-      .filters {
-        flex-direction: column;
-        align-items: stretch;
+      thead th {
+        top: 200px;
       }
-      .header-flex { flex-direction: column; }
-      .logo-amar { height: 70px; }
     }
   </style>
 </head>
 
 <body>
 
-<div class="garland">
-  <span>✨</span><span>🎄</span><span>⭐</span><span>🕯️</span>
-  <span>🎲 AmarBoard Romagna 🎲</span>
-  <span>⭐</span><span>🎄</span><span>✨</span>
-</div>
+<header>
+  <h1>Ludoteca Amarboard</h1>
 
-<!-- Fiocchi di neve -->
-<div class="snowflake">❄</div>
-<div class="snowflake">✻</div>
-<div class="snowflake">❅</div>
-<div class="snowflake">❆</div>
-<div class="snowflake">❄</div>
-<div class="snowflake">✵</div>
-<div class="snowflake">❄</div>
-
-<div id="wrapper">
-  <div class="header-flex">
-    <span class="xmas-icon">🎄</span>
-
-    <!-- LOGO (cambia estensione se necessario) -->
-    <img class="logo-amar"
-         src="https://raw.githubusercontent.com/sakana2893/Ludoteca-Amarboard/main/logo_amarboard.png"
-         alt="AmarBoard Romagna">
-
-    <span class="xmas-icon">🎲</span>
-  </div>
-  <h1>Catalogo Giochi – AmarBoard</h1>
   <div class="subtitle">
-    <span>Speciale Natale:</span> trova il gioco giusto (o fatti suggerire dai nostri Volontari) da intavolare con gli amici sui nostri tavoli.
+    <strong>Speciale Natale:</strong>
+    trova il gioco perfetto da intavolare con gli amici,
+    oppure lasciati consigliare dai nostri Volontari direttamente ai tavoli.
   </div>
 
-  <!-- BARRA STATISTICHE -->
-  <div class="stats-bar">
-    <div class="stat-box">
-      <div class="stat-label">Giochi attualmente in prestito</div>
-      <div class="stat-value" id="cntAttivi">–</div>
-      <div class="stat-note">Numero di prestiti attivi in questo momento.</div>
-    </div>
-    <div class="stat-box">
-      <div class="stat-label">Prestiti totali effettuati</div>
-      <div class="stat-value" id="cntTotali">–</div>
-      <div class="stat-note">Conteggio cumulativo dei prestiti registrati.</div>
-    </div>
-    <div class="stat-box stat-top">
-      <div class="stat-label">Top 3 giochi più prestati ora</div>
-      <ol id="topList"></ol>
-    </div>
+  <div class="sub">
+    <span class="pill"><strong id="countTotal">0</strong> totali</span>
+    <span class="pill"><strong id="countShown">0</strong> mostrati</span>
+    <span class="pill">Ultimo aggiornamento: <span id="lastUpdated">—</span></span>
+  </div>
+</header>
+
+<main>
+  <div class="controls">
+    <input id="q" type="search" placeholder="Cerca un gioco…" autocomplete="off" />
+    <select id="statusFilter">
+      <option value="">Tutti gli stati</option>
+      <option value="Disponibile">Disponibile</option>
+      <option value="In prestito">In prestito</option>
+      <option value="Non disponibile">Non disponibile</option>
+    </select>
+    <select id="autoRefresh">
+      <option value="0">Auto-refresh OFF</option>
+      <option value="10">Auto-refresh 10s</option>
+      <option value="15" selected>Auto-refresh 15s</option>
+      <option value="30">Auto-refresh 30s</option>
+      <option value="60">Auto-refresh 60s</option>
+    </select>
   </div>
 
-  <!-- FILTRI + BOTTONE AGGIORNA -->
-  <div class="filters">
-    <div class="filters-left">
-      <div class="filter-block">
-        <span class="filter-label">Categoria</span>
-        <select id="filtroCategoria">
-          <option value="">Tutte</option>
-        </select>
-      </div>
+  <div id="statusLine" class="status">Pronto.</div>
+  <div id="errorBox" class="error" style="display:none;"></div>
 
-      <div class="filter-block">
-        <span class="filter-label">Stato</span>
-        <select id="filtroStato">
-          <option value="">Tutti</option>
-          <option value="Disponibile">Disponibile</option>
-          <option value="In prestito">In prestito</option>
-        </select>
-      </div>
-
-      <div class="filter-block">
-        <span class="filter-label">Giocatori (contiene)</span>
-        <input type="text" id="filtroGiocatori" placeholder="es. 2-4">
-      </div>
-    </div>
-
-    <button id="btnRefresh" type="button">🔄 Aggiorna dati</button>
-  </div>
-
-  <table id="tblCatalogo" class="display" style="width:100%">
-    <thead>
-    <tr>
-      <th>Titolo</th>
-      <th>Giocatori</th>
-      <th>Durata</th>
-      <th>Età</th>
-      <th>Categoria</th>
-      <th>Editore</th>
-      <th>Disponibili</th>
-      <th>Stato</th>
-      <th>BGG</th>
-    </tr>
-    </thead>
-    <tbody></tbody>
+  <table>
+    <thead id="thead"></thead>
+    <tbody id="tbody"></tbody>
   </table>
-
-  <div class="footer-note">
-    🎅 Catalogo generato dalla ludoteca AmarBoard – versione natalizia
-  </div>
-</div>
+</main>
 
 <script>
-  // 👉 URL RAW del catalogo giochi
- const CSV_BASE_URL = new URL("/catalogo_ludoteca.csv", window.location.origin).href;
+  const CSV_PATH = "/catalogo_ludoteca.csv";
 
-  // 👉 URL RAW delle stats
-  const STATS_BASE_URL =
-    "/stats_ludoteca.csv";
+  let rows = [];
+  let columns = [];
+  let sortKey = null;
+  let sortDir = 1;
+  let refreshTimer = null;
 
-  let table = null;  // DataTable riusabile
-
-  function statoBadge(stato) {
-    stato = (stato || "").toLowerCase().trim();
-    if (stato === "disponibile") {
-      return '<span class="badge badge-disponibile">🎄 Disponibile</span>';
-    }
-    if (stato === "in prestito") {
-      return '<span class="badge badge-prestato">🎁 In prestito</span>';
-    }
-    return stato;
+  function formatNow() {
+    return new Date().toLocaleString("it-IT", { hour12: false });
   }
 
-  function caricaStats() {
-    const url = STATS_BASE_URL + "?v=" + Date.now(); // niente cache
-    Papa.parse(url, {
-      download: true,
-      header: true,
-      complete: function (resStats) {
-        if ((resStats.data || []).length > 0) {
-          const s = resStats.data[0];
-          document.getElementById("cntAttivi").textContent =
-            s["PrestitiAttivi"] || "0";
-          document.getElementById("cntTotali").textContent =
-            s["PrestitiTotali"] || "0";
+  function normalize(v) {
+    return (v ?? "").toString().toLowerCase().trim();
+  }
 
-          const topList = document.getElementById("topList");
-          topList.innerHTML = "";
-
-          function addTop(titoloKey, countKey) {
-            const titolo = s[titoloKey];
-            const cnt = s[countKey];
-            if (titolo && cnt && Number(cnt) > 0) {
-              const li = document.createElement("li");
-              li.textContent = titolo + " (" + cnt + ")";
-              topList.appendChild(li);
-            }
-          }
-
-          addTop("Top1Titolo", "Top1Prestiti");
-          addTop("Top2Titolo", "Top2Prestiti");
-          addTop("Top3Titolo", "Top3Prestiti");
-        }
+  function parseCSV(text) {
+    const lines = text.split(/\r?\n/).filter(l => l.trim());
+    const split = (line) => {
+      const out = [];
+      let cur = "", q = false;
+      for (let i = 0; i < line.length; i++) {
+        const c = line[i];
+        if (c === '"') { q = !q; continue; }
+        if (c === "," && !q) { out.push(cur); cur = ""; continue; }
+        cur += c;
       }
+      out.push(cur);
+      return out;
+    };
+
+    const header = split(lines[0]);
+    const data = lines.slice(1).map(l => {
+      const cells = split(l);
+      const o = {};
+      header.forEach((h, i) => o[h] = cells[i] ?? "");
+      return o;
+    });
+
+    return { header, data };
+  }
+
+  async function loadCSV() {
+    const res = await fetch(`${CSV_PATH}?v=${Date.now()}`, { cache: "no-store" });
+    if (!res.ok) throw new Error("Errore caricamento CSV");
+    const text = await res.text();
+    const parsed = parseCSV(text);
+
+    columns = parsed.header;
+    rows = parsed.data;
+
+    document.getElementById("countTotal").textContent = rows.length;
+    document.getElementById("lastUpdated").textContent = formatNow();
+  }
+
+  function render() {
+    const q = normalize(document.getElementById("q").value);
+    const st = normalize(document.getElementById("statusFilter").value);
+
+    let data = rows.filter(r => {
+      if (st && normalize(r["Stato"]) !== st) return false;
+      if (!q) return true;
+      return columns.some(c => normalize(r[c]).includes(q));
+    });
+
+    if (sortKey) {
+      data.sort((a, b) =>
+        a[sortKey].localeCompare(b[sortKey], "it", { numeric: true }) * sortDir
+      );
+    }
+
+    document.getElementById("countShown").textContent = data.length;
+
+    const thead = document.getElementById("thead");
+    thead.innerHTML = "<tr>" + columns.map(c =>
+      `<th>${c}${sortKey === c ? (sortDir > 0 ? " ▲" : " ▼") : ""}</th>`
+    ).join("") + "</tr>";
+
+    [...thead.querySelectorAll("th")].forEach((th, i) => {
+      th.onclick = () => {
+        if (sortKey === columns[i]) sortDir *= -1;
+        else { sortKey = columns[i]; sortDir = 1; }
+        render();
+      };
+    });
+
+    const tbody = document.getElementById("tbody");
+    tbody.innerHTML = "";
+
+    data.forEach(r => {
+      const tr = document.createElement("tr");
+      columns.forEach(c => {
+        const td = document.createElement("td");
+        td.innerHTML = c === "Stato"
+          ? `<span class="badge">${r[c]}</span>`
+          : r[c];
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
     });
   }
-<script>
-async function caricaCatalogo() {
-  const res = await fetch(`/catalogo_ludoteca.csv?v=${Date.now()}`, {
-    cache: "no-store"
-  });
 
-  const csv = await res.text();
-  console.log(csv); // qui poi fai il parsing
-}
-
-caricaCatalogo();
-</script>
-
-  function caricaCatalogo() {
-    const url = CSV_BASE_URL + "?v=" + Date.now(); // niente cache
-    const res = await fetch(url, { cache: "no-store" });
-const csvText = await res.text();
-    Papa.parse(url, {
-      download: true,
-      header: true,
-      complete: function (results) {
-        const raw = results.data || [];
-        const data = [];
-        const categorie = new Set();
-
-        raw.forEach(row => {
-          if (!row["Titolo"]) return;
-
-          const categoria = row["Categoria"] || "";
-          if (categoria) categorie.add(categoria);
-
-          data.push({
-            Titolo: row["Titolo"] || "",
-            Giocatori: row["NumeroGiocatori"] || "",
-            Durata: row["Durata"] || "",
-            Eta: row["Eta"] || "",
-            Categoria: categoria,
-            Editore: row["Editore"] || "",
-            Disponibili: row["CopieDisponibili"] || "",
-            Stato: row["StatoDisponibilita"] || "",
-            BGG: row["BGG"] || ""
-          });
-        });
-
-        // Popola categorie (sempre rinfrescate)
-        const selCat = document.getElementById("filtroCategoria");
-        selCat.innerHTML = '<option value="">Tutte</option>';
-        [...categorie].sort().forEach(cat => {
-          const opt = document.createElement("option");
-          opt.value = cat;
-          opt.textContent = cat;
-          selCat.appendChild(opt);
-        });
-
-        if (!table) {
-          // Prima inizializzazione DataTable
-          table = $("#tblCatalogo").DataTable({
-            data: data,
-            columns: [
-              { data: "Titolo" },
-              { data: "Giocatori" },
-              { data: "Durata" },
-              { data: "Eta" },
-              { data: "Categoria" },
-              { data: "Editore" },
-              {
-                data: "Disponibili",
-                render: d => `<strong>${d}</strong>`
-              },
-              {
-                data: "Stato",
-                render: d => statoBadge(d)
-              },
-              {
-                data: "BGG",
-                orderable: false,
-                render: d =>
-                  d ? `<a class="bgg-link" href="${d}" target="_blank">Scheda</a>` : ""
-              }
-            ],
-
-            // niente pagine: mostra sempre tutto
-            paging: false,
-            info: false,
-            lengthChange: false,
-
-            order: [[0, "asc"]],
-            language: {
-              url: "https://cdn.datatables.net/plug-ins/1.13.8/i18n/it-IT.json"
-            },
-            createdRow: function (row, rowData) {
-              const stato = (rowData.Stato || "").toLowerCase().trim();
-              if (stato === "disponibile") {
-                row.classList.add("disponibile-row");
-              } else if (stato === "in prestito") {
-                row.classList.add("prestato-row");
-              }
-            }
-          });
-
-          // Collego i FILTRI solo la prima volta
-          document.getElementById("filtroCategoria").addEventListener("change", function () {
-            const val = this.value;
-            table.column(4).search(val, false, false).draw();
-          });
-
-          document.getElementById("filtroStato").addEventListener("change", function () {
-            const val = this.value;
-            table.column(7).search(val, false, false).draw();
-          });
-
-          document.getElementById("filtroGiocatori").addEventListener("keyup", function () {
-            const val = this.value;
-            table.column(1).search(val, false, false).draw();
-          });
-
-        } else {
-          // Refresh dati senza reinizializzare DataTable
-          table.clear();
-          table.rows.add(data).draw();
-        }
-      },
-      error: function (err) {
-        console.error("Errore nel caricamento del CSV:", err);
-        alert("Impossibile caricare il catalogo. Controlla gli URL dei CSV.");
+  function setupAutoRefresh() {
+    document.getElementById("autoRefresh").onchange = e => {
+      if (refreshTimer) clearInterval(refreshTimer);
+      const s = Number(e.target.value);
+      if (s > 0) {
+        refreshTimer = setInterval(async () => {
+          await loadCSV();
+          render();
+        }, s * 1000);
       }
-    });
+    };
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
-    caricaStats();
-    caricaCatalogo();
-
-    document.getElementById("btnRefresh").addEventListener("click", function () {
-      caricaStats();
-      caricaCatalogo();
-    });
-  });
+  (async function boot() {
+    try {
+      setupAutoRefresh();
+      await loadCSV();
+      render();
+      document.getElementById("autoRefresh").dispatchEvent(new Event("change"));
+    } catch (e) {
+      document.getElementById("errorBox").style.display = "block";
+      document.getElementById("errorBox").textContent = e.message;
+    }
+  })();
 </script>
 
 </body>
