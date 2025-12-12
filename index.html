@@ -411,8 +411,7 @@
 
 <script>
   // 👉 URL RAW del catalogo giochi
-  const CSV_BASE_URL =
-    "/catalogo_ludoteca.csv";
+ const CSV_BASE_URL = new URL("/catalogo_ludoteca.csv", window.location.origin).href;
 
   // 👉 URL RAW delle stats
   const STATS_BASE_URL =
