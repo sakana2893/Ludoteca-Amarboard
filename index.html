@@ -412,11 +412,11 @@
 <script>
   // 👉 URL RAW del catalogo giochi
   const CSV_BASE_URL =
-    "https://raw.githubusercontent.com/sakana2893/Ludoteca-Amarboard/main/catalogo_ludoteca.csv";
+    "/catalogo_ludoteca.csv";
 
   // 👉 URL RAW delle stats
   const STATS_BASE_URL =
-    "https://raw.githubusercontent.com/sakana2893/Ludoteca-Amarboard/main/stats_ludoteca.csv";
+    "/stats_ludoteca.csv";
 
   let table = null;  // DataTable riusabile
 
@@ -467,6 +467,8 @@
 
   function caricaCatalogo() {
     const url = CSV_BASE_URL + "?v=" + Date.now(); // niente cache
+    const res = await fetch(url, { cache: "no-store" });
+const csvText = await res.text();
     Papa.parse(url, {
       download: true,
       header: true,
