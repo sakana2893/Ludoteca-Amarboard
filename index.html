@@ -463,6 +463,18 @@
       }
     });
   }
+<script>
+async function caricaCatalogo() {
+  const res = await fetch(`/catalogo_ludoteca.csv?v=${Date.now()}`, {
+    cache: "no-store"
+  });
+
+  const csv = await res.text();
+  console.log(csv); // qui poi fai il parsing
+}
+
+caricaCatalogo();
+</script>
 
   function caricaCatalogo() {
     const url = CSV_BASE_URL + "?v=" + Date.now(); // niente cache
