@@ -289,7 +289,7 @@
       text-align: right;
     }
 
-    /* box errori (non cambia la grafica se non ci sono errori) */
+    /* box errori (solo se serve) */
     #errorBox {
       display: none;
       margin: 10px 0 12px;
@@ -300,6 +300,54 @@
       color: #7a0f1a;
       font-size: 0.85rem;
       line-height: 1.35;
+    }
+
+    /* ===== COUNTDOWN BANNER + SPOILER SHIELD ===== */
+    #countdownBanner{
+      position: fixed;
+      inset: 70px 16px auto 16px;
+      max-width: 1200px;
+      margin: 0 auto;
+      z-index: 9999;
+      background: rgba(255,250,243,0.98);
+      border: 2px solid rgba(176,32,48,0.35);
+      box-shadow: 0 0 18px rgba(176,32,48,0.25);
+      border-radius: 16px;
+      padding: 14px 16px;
+      text-align: center;
+      color: #7a0f1a;
+      font-weight: 700;
+    }
+
+    #countdownBanner small{
+      display:block;
+      margin-top:6px;
+      font-weight: 600;
+      color:#444;
+    }
+
+    #countdownTime{
+      font-variant-numeric: tabular-nums;
+      font-size: 1.4rem;
+      color: #b02030;
+    }
+
+    .spoiler-hidden #wrapper{
+      filter: blur(10px);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .spoiler-hidden #wrapper::after{
+      content:"Catalogo in arrivo…";
+      position:absolute;
+      inset: 0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: rgba(122,15,26,0.85);
     }
 
     @media(max-width: 900px) {
@@ -323,6 +371,11 @@
 
 <body>
 
+<div id="countdownBanner" style="display:none;">
+  🎁 Il catalogo sblocca tra <span id="countdownTime">--:--:--</span>
+  <small>Per non spoilerare, fino a quell’ora la pagina resta “coperta”.</small>
+</div>
+
 <div class="garland">
   <span>✨</span><span>🎄</span><span>⭐</span><span>🕯️</span>
   <span>🎲 AmarBoard Romagna 🎲</span>
@@ -342,7 +395,7 @@
   <div class="header-flex">
     <span class="xmas-icon">🎄</span>
 
-    <!-- LOGO (puoi anche metterlo locale: src="logo_amarboard.png") -->
+    <!-- LOGO (se vuoi evitare cache/ritardi, meglio metterlo locale: src="logo_amarboard.png") -->
     <img class="logo-amar"
          src="https://raw.githubusercontent.com/sakana2893/Ludoteca-Amarboard/main/logo_amarboard.png"
          alt="AmarBoard Romagna">
@@ -427,7 +480,44 @@
 </div>
 
 <script>
-  // CSV LOCALI (root del sito: stessa cartella dell'HTML)
+  // ====== COUNTDOWN / SPOILER SHIELD ======
+  // Target: 12 Dicembre 2025 ore 09:00 (Europe/Rome)
+  const REVEAL_AT = new Date("2025-12-12T09:00:00+01:00").getTime();
+  let countdownTimer = null;
+
+  function startCountdownShield() {
+    const banner = document.getElementById("countdownBanner");
+    const timeEl = document.getElementById("countdownTime");
+
+    function tick() {
+      const now = Date.now();
+      const diff = REVEAL_AT - now;
+
+      if (diff <= 0) {
+        document.body.classList.remove("spoiler-hidden");
+        banner.style.display = "none";
+        if (countdownTimer) clearInterval(countdownTimer);
+
+        // sblocca: carica dati
+        if (typeof aggiornaTutto === "function") aggiornaTutto();
+        return;
+      }
+
+      document.body.classList.add("spoiler-hidden");
+      banner.style.display = "block";
+
+      const totalSec = Math.floor(diff / 1000);
+      const h = String(Math.floor(totalSec / 3600)).padStart(2, "0");
+      const m = String(Math.floor((totalSec % 3600) / 60)).padStart(2, "0");
+      const s = String(totalSec % 60).padStart(2, "0");
+      timeEl.textContent = `${h}:${m}:${s}`;
+    }
+
+    tick();
+    countdownTimer = setInterval(tick, 1000);
+  }
+
+  // ====== DATI CSV ======
   const CSV_BASE_URL   = "/catalogo_ludoteca.csv";
   const STATS_BASE_URL = "/stats_ludoteca.csv";
 
@@ -455,7 +545,7 @@
     return stato || "";
   }
 
-  // ✅ Anti-cache vero: fetch no-store + PapaParse su testo
+  // Anti-cache vero: fetch no-store + PapaParse su testo
   async function fetchTextNoStore(path) {
     const url = path + "?v=" + Date.now();
     const res = await fetch(url, { cache: "no-store" });
@@ -502,7 +592,7 @@
       addTop("Top3Titolo", "Top3Prestiti");
     } catch (e) {
       console.warn(e);
-      // stats opzionali: non blocchiamo la tabella
+      // stats opzionali
     }
   }
 
@@ -580,7 +670,6 @@
         language: {
           url: "https://cdn.datatables.net/plug-ins/1.13.8/i18n/it-IT.json"
         },
-        // ✅ classi righe sempre corrette anche dopo refresh/draw
         rowCallback: function (row, rowData) {
           row.classList.remove("disponibile-row", "prestato-row");
           const stato = (rowData.Stato || "").toLowerCase().trim();
@@ -617,14 +706,17 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
-    aggiornaTutto();
+    startCountdownShield();
 
     document.getElementById("btnRefresh").addEventListener("click", function () {
+      if (Date.now() < REVEAL_AT) return; // non spoilerare
       aggiornaTutto();
     });
 
-    // AUTO-REFRESH ogni 30 secondi
-    setInterval(aggiornaTutto, 30000);
+    setInterval(() => {
+      if (Date.now() < REVEAL_AT) return; // non spoilerare
+      aggiornaTutto();
+    }, 30000);
   });
 </script>
 
