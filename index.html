@@ -366,41 +366,219 @@
       .header-flex { flex-direction: column; }
       .logo-amar { height: 70px; }
     }
+
+    /* ===== ADMIN BADGE + PIN MODAL (AGGIUNTO) ===== */
+    #adminBadge{
+      position: fixed;
+      top: 10px;
+      right: 10px;
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,250,243,0.95);
+      border: 2px solid rgba(243,208,138,0.75);
+      border-radius: 999px;
+      padding: 8px 12px;
+      box-shadow: 0 2px 14px rgba(0,0,0,0.25);
+      color: #7a0f1a;
+      font-weight: 800;
+    }
+
+    #adminBadge .pill{
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      font-size: 0.82rem;
+    }
+
+    #adminBadge button{
+      border-radius: 999px;
+      border: 1px solid rgba(176,32,48,0.45);
+      background: rgba(255, 231, 231, 0.9);
+      color: #7a0f1a;
+      padding: 6px 10px;
+      cursor: pointer;
+      font-weight: 900;
+    }
+    #adminBadge button:hover{ filter: brightness(0.98); }
+
+    #countdownActions{
+      margin-top: 10px;
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn-mini{
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      background: #fff;
+      color: #222;
+      cursor: pointer;
+      font-weight: 800;
+    }
+    .btn-mini:hover{ filter: brightness(0.98); }
+
+    .btn-admin{
+      border: 1px solid rgba(31,122,58,0.55);
+      background: rgba(233,255,240,0.95);
+      color: #155724;
+    }
+
+    .btn-logout{
+      border: 1px solid rgba(176,32,48,0.55);
+      background: rgba(255,231,231,0.95);
+      color: #7a0f1a;
+    }
+
+    #pinModal{
+      position: fixed;
+      inset: 0;
+      z-index: 10001;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0,0,0,0.55);
+      padding: 16px;
+    }
+
+    #pinModal .card{
+      width: min(420px, 100%);
+      background: rgba(255,250,243,0.98);
+      border: 2px solid rgba(176,32,48,0.35);
+      border-radius: 16px;
+      padding: 16px 14px;
+      box-shadow: 0 0 24px rgba(0,0,0,0.35);
+      color: #222;
+    }
+
+    #pinModal h2{
+      margin: 0 0 8px;
+      color: #7a0f1a;
+      font-size: 1.15rem;
+    }
+
+    #pinModal p{
+      margin: 0 0 12px;
+      color: #444;
+      font-size: 0.9rem;
+      line-height: 1.35;
+    }
+
+    #pinModal input{
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      background: #fff;
+      color: #111;
+      font-size: 1rem;
+    }
+
+    #pinModal .row{
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    #pinModal .row button{
+      flex: 1;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      background: #fff;
+      cursor: pointer;
+      font-weight: 900;
+    }
+
+    #pinModal .row .ok{
+      border: 1px solid rgba(31,122,58,0.55);
+      background: rgba(233,255,240,0.95);
+      color: #155724;
+    }
+
+    #pinModal .row .cancel{
+      border: 1px solid rgba(0,0,0,0.2);
+      background: rgba(255,255,255,0.9);
+      color: #333;
+    }
+
+    #pinModal .err{
+      margin-top: 10px;
+      color: #7a0f1a;
+      background: rgba(255,231,231,0.9);
+      border: 1px solid rgba(176,32,48,0.4);
+      padding: 8px 10px;
+      border-radius: 12px;
+      display: none;
+      font-weight: 800;
+    }
   </style>
 </head>
 
 <body>
 
+<!-- ===== ADMIN BADGE (AGGIUNTO) ===== -->
+<div id="adminBadge">
+  <div class="pill">??? ADMIN MODE</div>
+  <button id="btnLogoutTop" type="button">Logout</button>
+</div>
+
+<!-- ===== PIN MODAL (AGGIUNTO) ===== -->
+<div id="pinModal" aria-hidden="true">
+  <div class="card">
+    <h2>Accesso Admin</h2>
+    <p>Inserisci il PIN per bypassare il countdown e controllare la pagina senza spoiler.</p>
+    <input id="pinInput" type="password" inputmode="numeric" autocomplete="off" placeholder="PIN">
+    <div class="row">
+      <button class="cancel" id="btnPinCancel" type="button">Annulla</button>
+      <button class="ok" id="btnPinOk" type="button">Entra</button>
+    </div>
+    <div class="err" id="pinErr">PIN errato.</div>
+  </div>
+</div>
+
 <div id="countdownBanner" style="display:none;">
-  🎁 La  pagina della nostra Ludoteca si sbloccherà tra <span id="countdownTime">--:--:--</span>
+  ?? La  pagina della nostra Ludoteca si sbloccherà tra <span id="countdownTime">--:--:--</span>
   <small>Stiamo "intavolando" la nostra pagina, fino a quell’ora la pagina resta “coperta”.</small>
+
+  <!-- ===== ACTIONS (AGGIUNTO) ===== -->
+  <div id="countdownActions">
+    <button class="btn-mini btn-admin" id="btnOpenPin" type="button">?? Admin</button>
+    <button class="btn-mini btn-logout" id="btnLogoutBanner" type="button" style="display:none;">?? Logout</button>
+  </div>
 </div>
 
 <div class="garland">
-  <span>✨</span><span>🎄</span><span>⭐</span><span>🕯️</span>
-  <span>🎲 AmarBoard Romagna 🎲</span>
-  <span>⭐</span><span>🎄</span><span>✨</span>
+  <span>?</span><span>??</span><span>?</span><span>???</span>
+  <span>?? AmarBoard Romagna ??</span>
+  <span>?</span><span>??</span><span>?</span>
 </div>
 
 <!-- Fiocchi di neve -->
-<div class="snowflake">❄</div>
-<div class="snowflake">✻</div>
-<div class="snowflake">❅</div>
-<div class="snowflake">❆</div>
-<div class="snowflake">❄</div>
-<div class="snowflake">✵</div>
-<div class="snowflake">❄</div>
+<div class="snowflake">?</div>
+<div class="snowflake">?</div>
+<div class="snowflake">?</div>
+<div class="snowflake">?</div>
+<div class="snowflake">?</div>
+<div class="snowflake">?</div>
+<div class="snowflake">?</div>
 
 <div id="wrapper">
   <div class="header-flex">
-    <span class="xmas-icon">🎄</span>
+    <span class="xmas-icon">??</span>
 
     <!-- LOGO (se vuoi evitare cache/ritardi, meglio metterlo locale: src="logo_amarboard.png") -->
     <img class="logo-amar"
          src="https://raw.githubusercontent.com/sakana2893/Ludoteca-Amarboard/main/logo_amarboard.png"
          alt="AmarBoard Romagna">
 
-    <span class="xmas-icon">🎲</span>
+    <span class="xmas-icon">??</span>
   </div>
 
   <h1>Catalogo Giochi – AmarBoard</h1>
@@ -452,7 +630,7 @@
       </div>
     </div>
 
-    <button id="btnRefresh" type="button">🔄 Aggiorna dati</button>
+    <button id="btnRefresh" type="button">?? Aggiorna dati</button>
   </div>
 
   <div id="errorBox"></div>
@@ -475,31 +653,115 @@
   </table>
 
   <div class="footer-note">
-    🎅 Catalogo generato dalla ludoteca AmarBoard – versione natalizia
+    ?? Catalogo generato dalla ludoteca AmarBoard – versione natalizia
   </div>
 </div>
 
 <script>
   // ====== COUNTDOWN / SPOILER SHIELD ======
-  // Target: 13 Dicembre 2025 ore 09:00 (Europe/Rome)
+  // Target: 13 Dicembre 2025 ore 09:00 (Europe/Rome)  <-- (nota: sotto hai 2026-01-01)
   const REVEAL_AT = new Date("2026-01-01T09:00:00+01:00").getTime();
   let countdownTimer = null;
+
+  // ====== ADMIN PIN (AGGIUNTO) ======
+  // Cambia questo PIN (4-8 cifre consigliate). È un bypass pratico, non "sicurezza forte".
+  const ADMIN_PIN = "7667";
+  const ADMIN_TTL_HOURS = 8;
+
+  function isAdmin() {
+    try {
+      const raw = localStorage.getItem("AB_ADMIN");
+      if (!raw) return false;
+      const obj = JSON.parse(raw);
+      return obj && obj.until && Date.now() < obj.until;
+    } catch { return false; }
+  }
+
+  function setAdminSession() {
+    localStorage.setItem("AB_ADMIN", JSON.stringify({
+      until: Date.now() + ADMIN_TTL_HOURS * 3600000
+    }));
+  }
+
+  function clearAdminSession() {
+    localStorage.removeItem("AB_ADMIN");
+  }
+
+  function refreshAdminUI() {
+    const admin = isAdmin();
+    document.getElementById("adminBadge").style.display = admin ? "flex" : "none";
+    document.getElementById("btnLogoutBanner").style.display = admin ? "inline-flex" : "none";
+  }
+
+  function openPinModal() {
+    const m = document.getElementById("pinModal");
+    const input = document.getElementById("pinInput");
+    const err = document.getElementById("pinErr");
+    err.style.display = "none";
+    input.value = "";
+    m.style.display = "flex";
+    m.setAttribute("aria-hidden", "false");
+    setTimeout(() => input.focus(), 50);
+  }
+
+  function closePinModal() {
+    const m = document.getElementById("pinModal");
+    m.style.display = "none";
+    m.setAttribute("aria-hidden", "true");
+  }
+
+  function submitPin() {
+    const input = document.getElementById("pinInput");
+    const err = document.getElementById("pinErr");
+    if (input.value === ADMIN_PIN) {
+      setAdminSession();
+      refreshAdminUI();
+      closePinModal();
+      // sblocca subito
+      unlockAndLoad();
+    } else {
+      err.style.display = "block";
+    }
+  }
+
+  function unlockAndLoad() {
+    const banner = document.getElementById("countdownBanner");
+    document.body.classList.remove("spoiler-hidden");
+    banner.style.display = "none";
+    if (countdownTimer) clearInterval(countdownTimer);
+    if (typeof aggiornaTutto === "function") aggiornaTutto();
+  }
+
+  function doLogout() {
+    clearAdminSession();
+    refreshAdminUI();
+    // se ancora prima di REVEAL_AT, torna “coperto”
+    if (Date.now() < REVEAL_AT) {
+      document.body.classList.add("spoiler-hidden");
+      document.getElementById("countdownBanner").style.display = "block";
+      // riavvia tick (se era stato stoppato)
+      if (!countdownTimer) startCountdownShield();
+    }
+  }
 
   function startCountdownShield() {
     const banner = document.getElementById("countdownBanner");
     const timeEl = document.getElementById("countdownTime");
 
     function tick() {
+      refreshAdminUI();
+
+      // ? bypass admin
+      if (isAdmin()) {
+        unlockAndLoad();
+        return;
+      }
+
       const now = Date.now();
       const diff = REVEAL_AT - now;
 
       if (diff <= 0) {
-        document.body.classList.remove("spoiler-hidden");
-        banner.style.display = "none";
-        if (countdownTimer) clearInterval(countdownTimer);
-
-        // sblocca: carica dati
-        if (typeof aggiornaTutto === "function") aggiornaTutto();
+        unlockAndLoad();
         return;
       }
 
@@ -537,10 +799,10 @@
   function statoBadge(stato) {
     stato = (stato || "").toLowerCase().trim();
     if (stato === "disponibile") {
-      return '<span class="badge badge-disponibile">🎄 Disponibile</span>';
+      return '<span class="badge badge-disponibile">?? Disponibile</span>';
     }
     if (stato === "in prestito") {
-      return '<span class="badge badge-prestato">🎁 In prestito</span>';
+      return '<span class="badge badge-prestato">?? In prestito</span>';
     }
     return stato || "";
   }
@@ -706,15 +968,31 @@
   }
 
   document.addEventListener("DOMContentLoaded", function () {
+    // ===== EVENTI ADMIN (AGGIUNTO) =====
+    document.getElementById("btnOpenPin").addEventListener("click", openPinModal);
+    document.getElementById("btnPinCancel").addEventListener("click", closePinModal);
+    document.getElementById("btnPinOk").addEventListener("click", submitPin);
+    document.getElementById("pinInput").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") submitPin();
+      if (e.key === "Escape") closePinModal();
+    });
+    document.getElementById("pinModal").addEventListener("click", (e) => {
+      if (e.target.id === "pinModal") closePinModal();
+    });
+
+    document.getElementById("btnLogoutTop").addEventListener("click", doLogout);
+    document.getElementById("btnLogoutBanner").addEventListener("click", doLogout);
+
+    // ===== START =====
     startCountdownShield();
 
     document.getElementById("btnRefresh").addEventListener("click", function () {
-      if (Date.now() < REVEAL_AT) return; // non spoilerare
+      if (!isAdmin() && Date.now() < REVEAL_AT) return; // non spoilerare
       aggiornaTutto();
     });
 
     setInterval(() => {
-      if (Date.now() < REVEAL_AT) return; // non spoilerare
+      if (!isAdmin() && Date.now() < REVEAL_AT) return; // non spoilerare
       aggiornaTutto();
     }, 30000);
   });
