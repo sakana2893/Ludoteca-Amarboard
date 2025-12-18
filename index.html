@@ -1,40 +1,241 @@
-<!-- VERSIONE STABILE – grafica originale + fix invio -->
-<!-- Cambiato SOLO JS: niente errore finto su prenotazione -->
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Catalogo Giochi – AmarBoard Natale</title>
 
-<!-- ⬇️ INCOLLA TUTTO IL FILE CHE HAI CARICATO -->
-<!-- ⬇️ e SOSTITUISCI SOLO la funzione di invio con questa -->
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
+<!-- Emoji compatibili ovunque -->
+<script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+
+<style>
+:root{
+  --rosso:#b02030;
+  --verde:#1f7a3a;
+  --oro:#f3d08a;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+  background:radial-gradient(circle at top,#ffe9e9,#fdf5e6 45%,#e4f5ea 100%);
+  overflow-x:hidden;
+}
+
+/* NEVE */
+.snowflake{
+  position:fixed;
+  top:-10px;
+  color:#fff;
+  font-size:1.2rem;
+  pointer-events:none;
+  animation:fall linear infinite;
+  opacity:.85;
+  z-index:1;
+}
+@keyframes fall{
+  to{transform:translateY(110vh);opacity:0}
+}
+.snowflake:nth-child(1){left:5%;animation-duration:12s}
+.snowflake:nth-child(2){left:18%;animation-duration:15s}
+.snowflake:nth-child(3){left:32%;animation-duration:11s}
+.snowflake:nth-child(4){left:46%;animation-duration:13s}
+.snowflake:nth-child(5){left:60%;animation-duration:16s}
+.snowflake:nth-child(6){left:74%;animation-duration:10s}
+.snowflake:nth-child(7){left:88%;animation-duration:14s}
+
+/* GARLAND */
+.garland{
+  position:fixed;top:0;left:0;width:100%;height:60px;
+  background:radial-gradient(circle at center,rgba(31,122,58,.7),rgba(0,0,0,.3));
+  display:flex;align-items:center;justify-content:center;
+  gap:10px;color:#ffe;font-size:1.4rem;z-index:2;
+  box-shadow:0 2px 8px rgba(0,0,0,.3);
+}
+.garland span{animation:blink 2.2s linear infinite}
+@keyframes blink{50%{opacity:1}0%,100%{opacity:.4}}
+
+#wrapper{
+  max-width:1200px;
+  margin:90px auto 40px;
+  padding:24px;
+  background:rgba(255,250,243,.96);
+  border-radius:20px;
+  border:2px solid rgba(176,32,48,.35);
+  box-shadow:0 0 18px rgba(176,32,48,.25);
+  position:relative;
+  z-index:3;
+}
+#wrapper:before{
+  content:"";
+  position:absolute;inset:8px;
+  border-radius:16px;
+  border:2px dashed rgba(243,208,138,.7);
+  pointer-events:none;
+}
+
+.header-flex{
+  display:flex;align-items:center;justify-content:center;
+  gap:18px;margin-bottom:6px;
+}
+.logo-amar{
+  height:80px;border-radius:999px;background:#fff;
+  box-shadow:0 0 6px rgba(0,0,0,.25);
+}
+h1{text-align:center;color:var(--rosso);margin:6px 0}
+.subtitle{text-align:center;color:#555;margin-bottom:16px}
+.subtitle span{color:var(--verde);font-weight:600}
+
+.filters{
+  display:flex;justify-content:space-between;
+  background:#fff;border-radius:12px;
+  padding:10px 12px;margin-bottom:12px;
+  border:1px solid rgba(31,122,58,.18);
+}
+button{
+  padding:6px 12px;border-radius:999px;
+  border:1px solid var(--verde);
+  background:#e9fff0;color:var(--verde);
+  font-weight:700;cursor:pointer;
+}
+button:hover{background:#d6ffe5}
+
+table.dataTable thead th{
+  background:#fff;border-bottom:2px solid var(--rosso)
+}
+table.dataTable tbody tr:nth-child(even){
+  background:#fffaf5
+}
+
+/* MODAL */
+#modal{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.65);
+  display:none;align-items:center;justify-content:center;
+  z-index:9999;
+}
+#modal .box{
+  background:#fff;border-radius:16px;
+  padding:18px;width:360px;
+}
+#modal h3{margin-top:0;color:var(--rosso)}
+input,textarea{
+  width:100%;padding:6px 8px;margin-bottom:8px;
+  border-radius:8px;border:1px solid #ccc;
+}
+.ok{color:var(--verde);font-weight:700}
+#pWebsite{display:none}
+</style>
+</head>
+
+<body>
+
+<div class="garland">
+  <span>✨</span><span>🎄</span><span>⭐</span><span>🕯️</span>
+  <span>🎲 AmarBoard Romagna 🎲</span>
+  <span>⭐</span><span>🎄</span><span>✨</span>
+</div>
+
+<div class="snowflake">❄</div><div class="snowflake">✻</div><div class="snowflake">❅</div>
+<div class="snowflake">❆</div><div class="snowflake">❄</div><div class="snowflake">✵</div><div class="snowflake">❄</div>
+
+<div id="wrapper">
+  <div class="header-flex">
+    <span>🎄</span>
+    <img class="logo-amar" src="https://raw.githubusercontent.com/sakana2893/Ludoteca-Amarboard/main/logo_amarboard.png">
+    <span>🎲</span>
+  </div>
+
+  <h1>Catalogo Giochi – AmarBoard</h1>
+  <div class="subtitle">
+    <span>Speciale Natale:</span>
+    trova il gioco giusto (o fatti suggerire dai nostri Volontari) da intavolare con gli amici.
+  </div>
+
+  <table id="tblCatalogo" class="display" style="width:100%">
+    <thead>
+      <tr>
+        <th>Titolo</th>
+        <th>Giocatori</th>
+        <th>Durata</th>
+        <th>Disponibili</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+</div>
+
+<div id="modal">
+  <div class="box">
+    <h3 id="mTitolo"></h3>
+    <input id="pNome" placeholder="Nome e cognome">
+    <input id="pTel" placeholder="Telefono (opzionale)">
+    <textarea id="pNote" placeholder="Note (opzionale)"></textarea>
+    <input id="pWebsite">
+    <div id="mOk" class="ok"></div>
+    <button onclick="invia()">Invia</button>
+    <button onclick="closeModal()">Annulla</button>
+  </div>
+</div>
 
 <script>
-/* ===== INVIO PRENOTAZIONE (FIX DEFINITIVO) ===== */
-async function inviaPrenotazione(payload){
-  try {
-    await fetch(
-      "https://script.google.com/macros/s/AKfycby-o0FWIL1NVCr_bWznqmkA4yCBnIhQzdyQGOaLDbAD-q_MOfBMjhL1knxVoPWbhHSl/exec",
-      {
-        method: "POST",
-        mode: "no-cors", // 🔑 fondamentale
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
-        },
-        body: new URLSearchParams(payload)
-      }
-    );
+twemoji.parse(document.body);
 
-    // ⚠️ con no-cors NON possiamo leggere la risposta
-    // se JS non esplode → consideriamo OK
-    mostraOkPrenotazione();
+const API_URL="https://script.google.com/macros/s/AKfycby-o0FWIL1NVCr_bWznqmkA4yCBnIhQzdyQGOaLDbAD-q_MOfBMjhL1knxVoPWbhHSl/exec";
+const CSV_URL="/catalogo_ludoteca.csv";
+let ctx={};
 
-  } catch (e) {
-    // ❌ NON mostriamo errore se il foglio si compila
-    mostraOkPrenotazione();
-  }
+function openModal(t,g){
+  ctx={titolo:t,giocatori:g||""};
+  mTitolo.textContent="Prenota: "+t;
+  mOk.textContent="";
+  modal.style.display="flex";
+}
+function closeModal(){modal.style.display="none"}
+
+function invia(){
+  if(pNome.value.trim().length<2)return;
+  const u=new URL(API_URL);
+  u.searchParams.set("action","submit");
+  u.searchParams.set("titolo",ctx.titolo);
+  u.searchParams.set("giocatori",ctx.giocatori);
+  u.searchParams.set("nome",pNome.value.trim());
+  u.searchParams.set("telefono",pTel.value.trim());
+  u.searchParams.set("note",pNote.value.trim());
+  u.searchParams.set("website",pWebsite.value.trim());
+  u.searchParams.set("_",Date.now());
+  new Image().src=u.toString();
+  mOk.textContent="Richiesta inviata ✅";
+  setTimeout(closeModal,900);
 }
 
-function mostraOkPrenotazione(){
-  const box = document.getElementById("prenotaOk");
-  if(box){
-    box.style.display = "block";
-    box.textContent = "✅ Richiesta inviata correttamente!";
+Papa.parse(CSV_URL+"?v="+Date.now(),{
+  download:true,header:true,
+  complete:r=>{
+    const data=r.data.filter(x=>x.Titolo);
+    $("#tblCatalogo").DataTable({
+      paging:false,info:false,data,
+      columns:[
+        {data:"Titolo"},
+        {data:"NumeroGiocatori"},
+        {data:"Durata"},
+        {data:"CopieDisponibili"},
+        {data:null,render:x=>
+          `<button onclick="openModal('${x.Titolo.replace(/'/g,"\\'")}','${x.NumeroGiocatori||""}')">📌 Richiedi</button>`}
+      ]
+    });
   }
-}
+});
 </script>
+
+</body>
+</html>
