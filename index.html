@@ -1024,13 +1024,54 @@
     document.getElementById("prenotaModal").setAttribute("aria-hidden","true");
   }
 
-  async function inviaPrenotazione(){
-    // cooldown client
-    const last = Number(localStorage.getItem("AB_LAST_REQ") || "0");
-    if (Date.now() - last < 12000) {
-      showEl("prenotaErr", "Attendi qualche secondo prima di inviare un’altra richiesta 🙂");
-      return;
-    }
+async function inviaPrenotazione(){
+  const last = Number(localStorage.getItem("AB_LAST_REQ") || "0");
+  if (Date.now() - last < 12000) {
+    showEl("prenotaErr", "Attendi qualche secondo prima di inviare un’altra richiesta 🙂");
+    return;
+  }
+
+  hideEl("prenotaOk"); hideEl("prenotaErr");
+
+  const nome = document.getElementById("pNome").value.trim();
+  const telefono = document.getElementById("pTel").value.trim();
+  const note = document.getElementById("pNote").value.trim();
+  const website = document.getElementById("pWebsite").value.trim(); // honeypot
+
+  if (nome.length < 2) { showEl("prenotaErr","Inserisci nome e cognome."); return; }
+  if (!API_URL || !API_URL.includes("/exec")) { showEl("prenotaErr","API non configurata (manca URL Apps Script)."); return; }
+
+  const payload = {
+    titolo: prenotaCtx.titolo,
+    giocatori: prenotaCtx.giocatori,
+    nome, telefono, note, website
+  };
+
+  try {
+    document.getElementById("pInvia").disabled = true;
+
+    // ✅ no-cors + urlencoded = niente CORS drama
+    const body = new URLSearchParams(payload);
+
+    await fetch(API_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+      body
+    });
+
+    // Con no-cors non possiamo leggere JSON: se non lancia errore, consideriamo inviato
+    localStorage.setItem("AB_LAST_REQ", String(Date.now()));
+    showEl("prenotaOk", "Richiesta inviata ✅ Ti rispondiamo appena possibile!");
+    setTimeout(closePrenotaModal, 900);
+
+  } catch (e) {
+    showEl("prenotaErr", "Errore invio: " + (e?.message || String(e)));
+  } finally {
+    document.getElementById("pInvia").disabled = false;
+  }
+}
+
 
     hideEl("prenotaOk"); hideEl("prenotaErr");
 
@@ -1224,3 +1265,4 @@
 
 </body>
 </html>
+
