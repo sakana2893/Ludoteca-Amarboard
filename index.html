@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<title>Catalogo Giochi – AmarBoard</title>
+<title>Catalogo Giochi – AmarBoard Natale</title>
 
 <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
 <meta http-equiv="Pragma" content="no-cache">
@@ -14,96 +14,98 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
 <style>
-  body{
-    margin:0;
-    font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
-    background:#111;
-    color:#f5f5f5;
-  }
-  #wrapper{
-    max-width:1200px;
-    margin:20px auto;
-    padding:20px;
-    background:#181818;
-    border-radius:16px;
-    border:1px solid #333;
-  }
-  h1{
-    margin:0 0 6px;
-    color:#f3d08a;
-  }
-  .subtitle{
-    color:#ccc;
-    margin-bottom:14px;
-  }
+:root{
+  --rosso:#b02030;
+  --verde:#1f7a3a;
+  --oro:#f3d08a;
+}
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+  background:radial-gradient(circle at top,#ffe9e9,#fdf5e6 45%,#e4f5ea 100%);
+}
+#wrapper{
+  max-width:1200px;
+  margin:70px auto 40px;
+  padding:24px;
+  background:rgba(255,250,243,.96);
+  border-radius:20px;
+  border:2px solid rgba(176,32,48,.35);
+  box-shadow:0 0 18px rgba(176,32,48,.25);
+}
+h1{
+  margin:0 0 6px;
+  text-align:center;
+  color:var(--rosso);
+}
+.subtitle{
+  text-align:center;
+  margin-bottom:16px;
+  color:#555;
+}
+.topbar{
+  display:flex;
+  justify-content:flex-end;
+  margin-bottom:6px;
+}
+.admin-link{
+  font-size:.8rem;
+  color:#555;
+  text-decoration:none;
+}
+button{
+  padding:6px 10px;
+  border-radius:999px;
+  border:1px solid var(--verde);
+  background:#e9fff0;
+  color:var(--verde);
+  font-weight:700;
+  cursor:pointer;
+}
+button:hover{ background:#d6ffe5; }
 
-  .topbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:8px;
-  }
-  .admin-link{
-    font-size:.8rem;
-    color:#8bd1ff;
-    text-decoration:none;
-  }
+table.dataTable thead th{
+  background:#fff;
+  border-bottom:2px solid var(--rosso);
+}
+table.dataTable tbody tr:nth-child(even){
+  background:#fffaf5;
+}
 
-  button{
-    padding:6px 10px;
-    border-radius:8px;
-    border:1px solid #444;
-    background:#222;
-    color:#fff;
-    cursor:pointer;
-    font-weight:700;
-  }
-  button:hover{ background:#2a2a2a; }
-
-  table.dataTable{
-    color:#f5f5f5;
-  }
-  table.dataTable thead th{
-    background:#222;
-    border-bottom:2px solid #b02030;
-  }
-
-  /* ===== MODAL ===== */
-  #modal{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.7);
-    display:none;
-    align-items:center;
-    justify-content:center;
-    z-index:9999;
-  }
-  #modal .box{
-    width:360px;
-    background:#181818;
-    border:1px solid #444;
-    border-radius:14px;
-    padding:16px;
-  }
-  #modal h3{
-    margin-top:0;
-    color:#f3d08a;
-  }
-
-  input, textarea{
-    width:100%;
-    margin-bottom:8px;
-    padding:6px 8px;
-    background:#111;
-    color:#fff;
-    border:1px solid #444;
-    border-radius:8px;
-  }
-
-  .ok{ color:#a9ffbd; font-size:.85rem; }
-  .err{ color:#ffd7d7; font-size:.85rem; }
-
-  #pWebsite{ display:none; } /* honeypot */
+/* ===== MODAL ===== */
+#modal{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.65);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+}
+#modal .box{
+  width:380px;
+  background:#fff;
+  border-radius:16px;
+  padding:18px;
+  border:2px solid var(--oro);
+}
+#modal h3{
+  margin-top:0;
+  color:var(--rosso);
+}
+input,textarea{
+  width:100%;
+  padding:6px 8px;
+  margin-bottom:8px;
+  border-radius:8px;
+  border:1px solid #ccc;
+}
+.ok{
+  color:#1f7a3a;
+  font-weight:700;
+  font-size:.9rem;
+}
+#pWebsite{display:none;}
 </style>
 </head>
 
@@ -111,13 +113,12 @@
 
 <div id="wrapper">
   <div class="topbar">
-    <div></div>
-    <a class="admin-link" href="admin.html" target="_blank">Admin</a>
+    <a class="admin-link" href="admin.html" target="_blank">Area Admin</a>
   </div>
 
   <h1>Catalogo Giochi – AmarBoard</h1>
   <div class="subtitle">
-    Speciale Natale: scegli un gioco o richiedi la prenotazione al banco.
+    <b>Speciale Natale:</b> scegli il gioco giusto o richiedi la prenotazione al banco 🎄
   </div>
 
   <table id="tblCatalogo" class="display" style="width:100%">
@@ -127,17 +128,17 @@
         <th>Giocatori</th>
         <th>Durata</th>
         <th>Disponibili</th>
-        <th>Azione</th>
+        <th></th>
       </tr>
     </thead>
     <tbody></tbody>
   </table>
 </div>
 
-<!-- ===== MODAL PRENOTAZIONE ===== -->
+<!-- MODAL -->
 <div id="modal">
   <div class="box">
-    <h3 id="mTitolo">Richiedi prenotazione</h3>
+    <h3 id="mTitolo"></h3>
 
     <input id="pNome" placeholder="Nome e cognome">
     <input id="pTel" placeholder="Telefono (opzionale)">
@@ -145,9 +146,8 @@
     <input id="pWebsite">
 
     <div id="mOk" class="ok"></div>
-    <div id="mErr" class="err"></div>
 
-    <div style="display:flex; gap:8px; margin-top:10px;">
+    <div style="display:flex;gap:10px;margin-top:10px;">
       <button id="pInvia" onclick="invia()">Invia</button>
       <button onclick="closeModal()">Annulla</button>
     </div>
@@ -160,83 +160,59 @@ const API_URL = "https://script.google.com/macros/s/AKfycby-o0FWIL1NVCr_bWznqmkA
 const CSV_URL = "/catalogo_ludoteca.csv";
 
 /* ===== STATE ===== */
-let table = null;
-let prenotaCtx = { titolo:"", giocatori:"" };
+let ctx = {titolo:"",giocatori:""};
 
 /* ===== MODAL ===== */
-function openModal(titolo, giocatori){
-  prenotaCtx.titolo = titolo;
-  prenotaCtx.giocatori = giocatori || "";
-  document.getElementById("mTitolo").textContent = "Prenota: " + titolo;
-  document.getElementById("mOk").textContent="";
-  document.getElementById("mErr").textContent="";
-  document.getElementById("modal").style.display="flex";
-}
-
-function closeModal(){
-  document.getElementById("modal").style.display="none";
-}
-
-/* ===== INVIO PRENOTAZIONE (BEACON GET) ===== */
-function invia(){
-  const nome = pNome.value.trim();
-  if(nome.length < 2){
-    mErr.textContent = "Inserisci nome e cognome.";
-    return;
-  }
-
-  mErr.textContent="";
+function openModal(t,g){
+  ctx.titolo=t; ctx.giocatori=g||"";
+  mTitolo.textContent="Prenota: "+t;
   mOk.textContent="";
-  pInvia.disabled = true;
-
-  const u = new URL(API_URL);
-  u.searchParams.set("action","submit");
-  u.searchParams.set("titolo", prenotaCtx.titolo);
-  u.searchParams.set("giocatori", prenotaCtx.giocatori);
-  u.searchParams.set("nome", nome);
-  u.searchParams.set("telefono", pTel.value.trim());
-  u.searchParams.set("note", pNote.value.trim());
-  u.searchParams.set("website", pWebsite.value.trim());
-  u.searchParams.set("_", Date.now()); // anti-cache
-
-  const img = new Image();
-  img.onload = () => {
-    mOk.textContent = "Richiesta inviata ✅";
-    pInvia.disabled = false;
-    setTimeout(closeModal, 900);
-  };
-  img.onerror = () => {
-    mErr.textContent = "Errore invio. Controlla connessione.";
-    pInvia.disabled = false;
-  };
-  img.src = u.toString();
+  modal.style.display="flex";
+}
+function closeModal(){
+  modal.style.display="none";
 }
 
-/* ===== CARICA CATALOGO CSV ===== */
-Papa.parse(CSV_URL + "?v=" + Date.now(), {
-  download: true,
-  header: true,
-  skipEmptyLines: true,
-  complete: function(res){
-    const data = (res.data || []).filter(r => r.Titolo);
+/* ===== INVIO (SILENZIOSO, AFFIDABILE) ===== */
+function invia(){
+  if(pNome.value.trim().length<2) return;
 
-    table = $("#tblCatalogo").DataTable({
-      data: data,
-      paging: false,
-      info: false,
-      columns: [
-        { data: "Titolo" },
-        { data: "NumeroGiocatori" },
-        { data: "Durata" },
-        { data: "CopieDisponibili" },
-        {
-          data: null,
-          orderable: false,
-          render: r => `
-            <button onclick="openModal('${r.Titolo.replace(/'/g,"\\'")}','${(r.NumeroGiocatori||"").replace(/'/g,"\\'")}')">
-              📌 Richiedi
-            </button>`
-        }
+  const u=new URL(API_URL);
+  u.searchParams.set("action","submit");
+  u.searchParams.set("titolo",ctx.titolo);
+  u.searchParams.set("giocatori",ctx.giocatori);
+  u.searchParams.set("nome",pNome.value.trim());
+  u.searchParams.set("telefono",pTel.value.trim());
+  u.searchParams.set("note",pNote.value.trim());
+  u.searchParams.set("website",pWebsite.value.trim());
+  u.searchParams.set("_",Date.now());
+
+  pInvia.disabled=true;
+  new Image().src=u.toString();
+
+  mOk.textContent="Richiesta inviata ✅";
+  setTimeout(closeModal,900);
+}
+
+/* ===== LOAD CSV ===== */
+Papa.parse(CSV_URL+"?v="+Date.now(),{
+  download:true,
+  header:true,
+  complete:r=>{
+    const data=r.data.filter(x=>x.Titolo);
+    $("#tblCatalogo").DataTable({
+      data,
+      paging:false,
+      info:false,
+      columns:[
+        {data:"Titolo"},
+        {data:"NumeroGiocatori"},
+        {data:"Durata"},
+        {data:"CopieDisponibili"},
+        {data:null,render:x=>
+          `<button onclick="openModal('${x.Titolo.replace(/'/g,"\\'")}','${x.NumeroGiocatori||""}')">
+            📌 Richiedi
+          </button>`}
       ]
     });
   }
