@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>AmarBoard – Admin Prenotazioni</title>
+
+<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+
+<style>
+  :root{
+    --bg:#0f0f0f;
+    --panel:#151515;
+    --line:#2a2a2a;
+    --txt:#eaeaea;
+    --muted:#9a9a9a;
+    --oro:#f3d08a;
+    --verde:#1f7a3a;
+    --rosso:#b02030;
+    --blu:#4b78b7;
+  }
+  body{ margin:0; font-family:system-ui,-apple-system,"Segoe UI",sans-serif; background:var(--bg); color:var(--txt); }
+  .wrap{ max-width:1200px; margin:18px auto; padding:16px; }
+  h1{ margin:0 0 10px; color:var(--oro); letter-spacing:.02em; }
+  .bar{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:12px; }
+  input, select, button{
+    background:var(--panel); color:var(--txt);
+    border:1px solid #333; border-radius:10px;
+    padding:8px 10px; font-weight:800;
+  }
+  input::placeholder{ color:#777; }
+  button{ cursor:pointer; }
+  button:hover{ filter:brightness(1.08); }
+
+  .btn-ok{ background:#102818; border-color:var(--verde); color:#a9ffbd; }
+  .btn-warn{ background:#2b1416; border-color:var(--rosso); color:#ffd7d7; }
+  .btn-info{ background:#121b26; border-color:var(--blu); color:#cfe7ff; }
+
+  .status{ font-size:.86rem; color:var(--muted); margin:6px 0 10px; }
+
+  table{ width:100%; border-collapse:collapse; font-size:.92rem; }
+  th, td{ border-bottom:1px solid var(--line); padding:10px 8px; vertical-align:top; }
+  th{ background:var(--panel); position:sticky; top:0; z-index:2; text-align:left; }
+  .muted{ color:var(--muted); font-size:.82rem; }
+
+  .tag{
+    display:inline-block; padding:4px 10px; border-radius:999px;
+    font-size:.72rem; font-weight:900; letter-spacing:.04em;
+    border:1px solid #444;
+  }
+  .NUOVA{ background:#2b1b1b; border-color:var(--rosso); color:#ffd7d7; }
+  .PRESA_IN_CARICO{ background:#1b2330; border-color:var(--blu); color:#cfe7ff; }
+  .APPROVATA{ background:#1b2b1b; border-color:var(--verde); color:#c9f7cf; }
+  .RIFIUTATA{ background:#2b1416; border-color:var(--rosso); color:#ffd7d7; }
+  .EVASA{ background:#2a2a2a; border-color:#666; color:#eee; }
+
+  .actions{ display:flex; flex-wrap:wrap; gap:6px; }
+  .mini{ padding:6px 8px; font-size:.76rem; border-radius:9px; }
+
+  /* LOGIN */
+  #login{
+    position:fixed; inset:0;
+    background:rgba(0,0,0,.78);
+    display:flex; align-items:center; justify-content:center;
+    z-index:9999;
+  }
+  #login .box{
+    width:380px; background:var(--panel);
+    border:1px solid #333; border-radius:14px; padding:16px;
+  }
+  #login h2{ margin:0 0 10px; color:var(--oro); }
+  #login .err{
+    display:none; margin-top:10px; padding:10px;
+    border-radius:10px; background:#3a1515;
+    border:1px solid #b23737; color:#ffd7d7; font-weight:900;
+  }
+
+  .hint{
+    font-size:.82rem; color:var(--muted);
+    margin-top:6px; line-height:1.35;
+  }
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div id="login">
+  <div class="box">
+    <h2>Accesso Admin</h2>
+    <input id="pin" type="password" inputmode="numeric" placeholder="PIN admin (2486)" style="width:100%;">
+    <input id="key" type="password" placeholder="ADMIN_KEY (da Code.gs)" style="width:100%; margin-top:8px;">
+    <input id="by" type="text" placeholder="Nome admin (es. Sacha)" style="width:100%; margin-top:8px;">
+    <div class="hint">
+      • Il PIN sblocca l’admin sul browser<br>
+      • L’ADMIN_KEY serve per leggere/aggiornare il foglio
+    </div>
+    <div style="display:flex; gap:8px; margin-top:12px;">
+      <button class="btn-ok" style="flex:1;" onclick="login()">Entra</button>
+      <button class="btn-warn" style="flex:1;" onclick="resetLogin()">Reset</button>
+    </div>
+    <div class="err" id="loginErr">PIN o ADMIN_KEY errati.</div>
+  </div>
+</div>
+
+<div class="wrap">
+  <h1>Admin Prenotazioni – AmarBoard</h1>
+
+  <div class="bar">
+    <select id="only">
+      <option value="">Tutte</option>
+      <option value="NUOVA">Solo NUOVE</option>
+      <option value="PRESA_IN_CARICO">Presa in carico</option>
+      <option value="APPROVATA">Approvate</option>
+      <option value="RIFIUTATA">Rifiutate</option>
+      <option value="EVASA">Evase</option>
+    </select>
+
+    <input id="q" placeholder="Cerca (titolo / nome / note)" style="flex:1; min-width:240px;">
+    <button class="btn-info" onclick="loadList()">Aggiorna</button>
+    <button class="btn-warn" onclick="logout()">Logout</button>
+  </div>
+
+  <div class="status" id="status">–</div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Data</th>
+        <th>Gioco</th>
+        <th>Richiedente</th>
+        <th>Note</th>
+        <th>Stato</th>
+        <th>Azioni</th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+</div>
+
+<script>
+/* ===== CONFIG ===== */
+const API_URL   = "https://script.google.com/macros/s/AKfycby-o0FWIL1NVCr_bWznqmkA4yCBnIhQzdyQGOaLDbAD-q_MOfBMjhL1knxVoPWbhHSl/exec";
+const ADMIN_PIN = "2486";
+
+// 🔧 METTI QUI la tua ADMIN_KEY (uguale a Code.gs)
+const DEFAULT_ADMIN_KEY = ""; // es: "sachaolivaamarboard00102030405060708090"
+
+const STORE = {
+  ok: "AB_ADMIN_OK",
+  key: "AB_ADMIN_KEY",
+  by:  "AB_ADMIN_NAME"
+};
+
+function qs(id){ return document.getElementById(id); }
+function esc(s){ return String(s||"").replace(/[&<>"']/g,m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m])); }
+
+function isAuthed(){
+  return localStorage.getItem(STORE.ok)==="1" &&
+         (localStorage.getItem(STORE.key)||"").length>10;
+}
+
+function login(){
+  const pin = qs("pin").value.trim();
+  const key = (qs("key").value.trim() || DEFAULT_ADMIN_KEY).trim();
+  const by  = qs("by").value.trim() || "Admin";
+
+  if(pin !== ADMIN_PIN || key.length < 10){
+    qs("loginErr").style.display="block";
+    return;
+  }
+  localStorage.setItem(STORE.ok,"1");
+  localStorage.setItem(STORE.key,key);
+  localStorage.setItem(STORE.by,by);
+  qs("login").style.display="none";
+  loadList();
+}
+
+function resetLogin(){
+  localStorage.removeItem(STORE.ok);
+  localStorage.removeItem(STORE.key);
+  localStorage.removeItem(STORE.by);
+  qs("pin").value="";
+  qs("key").value="";
+  qs("by").value="";
+  qs("loginErr").style.display="none";
+}
+
+function logout(){
+  resetLogin();
+  location.reload();
+}
+
+async function api(params){
+  const u = new URL(API_URL);
+  params.key = localStorage.getItem(STORE.key);
+  Object.entries(params).forEach(([k,v])=>u.searchParams.set(k,v));
+
+  // NB: qui serve leggere il JSON; se un browser fa i capricci,
+  // sotto mostriamo un link "Apri JSON" per debug.
+  const res = await fetch(u.toString(), { cache:"no-store" });
+  const data = await res.json().catch(()=>({}));
+  if(!data.ok) throw new Error(data.error || "Errore API");
+  return data;
+}
+
+function fmt(iso){
+  try{ return new Date(iso).toLocaleString("it-IT",{hour12:false}); }
+  catch{ return iso; }
+}
+
+/* ===== ORDINE: NUOVE prima, poi per DataISO desc ===== */
+function sortRowsNuovePrima(rows){
+  const nuove = [];
+  const altre = [];
+  for(const r of rows){
+    const st = String(r.Stato||"").toUpperCase();
+    if(st === "NUOVA") nuove.push(r);
+    else altre.push(r);
+  }
+  nuove.sort((a,b)=> String(b.DataISO||"").localeCompare(String(a.DataISO||"")));
+  altre.sort((a,b)=> String(b.DataISO||"").localeCompare(String(a.DataISO||"")));
+  return nuove.concat(altre);
+}
+
+async function loadList(){
+  if(!isAuthed()) return;
+
+  const only = qs("only").value;
+  const q = qs("q").value.trim();
+
+  qs("status").textContent="Caricamento…";
+  const t0 = Date.now();
+
+  const debugUrl = new URL(API_URL);
+  debugUrl.searchParams.set("action","list");
+  debugUrl.searchParams.set("only", only);
+  debugUrl.searchParams.set("q", q);
+  debugUrl.searchParams.set("key", localStorage.getItem(STORE.key));
+
+  try{
+    const data = await api({action:"list",only,q});
+    let rows = data.rows || [];
+
+    rows = sortRowsNuovePrima(rows);
+
+    qs("status").textContent = `OK: ${rows.length} richieste (NUOVE in cima) • ${Date.now()-t0} ms`;
+    const tb = qs("tbody");
+    tb.innerHTML="";
+
+    const by = localStorage.getItem(STORE.by) || "Admin";
+
+    rows.forEach(r=>{
+      const tr=document.createElement("tr");
+
+      const stato = String(r.Stato||"").toUpperCase();
+      const tagClass = ["NUOVA","PRESA_IN_CARICO","APPROVATA","RIFIUTATA","EVASA"].includes(stato) ? stato : "";
+
+      tr.innerHTML = `
+        <td class="muted">${esc(fmt(r.DataISO))}</td>
+        <td><b>${esc(r.Titolo)}</b><div class="muted">${esc(r.Giocatori||"")}</div></td>
+        <td>${esc(r.Nome)}<div class="muted">${esc(r.Telefono||"")}</div></td>
+        <td>${esc(r.Note||"")}</td>
+        <td><span class="tag ${esc(tagClass)}">${esc(stato || "")}</span></td>
+        <td>
+          <div class="actions">
+            <button class="mini btn-info" onclick="setStato('${r.ID}','PRESA_IN_CARICO')">Presa</button>
+            <button class="mini btn-ok" onclick="setStato('${r.ID}','APPROVATA')">Approva</button>
+            <button class="mini btn-warn" onclick="setStato('${r.ID}','RIFIUTATA')">Rifiuta</button>
+            <button class="mini" onclick="setStato('${r.ID}','EVASA')">Evasa</button>
+          </div>
+          <div class="muted">${esc(r.GestitoDa||"")} ${r.GestitoIl?("• "+fmt(r.GestitoIl)):""}</div>
+        </td>
+      `;
+      tb.appendChild(tr);
+    });
+
+  }catch(e){
+    qs("status").innerHTML =
+      `Errore: ${esc(e.message)} • <a style="color:#8bd1ff" href="${esc(debugUrl.toString())}" target="_blank" rel="noopener">Apri JSON</a>`;
+  }
+}
+
+async function setStato(id,stato){
+  const by = localStorage.getItem(STORE.by) || "Admin";
+  try{
+    await api({action:"update",id,stato,by});
+    loadList();
+  }catch(e){
+    alert("Errore: " + e.message);
+  }
+}
+
+/* ===== INIT ===== */
+(function init(){
+  // Precompila key se l’hai messa in DEFAULT_ADMIN_KEY
+  if(DEFAULT_ADMIN_KEY && DEFAULT_ADMIN_KEY.length>10){
+    qs("key").value = DEFAULT_ADMIN_KEY;
+  }
+  // Se già autenticato
+  if(isAuthed()){
+    qs("login").style.display="none";
+    loadList();
+  }
+  setInterval(()=>{ if(isAuthed()) loadList(); }, 15000);
+})();
+</script>
+
+</body>
+</html>
