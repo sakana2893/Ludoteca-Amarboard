@@ -148,7 +148,7 @@
       color: #555;
       margin-bottom: 12px;
     }
-    .subtitle span { color: var(--verde-natale); font-weight: 600; }
+    .subtitle span { color: var(--verde-natale); font-weight: 700; }
 
     .stats-bar {
       display: grid;
@@ -172,11 +172,12 @@
       font-size: 0.75rem;
       letter-spacing: 0.05em;
       margin-bottom: 4px;
+      font-weight: 800;
     }
 
     .stat-value {
       font-size: 1.4rem;
-      font-weight: 700;
+      font-weight: 900;
       color: var(--rosso-natale);
     }
 
@@ -184,12 +185,14 @@
       font-size: 0.75rem;
       color: #777;
       margin-top: 3px;
+      font-weight: 700;
     }
 
     .stat-top ol {
       margin: 0;
       padding-left: 18px;
       font-size: 0.8rem;
+      font-weight: 700;
     }
 
     .filters {
@@ -217,19 +220,21 @@
     .filter-label {
       color: #444;
       font-size: 0.8rem;
+      font-weight: 800;
     }
 
     select, input[type="text"] {
-      padding: 5px 8px;
+      padding: 6px 8px;
       border-radius: 6px;
       border: 1px solid #ccc;
       font-size: 0.85rem;
       min-width: 120px;
       background: #fff;
+      font-weight: 700;
     }
 
     #btnRefresh {
-      padding: 6px 10px;
+      padding: 7px 10px;
       border-radius: 8px;
       border: 1px solid var(--verde-natale);
       background: #e9fff0;
@@ -238,8 +243,8 @@
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-      font-weight: 800;
+      gap: 6px;
+      font-weight: 900;
     }
     #btnRefresh:hover { background: #d6ffe5; }
 
@@ -248,6 +253,7 @@
     table.dataTable thead th {
       background: linear-gradient(180deg,#f7f7f7,#e3e3e3);
       border-bottom: 2px solid var(--rosso-natale);
+      font-weight: 900;
     }
     table.dataTable tbody tr:nth-child(even) { background-color: #fffaf5; }
     table.dataTable tbody tr.disponibile-row {
@@ -261,7 +267,7 @@
       padding: 4px 10px;
       border-radius: 999px;
       font-size: 0.75rem;
-      font-weight: 700;
+      font-weight: 900;
       display: inline-block;
       white-space: nowrap;
     }
@@ -275,12 +281,19 @@
       color: #721c24;
       border: 1px solid #f1b0b7;
     }
+    /* ✅ badge richiesto */
+    .badge-richiesto{
+      background:#efe1ff;
+      color:#4a1a7a;
+      border:1px solid #c9a7ff;
+      margin-left: 6px;
+    }
 
     a.bgg-link {
       color: var(--rosso-natale);
       font-size: 0.8rem;
       text-decoration: none;
-      font-weight: 700;
+      font-weight: 900;
     }
     a.bgg-link:hover { text-decoration: underline; }
 
@@ -289,6 +302,7 @@
       font-size: 0.8rem;
       color: #777;
       text-align: right;
+      font-weight: 700;
     }
 
     #errorBox {
@@ -301,6 +315,7 @@
       color: #7a0f1a;
       font-size: 0.85rem;
       line-height: 1.35;
+      font-weight: 800;
     }
 
     /* ===== COUNTDOWN BANNER + SPOILER SHIELD ===== */
@@ -399,7 +414,7 @@
       color: #222;
     }
     #pinModal h2{ margin: 0 0 8px; color: #7a0f1a; font-size: 1.15rem; }
-    #pinModal p{ margin: 0 0 12px; color: #444; font-size: 0.9rem; line-height: 1.35; }
+    #pinModal p{ margin: 0 0 12px; color: #444; font-size: 0.9rem; line-height: 1.35; font-weight: 700; }
     #pinModal input{
       width: 100%;
       padding: 10px 12px;
@@ -407,6 +422,7 @@
       border: 1px solid #ccc;
       background: #fff;
       font-size: 1rem;
+      font-weight: 800;
     }
     #pinModal .row{ display:flex; gap:10px; margin-top: 12px; }
     #pinModal .row button{
@@ -460,7 +476,7 @@
       color: #222;
     }
     #prenotaModal h2{ margin: 0 0 6px; color: #7a0f1a; font-size: 1.1rem; }
-    #prenotaModal .sub{ margin: 0 0 10px; color:#444; font-size: 0.9rem; line-height: 1.35; }
+    #prenotaModal .sub{ margin: 0 0 10px; color:#444; font-size: 0.9rem; line-height: 1.35; font-weight: 700; }
     #prenotaModal input, #prenotaModal textarea{
       width: 100%;
       padding: 10px 12px;
@@ -471,6 +487,7 @@
       font-size: 0.95rem;
       margin-top: 8px;
       font-family: inherit;
+      font-weight: 700;
     }
     #prenotaModal textarea{ min-height: 84px; resize: vertical; }
     #prenotaModal .row{ display:flex; gap:10px; margin-top: 12px; flex-wrap: wrap; }
@@ -503,6 +520,7 @@
       border-radius: 12px;
       display: none;
       font-weight: 900;
+      text-align:center;
     }
     #honeypotWebsite{ display:none; }
 
@@ -646,7 +664,6 @@
 
   <div class="filters">
     <div class="filters-left">
-      <!-- Categoria rimossa come richiesto -->
       <div class="filter-block">
         <span class="filter-label">Stato</span>
         <select id="filtroStato">
@@ -693,11 +710,12 @@
   /* =========================
      CONFIG
   ========================= */
-  // ⚠️ CSV RELATIVI (così funzionano sia su root che su /repo/)
+  // CSV RELATIVI (root della repo)
   const CSV_BASE_URL   = "catalogo_ludoteca.csv";
   const STATS_BASE_URL = "stats_ludoteca.csv";
 
-  const API_URL = "https://script.google.com/macros/s/AKfycby-o0FWIL1NVCr_bWznqmkA4yCBnIhQzdyQGOaLDbAD-q_MOfBMjhL1knxVoPWbhHSl/exec";
+  // Apps Script WebApp
+  const API_URL = "https://script.google.com/macros/library/d/1Fjkpe61qWaEsvzPZQQm34tPbTZHRnC5RQLcCHjmhN-n6fCpsY2cTmoO9/3";
 
   // Admin
   const ADMIN_PIN = "2486";
@@ -712,6 +730,9 @@
   let countdownTimer = null;
 
   let reqCtx = { titolo:"", giocatori:"" };
+
+  // ✅ mappa richieste: { "Titolo": 2, ... }
+  let richiesteMap = {};
 
   /* =========================
      HELPERS
@@ -738,6 +759,13 @@
     return stato || "";
   }
 
+  function badgeRichiestoHtml(titolo){
+    const n = richiesteMap[titolo] || 0;
+    if (!n) return "";
+    const txt = (n > 1) ? `🟣 Richiesto (${n})` : `🟣 Richiesto`;
+    return ` <span class="badge badge-richiesto">${txt}</span>`;
+  }
+
   async function fetchTextNoStore(path) {
     const url = path + "?v=" + Date.now();
     const res = await fetch(url, { cache: "no-store" });
@@ -751,7 +779,46 @@
   }
 
   /* =========================
-     ADMIN SESSION
+     JSONP (per evitare CORS su Apps Script)
+  ========================= */
+  function jsonp(url){
+    return new Promise((resolve, reject) => {
+      const cb = "cb_" + Math.random().toString(36).slice(2);
+      const s = document.createElement("script");
+      const timeout = setTimeout(() => {
+        cleanup();
+        reject(new Error("JSONP timeout"));
+      }, 6000);
+
+      function cleanup(){
+        clearTimeout(timeout);
+        try{ delete window[cb]; } catch(e){ window[cb] = undefined; }
+        if (s && s.parentNode) s.parentNode.removeChild(s);
+      }
+
+      window[cb] = (data) => {
+        cleanup();
+        resolve(data);
+      };
+
+      s.onerror = () => { cleanup(); reject(new Error("JSONP load error")); };
+      s.src = url + (url.includes("?") ? "&" : "?") + "callback=" + cb + "&v=" + Date.now();
+      document.body.appendChild(s);
+    });
+  }
+
+  async function caricaRichiesteMap(){
+    try{
+      const data = await jsonp(API_URL + "?action=requested_map");
+      if (data && data.ok && data.map) richiesteMap = data.map;
+    }catch(e){
+      // silenzioso: se non carica, nessun badge
+      richiesteMap = richiesteMap || {};
+    }
+  }
+
+  /* =========================
+     ADMIN SESSION (solo per bypass countdown su index)
   ========================= */
   function isAdmin() {
     try {
@@ -860,6 +927,7 @@
     reqCtx.giocatori = giocatori || "";
 
     document.getElementById("prenotaTitle").textContent = "📌 Richiedi: " + (reqCtx.titolo || "");
+    document.getElementById("prenotaSubtitle").textContent = reqCtx.giocatori ? ("Giocatori: " + reqCtx.giocatori) : "Compila e invia la richiesta.";
     document.getElementById("reqOkMsg").style.display = "none";
     document.getElementById("reqNome").value = "";
     document.getElementById("reqTel").value = "";
@@ -895,15 +963,16 @@
 
     const payload = new URLSearchParams({
       action: "submit",
-      titolo: reqCtx.titolo,
-      giocatori: reqCtx.giocatori,
-      nome,
-      telefono: (document.getElementById("reqTel").value || "").trim(),
-      note: (document.getElementById("reqNote").value || "").trim(),
+      Titolo: reqCtx.titolo,
+      Giocatori: reqCtx.giocatori,
+      Nome: nome,
+      Telefono: (document.getElementById("reqTel").value || "").trim(),
+      Note: (document.getElementById("reqNote").value || "").trim(),
+      Source: "index.html",
       _: String(Date.now())
     }).toString();
 
-    // ✅ invio senza "errore finto": sendBeacon → fallback no-cors
+    // ✅ invio senza falsi errori: sendBeacon → fallback fetch no-cors
     let sent = false;
     try {
       if (navigator.sendBeacon) {
@@ -918,7 +987,7 @@
         mode: "no-cors",
         headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
         body: payload
-      }).catch(() => {}); // non mostriamo errore
+      }).catch(() => {});
     }
 
     localStorage.setItem("AB_LAST_REQ", String(Date.now()));
@@ -985,7 +1054,13 @@
       table = $("#tblCatalogo").DataTable({
         data: data,
         columns: [
-          { data: "Titolo" },
+          {
+            data: "Titolo",
+            render: function(d, type){
+              if (type === "display") return d + badgeRichiestoHtml(d);
+              return d; // sort/filter pulito
+            }
+          },
           { data: "Giocatori" },
           { data: "Durata" },
           { data: "Eta" },
@@ -1006,8 +1081,8 @@
             data: null,
             orderable: false,
             render: r => {
-              const t = String(r.Titolo || "").replace(/'/g, "\\'");
-              const g = String(r.Giocatori || "").replace(/'/g, "\\'");
+              const t = String(r.Titolo || "").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+              const g = String(r.Giocatori || "").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
               return `<button type="button" class="btn-mini btn-admin jsRichiedi" data-t="${t}" data-g="${g}">📌 Richiedi</button>`;
             }
           }
@@ -1051,7 +1126,13 @@
   async function aggiornaTutto() {
     clearError();
     try {
+      // ✅ prima aggiorno la mappa richieste, poi rendo la tabella
+      await caricaRichiesteMap();
+
       await Promise.all([caricaStats(), caricaCatalogo()]);
+
+      // dopo draw, DataTables potrebbe avere riusato DOM: rendo emoji
+      renderEmoji();
     } catch (e) {
       console.error(e);
       showError("Errore aggiornamento dati: " + (e?.message ?? String(e)));
@@ -1067,6 +1148,7 @@
     document.getElementById("btnOpenPin").addEventListener("click", openPinModal);
     document.getElementById("btnPinCancel").addEventListener("click", closePinModal);
     document.getElementById("btnPinOk").addEventListener("click", submitPin);
+    document.getElementById("pinInput").addEventListener("keydown", function(e){ if (e.key === "Enter") submitPin(); });
 
     document.getElementById("btnLogoutTop").addEventListener("click", doLogout);
     document.getElementById("btnLogoutBanner").addEventListener("click", doLogout);
