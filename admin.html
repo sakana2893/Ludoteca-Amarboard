@@ -1,310 +1,549 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-<meta charset="UTF-8">
-<title>AmarBoard – Admin Prenotazioni</title>
+  <meta charset="UTF-8">
+  <title>Admin Prenotazioni – AmarBoard</title>
 
-<meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
 
-<style>
-  :root{
-    --bg:#0f0f0f;
-    --panel:#151515;
-    --line:#2a2a2a;
-    --txt:#eaeaea;
-    --muted:#9a9a9a;
-    --oro:#f3d08a;
-    --verde:#1f7a3a;
-    --rosso:#b02030;
-    --blu:#4b78b7;
-  }
-  body{ margin:0; font-family:system-ui,-apple-system,"Segoe UI",sans-serif; background:var(--bg); color:var(--txt); }
-  .wrap{ max-width:1200px; margin:18px auto; padding:16px; }
-  h1{ margin:0 0 10px; color:var(--oro); letter-spacing:.02em; }
-  .bar{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:12px; }
-  input, select, button{
-    background:var(--panel); color:var(--txt);
-    border:1px solid #333; border-radius:10px;
-    padding:8px 10px; font-weight:800;
-  }
-  input::placeholder{ color:#777; }
-  button{ cursor:pointer; }
-  button:hover{ filter:brightness(1.08); }
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+  <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
 
-  .btn-ok{ background:#102818; border-color:var(--verde); color:#a9ffbd; }
-  .btn-warn{ background:#2b1416; border-color:var(--rosso); color:#ffd7d7; }
-  .btn-info{ background:#121b26; border-color:var(--blu); color:#cfe7ff; }
+  <style>
+    :root { --rosso:#b02030; --verde:#1f7a3a; --oro:#f3d08a; }
 
-  .status{ font-size:.86rem; color:var(--muted); margin:6px 0 10px; }
+    *{ box-sizing:border-box; }
+    body{
+      font-family: system-ui,-apple-system,"Segoe UI",sans-serif;
+      margin:0; padding:0;
+      background: radial-gradient(circle at top, #ffe9e9, #fdf5e6 45%, #e4f5ea 100%);
+      min-height:100vh;
+    }
 
-  table{ width:100%; border-collapse:collapse; font-size:.92rem; }
-  th, td{ border-bottom:1px solid var(--line); padding:10px 8px; vertical-align:top; }
-  th{ background:var(--panel); position:sticky; top:0; z-index:2; text-align:left; }
-  .muted{ color:var(--muted); font-size:.82rem; }
+    .garland{
+      position: fixed; top:0; left:0; width:100%; height:60px;
+      background: radial-gradient(circle at center, rgba(31,122,58,0.7), rgba(0,0,0,0.3));
+      display:flex; align-items:center; justify-content:center; gap:10px;
+      color:#ffe; font-size:1.2rem; z-index:10;
+      box-shadow:0 2px 8px rgba(0,0,0,0.3);
+    }
 
-  .tag{
-    display:inline-block; padding:4px 10px; border-radius:999px;
-    font-size:.72rem; font-weight:900; letter-spacing:.04em;
-    border:1px solid #444;
-  }
-  .NUOVA{ background:#2b1b1b; border-color:var(--rosso); color:#ffd7d7; }
-  .PRESA_IN_CARICO{ background:#1b2330; border-color:var(--blu); color:#cfe7ff; }
-  .APPROVATA{ background:#1b2b1b; border-color:var(--verde); color:#c9f7cf; }
-  .RIFIUTATA{ background:#2b1416; border-color:var(--rosso); color:#ffd7d7; }
-  .EVASA{ background:#2a2a2a; border-color:#666; color:#eee; }
+    #wrap{
+      max-width:1200px;
+      margin: 90px auto 40px;
+      padding: 22px 24px 26px;
+      background: rgba(255,250,243,0.96);
+      border-radius: 20px;
+      border: 2px solid rgba(176,32,48,0.35);
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.8), 0 0 18px rgba(176,32,48,0.35);
+      position: relative;
+    }
+    #wrap::before{
+      content:""; position:absolute; inset:8px;
+      border-radius: 16px;
+      border: 2px dashed rgba(243,208,138,0.7);
+      pointer-events:none;
+    }
 
-  .actions{ display:flex; flex-wrap:wrap; gap:6px; }
-  .mini{ padding:6px 8px; font-size:.76rem; border-radius:9px; }
+    h1{
+      margin: 6px 0 2px;
+      text-align:center;
+      color: var(--rosso);
+      text-shadow: 0 1px 0 #fff, 0 0 6px rgba(176,32,48,0.25);
+      font-size: 1.7rem;
+      font-weight: 900;
+    }
+    .sub{
+      text-align:center;
+      color:#555;
+      margin: 0 0 14px;
+      font-weight: 800;
+      font-size: 0.9rem;
+    }
 
-  /* LOGIN */
-  #login{
-    position:fixed; inset:0;
-    background:rgba(0,0,0,.78);
-    display:flex; align-items:center; justify-content:center;
-    z-index:9999;
-  }
-  #login .box{
-    width:380px; background:var(--panel);
-    border:1px solid #333; border-radius:14px; padding:16px;
-  }
-  #login h2{ margin:0 0 10px; color:var(--oro); }
-  #login .err{
-    display:none; margin-top:10px; padding:10px;
-    border-radius:10px; background:#3a1515;
-    border:1px solid #b23737; color:#ffd7d7; font-weight:900;
-  }
+    .topbar{
+      display:flex; gap:12px; flex-wrap:wrap;
+      align-items:center; justify-content:space-between;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(31,122,58,0.18);
+      background: linear-gradient(90deg, #fffdf7, #f7fff7);
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 1;
+    }
 
-  .hint{
-    font-size:.82rem; color:var(--muted);
-    margin-top:6px; line-height:1.35;
-  }
-</style>
+    .left, .right{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+
+    .pill{
+      border-radius: 999px;
+      padding: 6px 10px;
+      border: 1px solid rgba(176,32,48,0.25);
+      background: rgba(255,255,255,0.75);
+      font-weight: 900;
+      color:#7a0f1a;
+      display:inline-flex; align-items:center; gap:8px;
+    }
+
+    .btn{
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      background: #fff;
+      cursor: pointer;
+      font-weight: 900;
+    }
+    .btn-ok{
+      border: 1px solid rgba(31,122,58,0.55);
+      background: rgba(233,255,240,0.95);
+      color: #155724;
+    }
+    .btn-warn{
+      border: 1px solid rgba(176,32,48,0.55);
+      background: rgba(255,231,231,0.95);
+      color: #7a0f1a;
+    }
+
+    input[type="text"], select{
+      padding: 7px 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      background: #fff;
+      font-weight: 800;
+    }
+
+    #errorBox{
+      display:none;
+      margin: 10px 0 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(176,32,48,0.35);
+      background: rgba(255,231,231,0.85);
+      color:#7a0f1a;
+      font-weight: 900;
+    }
+
+    /* action buttons in table */
+    .act{
+      display:flex;
+      gap:6px;
+      flex-wrap: wrap;
+    }
+    .mini{
+      padding: 6px 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      background:#fff;
+      cursor:pointer;
+      font-weight: 900;
+      font-size: 0.85rem;
+    }
+    .mini.ok{ border-color: rgba(31,122,58,0.55); background: rgba(233,255,240,0.95); color:#155724; }
+    .mini.bad{ border-color: rgba(176,32,48,0.55); background: rgba(255,231,231,0.95); color:#7a0f1a; }
+    .mini.neu{ border-color: rgba(243,208,138,0.9); background: rgba(255,250,243,0.95); color:#7a3d00; }
+
+    .badge{
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 900;
+      display:inline-block;
+      white-space: nowrap;
+    }
+    .b-nuova{ background:#efe1ff; color:#4a1a7a; border:1px solid #c9a7ff; }
+    .b-presa{ background:#e6f3ff; color:#0b3d6b; border:1px solid #a9d0ff; }
+    .b-app{ background:#ffe8c7; color:#7a3d00; border:1px solid #ffc37a; }
+    .b-rif{ background:#f8d7da; color:#721c24; border:1px solid #f1b0b7; }
+    .b-eva{ background:#d4edda; color:#155724; border:1px solid #b1dfbb; }
+    .b-del{ background:#eee; color:#555; border:1px solid #ccc; }
+
+    /* PIN modal */
+    #pinModal{
+      position: fixed; inset:0; z-index: 9999;
+      display:flex; align-items:center; justify-content:center;
+      background: rgba(0,0,0,0.55);
+      padding: 16px;
+    }
+    #pinModal .card{
+      width: min(420px, 100%);
+      background: rgba(255,250,243,0.98);
+      border: 2px solid rgba(176,32,48,0.35);
+      border-radius: 16px;
+      padding: 16px 14px;
+      box-shadow: 0 0 24px rgba(0,0,0,0.35);
+      color:#222;
+    }
+    #pinModal h2{ margin:0 0 8px; color:#7a0f1a; font-size: 1.15rem; }
+    #pinModal p{ margin:0 0 12px; color:#444; font-size:0.9rem; line-height:1.35; font-weight:800; }
+    #pinModal input{
+      width:100%;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      background:#fff;
+      font-size: 1rem;
+      font-weight:900;
+    }
+    #pinModal .row{ display:flex; gap:10px; margin-top: 12px; }
+    #pinModal .row button{
+      flex:1; padding: 10px 12px; border-radius: 12px; border: 1px solid #ccc; background:#fff;
+      cursor:pointer; font-weight:900;
+    }
+    #pinModal .row .ok{ border-color: rgba(31,122,58,0.55); background: rgba(233,255,240,0.95); color:#155724; }
+    #pinModal .row .cancel{ border-color: rgba(0,0,0,0.2); background: rgba(255,255,255,0.9); color:#333; }
+    #pinErr{
+      display:none; margin-top:10px; color:#7a0f1a; background: rgba(255,231,231,0.9);
+      border: 1px solid rgba(176,32,48,0.4); padding: 8px 10px; border-radius: 12px; font-weight:900;
+    }
+
+    @media(max-width:768px){
+      #wrap{ margin:80px 10px 20px; padding: 14px; }
+      .topbar{ flex-direction: column; align-items: stretch; }
+    }
+  </style>
 </head>
 
 <body>
-
-<!-- LOGIN -->
-<div id="login">
-  <div class="box">
-    <h2>Accesso Admin</h2>
-    <input id="pin" type="password" inputmode="numeric" placeholder="PIN admin (2486)" style="width:100%;">
-    <input id="key" type="password" placeholder="ADMIN_KEY (da Code.gs)" style="width:100%; margin-top:8px;">
-    <input id="by" type="text" placeholder="Nome admin (es. Sacha)" style="width:100%; margin-top:8px;">
-    <div class="hint">
-      • Il PIN sblocca l’admin sul browser<br>
-      • L’ADMIN_KEY serve per leggere/aggiornare il foglio
-    </div>
-    <div style="display:flex; gap:8px; margin-top:12px;">
-      <button class="btn-ok" style="flex:1;" onclick="login()">Entra</button>
-      <button class="btn-warn" style="flex:1;" onclick="resetLogin()">Reset</button>
-    </div>
-    <div class="err" id="loginErr">PIN o ADMIN_KEY errati.</div>
-  </div>
-</div>
-
-<div class="wrap">
-  <h1>Admin Prenotazioni – AmarBoard</h1>
-
-  <div class="bar">
-    <select id="only">
-      <option value="">Tutte</option>
-      <option value="NUOVA">Solo NUOVE</option>
-      <option value="PRESA_IN_CARICO">Presa in carico</option>
-      <option value="APPROVATA">Approvate</option>
-      <option value="RIFIUTATA">Rifiutate</option>
-      <option value="EVASA">Evase</option>
-    </select>
-
-    <input id="q" placeholder="Cerca (titolo / nome / note)" style="flex:1; min-width:240px;">
-    <button class="btn-info" onclick="loadList()">Aggiorna</button>
-    <button class="btn-warn" onclick="logout()">Logout</button>
+  <div class="garland">
+    <span>✨</span><span>🎄</span><span>⭐</span><span>🕯️</span>
+    <span>🎲 Admin AmarBoard 🎲</span>
+    <span>⭐</span><span>🎄</span><span>✨</span>
   </div>
 
-  <div class="status" id="status">–</div>
+  <!-- PIN gate -->
+  <div id="pinModal">
+    <div class="card">
+      <h2>Accesso Admin</h2>
+      <p>PIN + chiave tecnica. (La chiave tecnica resta solo in questo file.)</p>
+      <input id="pinInput" type="password" inputmode="numeric" autocomplete="off" placeholder="PIN (2486)">
+      <div class="row">
+        <button class="cancel" id="btnPinCancel" type="button">Chiudi</button>
+        <button class="ok" id="btnPinOk" type="button">Entra</button>
+      </div>
+      <div id="pinErr">PIN errato.</div>
+    </div>
+  </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Data</th>
-        <th>Gioco</th>
-        <th>Richiedente</th>
-        <th>Note</th>
-        <th>Stato</th>
-        <th>Azioni</th>
-      </tr>
-    </thead>
-    <tbody id="tbody"></tbody>
-  </table>
-</div>
+  <div id="wrap">
+    <h1>Admin Prenotazioni</h1>
+    <div class="sub">Foglio: <b>prenotazioni</b> • GestitoDa: <b>AmarBoard</b></div>
+
+    <div class="topbar">
+      <div class="left">
+        <span class="pill" id="pillNew">🟣 Nuove: 0</span>
+        <span class="pill" id="pillTot">📚 Totali: 0</span>
+
+        <select id="filtroStato">
+          <option value="">Tutti gli stati</option>
+          <option value="NUOVA">NUOVA</option>
+          <option value="PRESA_IN_CARICO">PRESA_IN_CARICO</option>
+          <option value="APPROVATA">APPROVATA</option>
+          <option value="RIFIUTATA">RIFIUTATA</option>
+          <option value="EVASA">EVASA</option>
+          <option value="ELIMINATA">ELIMINATA</option>
+        </select>
+
+        <input id="q" type="text" placeholder="Cerca titolo/nome/tel/note">
+      </div>
+
+      <div class="right">
+        <button class="btn btn-ok" id="btnRefresh" type="button">🔄 Aggiorna</button>
+        <button class="btn btn-warn" id="btnLogout" type="button">🚪 Logout</button>
+      </div>
+    </div>
+
+    <div id="errorBox"></div>
+
+    <table id="tbl" class="display" style="width:100%">
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>Titolo</th>
+          <th>Nome</th>
+          <th>Telefono</th>
+          <th>Note</th>
+          <th>Stato</th>
+          <th>Azioni</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+  </div>
 
 <script>
-/* ===== CONFIG ===== */
-const API_URL   = "https://script.google.com/macros/s/AKfycbymY3lNuMU13fv2NSXJBBAkGh0iOMzABjzuWnARGjsY_UHr7ZWEUM6wss9f1A2zbi9dcA/exec";
-const ADMIN_PIN = "2486";
+  // ===== CONFIG =====
+  const API_URL   = "https://script.google.com/macros/s/AKfycbymY3lNuMU13fv2NSXJBBAkGh0iOMzABjzuWnARGjsY_UHr7ZWEUM6wss9f1A2zbi9dcA/exec";
+  const ADMIN_KEY = "sachaolivaamarboard00102030405060";
+  const ADMIN_PIN = "2486";
+  const ADMIN_TTL_HOURS = 8;
+  const MANAGED_BY = "AmarBoard";
+  const REFRESH_MS = 12000;
 
-// 🔧 METTI QUI la tua ADMIN_KEY (uguale a Code.gs)
-const DEFAULT_ADMIN_KEY = ""; // es: "sachaolivaamarboard00102030405060708090"
+  let table = null;
+  let timer = null;
 
-const STORE = {
-  ok: "AB_ADMIN_OK",
-  key: "AB_ADMIN_KEY",
-  by:  "AB_ADMIN_NAME"
-};
+  function renderEmoji(){ try{ twemoji.parse(document.body,{folder:"svg",ext:".svg"}); }catch(e){} }
 
-function qs(id){ return document.getElementById(id); }
-function esc(s){ return String(s||"").replace(/[&<>"']/g,m=>({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;" }[m])); }
-
-function isAuthed(){
-  return localStorage.getItem(STORE.ok)==="1" &&
-         (localStorage.getItem(STORE.key)||"").length>10;
-}
-
-function login(){
-  const pin = qs("pin").value.trim();
-  const key = (qs("key").value.trim() || DEFAULT_ADMIN_KEY).trim();
-  const by  = qs("by").value.trim() || "Admin";
-
-  if(pin !== ADMIN_PIN || key.length < 10){
-    qs("loginErr").style.display="block";
-    return;
+  function showError(msg){
+    const box = document.getElementById("errorBox");
+    box.style.display = "block";
+    box.textContent = msg;
   }
-  localStorage.setItem(STORE.ok,"1");
-  localStorage.setItem(STORE.key,key);
-  localStorage.setItem(STORE.by,by);
-  qs("login").style.display="none";
-  loadList();
-}
-
-function resetLogin(){
-  localStorage.removeItem(STORE.ok);
-  localStorage.removeItem(STORE.key);
-  localStorage.removeItem(STORE.by);
-  qs("pin").value="";
-  qs("key").value="";
-  qs("by").value="";
-  qs("loginErr").style.display="none";
-}
-
-function logout(){
-  resetLogin();
-  location.reload();
-}
-
-async function api(params){
-  const u = new URL(API_URL);
-  params.key = localStorage.getItem(STORE.key);
-  Object.entries(params).forEach(([k,v])=>u.searchParams.set(k,v));
-
-  // NB: qui serve leggere il JSON; se un browser fa i capricci,
-  // sotto mostriamo un link "Apri JSON" per debug.
-  const res = await fetch(u.toString(), { cache:"no-store" });
-  const data = await res.json().catch(()=>({}));
-  if(!data.ok) throw new Error(data.error || "Errore API");
-  return data;
-}
-
-function fmt(iso){
-  try{ return new Date(iso).toLocaleString("it-IT",{hour12:false}); }
-  catch{ return iso; }
-}
-
-/* ===== ORDINE: NUOVE prima, poi per DataISO desc ===== */
-function sortRowsNuovePrima(rows){
-  const nuove = [];
-  const altre = [];
-  for(const r of rows){
-    const st = String(r.Stato||"").toUpperCase();
-    if(st === "NUOVA") nuove.push(r);
-    else altre.push(r);
+  function clearError(){
+    const box = document.getElementById("errorBox");
+    box.style.display = "none";
+    box.textContent = "";
   }
-  nuove.sort((a,b)=> String(b.DataISO||"").localeCompare(String(a.DataISO||"")));
-  altre.sort((a,b)=> String(b.DataISO||"").localeCompare(String(a.DataISO||"")));
-  return nuove.concat(altre);
-}
 
-async function loadList(){
-  if(!isAuthed()) return;
+  function isAdmin(){
+    try{
+      const raw = localStorage.getItem("AB_ADMIN_ADMINPAGE");
+      if(!raw) return false;
+      const obj = JSON.parse(raw);
+      return obj && obj.until && Date.now() < obj.until;
+    }catch{ return false; }
+  }
+  function setAdminSession(){
+    localStorage.setItem("AB_ADMIN_ADMINPAGE", JSON.stringify({ until: Date.now() + ADMIN_TTL_HOURS*3600000 }));
+  }
+  function clearAdminSession(){
+    localStorage.removeItem("AB_ADMIN_ADMINPAGE");
+  }
 
-  const only = qs("only").value;
-  const q = qs("q").value.trim();
+  function openPin(){
+    document.getElementById("pinModal").style.display = "flex";
+    document.getElementById("pinErr").style.display = "none";
+    document.getElementById("pinInput").value = "";
+    setTimeout(()=>document.getElementById("pinInput").focus(),50);
+    renderEmoji();
+  }
+  function closePin(){
+    document.getElementById("pinModal").style.display = "none";
+  }
+  function submitPin(){
+    const v = document.getElementById("pinInput").value;
+    if(v === ADMIN_PIN){
+      setAdminSession();
+      closePin();
+      init();
+    } else {
+      document.getElementById("pinErr").style.display = "block";
+    }
+  }
 
-  qs("status").textContent="Caricamento…";
-  const t0 = Date.now();
+  // JSONP helper
+  function jsonp(url){
+    return new Promise((resolve,reject)=>{
+      const cb="cb_"+Math.random().toString(36).slice(2);
+      const s=document.createElement("script");
+      const timeout=setTimeout(()=>{cleanup(); reject(new Error("JSONP timeout"));},7000);
 
-  const debugUrl = new URL(API_URL);
-  debugUrl.searchParams.set("action","list");
-  debugUrl.searchParams.set("only", only);
-  debugUrl.searchParams.set("q", q);
-  debugUrl.searchParams.set("key", localStorage.getItem(STORE.key));
+      function cleanup(){
+        clearTimeout(timeout);
+        try{ delete window[cb]; }catch(e){ window[cb]=undefined; }
+        if(s && s.parentNode) s.parentNode.removeChild(s);
+      }
 
-  try{
-    const data = await api({action:"list",only,q});
-    let rows = data.rows || [];
+      window[cb]=(data)=>{ cleanup(); resolve(data); };
+      s.onerror=()=>{ cleanup(); reject(new Error("JSONP load error")); };
 
-    rows = sortRowsNuovePrima(rows);
+      s.src = url + (url.includes("?")?"&":"?") + "callback=" + cb + "&v=" + Date.now();
+      document.body.appendChild(s);
+    });
+  }
 
-    qs("status").textContent = `OK: ${rows.length} richieste (NUOVE in cima) • ${Date.now()-t0} ms`;
-    const tb = qs("tbody");
-    tb.innerHTML="";
+  function badgeStatoHtml(st){
+    const s = String(st||"").toUpperCase().trim();
+    if(s==="NUOVA") return '<span class="badge b-nuova">🟣 NUOVA</span>';
+    if(s==="PRESA_IN_CARICO") return '<span class="badge b-presa">🔵 PRESA</span>';
+    if(s==="APPROVATA") return '<span class="badge b-app">🟠 APPROVATA</span>';
+    if(s==="RIFIUTATA") return '<span class="badge b-rif">🔴 RIFIUTATA</span>';
+    if(s==="EVASA") return '<span class="badge b-eva">🟢 EVASA</span>';
+    if(s==="ELIMINATA") return '<span class="badge b-del">⚪ ELIMINATA</span>';
+    return s;
+  }
 
-    const by = localStorage.getItem(STORE.by) || "Admin";
+  function fmtData(iso){
+    if(!iso) return "";
+    try{
+      const d = new Date(iso);
+      return d.toLocaleString("it-IT",{year:"2-digit",month:"2-digit",day:"2-digit",hour:"2-digit",minute:"2-digit"});
+    }catch{ return iso; }
+  }
 
-    rows.forEach(r=>{
-      const tr=document.createElement("tr");
+  async function fetchList(){
+    const only = document.getElementById("filtroStato").value || "";
+    const q = (document.getElementById("q").value || "").trim();
 
-      const stato = String(r.Stato||"").toUpperCase();
-      const tagClass = ["NUOVA","PRESA_IN_CARICO","APPROVATA","RIFIUTATA","EVASA"].includes(stato) ? stato : "";
+    const url = API_URL + "?action=list&key=" + encodeURIComponent(ADMIN_KEY) +
+                "&only=" + encodeURIComponent(only) +
+                "&q=" + encodeURIComponent(q);
 
-      tr.innerHTML = `
-        <td class="muted">${esc(fmt(r.DataISO))}</td>
-        <td><b>${esc(r.Titolo)}</b><div class="muted">${esc(r.Giocatori||"")}</div></td>
-        <td>${esc(r.Nome)}<div class="muted">${esc(r.Telefono||"")}</div></td>
-        <td>${esc(r.Note||"")}</td>
-        <td><span class="tag ${esc(tagClass)}">${esc(stato || "")}</span></td>
-        <td>
-          <div class="actions">
-            <button class="mini btn-info" onclick="setStato('${r.ID}','PRESA_IN_CARICO')">Presa</button>
-            <button class="mini btn-ok" onclick="setStato('${r.ID}','APPROVATA')">Approva</button>
-            <button class="mini btn-warn" onclick="setStato('${r.ID}','RIFIUTATA')">Rifiuta</button>
-            <button class="mini" onclick="setStato('${r.ID}','EVASA')">Evasa</button>
-          </div>
-          <div class="muted">${esc(r.GestitoDa||"")} ${r.GestitoIl?("• "+fmt(r.GestitoIl)):""}</div>
-        </td>
-      `;
-      tb.appendChild(tr);
+    // qui possiamo usare JSONP per evitare CORS
+    const data = await jsonp(url);
+    if(!data || !data.ok) throw new Error(data?.error || "Errore list");
+    return data.rows || [];
+  }
+
+  async function updateRow(id, stato){
+    // update NON serve JSONP se ti va: ma usiamo JSONP uguale così è “sempre ok”
+    const url = API_URL + "?action=update&key=" + encodeURIComponent(ADMIN_KEY) +
+                "&id=" + encodeURIComponent(id) +
+                "&stato=" + encodeURIComponent(stato) +
+                "&by=" + encodeURIComponent(MANAGED_BY);
+
+    const data = await jsonp(url);
+    if(!data || !data.ok) throw new Error(data?.error || "Errore update");
+    return true;
+  }
+
+  async function archiveRow(id){
+    const url = API_URL + "?action=archive&key=" + encodeURIComponent(ADMIN_KEY) +
+                "&id=" + encodeURIComponent(id) +
+                "&by=" + encodeURIComponent(MANAGED_BY);
+
+    const data = await jsonp(url);
+    if(!data || !data.ok) throw new Error(data?.error || "Errore archive");
+    return true;
+  }
+
+  function countNew(rows){
+    return rows.filter(r => String(r.Stato||"").toUpperCase().trim() === "NUOVA").length;
+  }
+
+  function sortNewFirst(rows){
+    // NUOVA prima, poi DataISO desc
+    return rows.slice().sort((a,b)=>{
+      const sa = String(a.Stato||"").toUpperCase().trim();
+      const sb = String(b.Stato||"").toUpperCase().trim();
+      const pa = (sa==="NUOVA") ? 0 : (sa==="PRESA_IN_CARICO") ? 1 : 2;
+      const pb = (sb==="NUOVA") ? 0 : (sb==="PRESA_IN_CARICO") ? 1 : 2;
+      if(pa !== pb) return pa - pb;
+      return String(b.DataISO||"").localeCompare(String(a.DataISO||""));
+    });
+  }
+
+  async function refresh(){
+    clearError();
+    try{
+      let rows = await fetchList();
+      rows = sortNewFirst(rows);
+
+      document.getElementById("pillNew").innerHTML = `🟣 Nuove: ${countNew(rows)}`;
+      document.getElementById("pillTot").innerHTML = `📚 Totali: ${rows.length}`;
+
+      if(!table){
+        table = $("#tbl").DataTable({
+          data: rows,
+          columns: [
+            { data:"DataISO", render: d => fmtData(d) },
+            { data:"Titolo" },
+            { data:"Nome" },
+            { data:"Telefono" },
+            { data:"Note" },
+            { data:"Stato", render: d => badgeStatoHtml(d) },
+            {
+              data: null,
+              orderable: false,
+              render: r => {
+                const id = String(r.ID||"");
+                return `
+                  <div class="act">
+                    <button class="mini neu" data-act="take" data-id="${id}">🔵 Presa</button>
+                    <button class="mini ok"  data-act="ok"   data-id="${id}">🟠 Approva</button>
+                    <button class="mini bad" data-act="no"   data-id="${id}">🔴 Rifiuta</button>
+                    <button class="mini ok"  data-act="done" data-id="${id}">🟢 Evasa</button>
+                    <button class="mini bad" data-act="del"  data-id="${id}">🗑️ Elimina</button>
+                  </div>`;
+              }
+            }
+          ],
+          paging: false,
+          info: false,
+          searching: false,
+          order: [] // gestito da sortNewFirst
+        });
+      } else {
+        table.clear();
+        table.rows.add(rows).draw(false);
+      }
+
+      renderEmoji();
+    }catch(e){
+      console.error(e);
+      showError("Errore refresh: " + (e?.message ?? String(e)));
+    }
+  }
+
+  function init(){
+    if(!isAdmin()){
+      openPin();
+      return;
+    }
+
+    closePin();
+    refresh();
+
+    if(timer) clearInterval(timer);
+    timer = setInterval(refresh, REFRESH_MS);
+
+    document.getElementById("btnRefresh").addEventListener("click", refresh);
+
+    document.getElementById("btnLogout").addEventListener("click", ()=>{
+      clearAdminSession();
+      location.reload();
     });
 
-  }catch(e){
-    qs("status").innerHTML =
-      `Errore: ${esc(e.message)} • <a style="color:#8bd1ff" href="${esc(debugUrl.toString())}" target="_blank" rel="noopener">Apri JSON</a>`;
-  }
-}
+    document.getElementById("filtroStato").addEventListener("change", refresh);
+    document.getElementById("q").addEventListener("keyup", ()=>{
+      // piccolo debounce
+      if(window.__t) clearTimeout(window.__t);
+      window.__t = setTimeout(refresh, 250);
+    });
 
-async function setStato(id,stato){
-  const by = localStorage.getItem(STORE.by) || "Admin";
-  try{
-    await api({action:"update",id,stato,by});
-    loadList();
-  }catch(e){
-    alert("Errore: " + e.message);
-  }
-}
+    document.body.addEventListener("click", async (ev)=>{
+      const t = ev.target;
+      if(!t || !t.dataset || !t.dataset.act) return;
 
-/* ===== INIT ===== */
-(function init(){
-  // Precompila key se l’hai messa in DEFAULT_ADMIN_KEY
-  if(DEFAULT_ADMIN_KEY && DEFAULT_ADMIN_KEY.length>10){
-    qs("key").value = DEFAULT_ADMIN_KEY;
+      const id = t.dataset.id;
+      const act = t.dataset.act;
+
+      try{
+        t.disabled = true;
+        if(act === "take") await updateRow(id, "PRESA_IN_CARICO");
+        if(act === "ok")   await updateRow(id, "APPROVATA");
+        if(act === "no")   await updateRow(id, "RIFIUTATA");
+        if(act === "done") await updateRow(id, "EVASA");
+        if(act === "del"){
+          const conf = confirm("Eliminare la richiesta? (Verrà archiviata: Stato=ELIMINATA)");
+          if(!conf) { t.disabled = false; return; }
+          await archiveRow(id);
+        }
+        await refresh();
+      }catch(e){
+        showError("Errore azione: " + (e?.message ?? String(e)));
+      }finally{
+        t.disabled = false;
+      }
+    });
+
+    renderEmoji();
   }
-  // Se già autenticato
-  if(isAuthed()){
-    qs("login").style.display="none";
-    loadList();
-  }
-  setInterval(()=>{ if(isAuthed()) loadList(); }, 15000);
-})();
+
+  document.addEventListener("DOMContentLoaded", ()=>{
+    if(isAdmin()) init();
+    else openPin();
+
+    document.getElementById("btnPinOk").addEventListener("click", submitPin);
+    document.getElementById("btnPinCancel").addEventListener("click", ()=>{ /* resta in modal */ });
+    document.getElementById("pinInput").addEventListener("keydown",(e)=>{ if(e.key==="Enter") submitPin(); });
+    renderEmoji();
+  });
 </script>
 
 </body>
