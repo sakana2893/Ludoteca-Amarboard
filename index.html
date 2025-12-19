@@ -4,566 +4,221 @@
   <meta charset="UTF-8">
   <title>Catalogo Giochi – AmarBoard Natale</title>
 
-  <!-- No cache per l'HTML -->
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <!-- DataTables CSS -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
-
-  <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
-  <!-- DataTables JS -->
   <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
-
-  <!-- PapaParse per leggere CSV -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
-  <!-- Twemoji (risolve i "?" al posto delle emoji su Windows 7 / font mancanti) -->
+  <!-- Twemoji: risolve i "?" al posto delle emoji su PC vecchi / font mancanti -->
   <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
 
   <style>
-    :root {
-      --rosso-natale: #b02030;
-      --verde-natale: #1f7a3a;
-      --oro-soft:    #f3d08a;
-      --bg-chiaro:   #fffaf3;
+    :root { --rosso-natale:#b02030; --verde-natale:#1f7a3a; --oro-soft:#f3d08a; --bg-chiaro:#fffaf3; }
+    *{box-sizing:border-box}
+    body{
+      font-family:system-ui,-apple-system,"Segoe UI",sans-serif;margin:0;padding:0;
+      background:radial-gradient(circle at top,#ffe9e9,#fdf5e6 45%,#e4f5ea 100%);
+      min-height:100vh;overflow-x:hidden;position:relative;
     }
 
-    * { box-sizing: border-box; }
+    .snowflake{position:fixed;top:-10px;color:#fff;font-size:1.2rem;pointer-events:none;
+      animation-name:fall;animation-timing-function:linear;animation-iteration-count:infinite;
+      opacity:.85;z-index:1;text-shadow:0 0 3px rgba(0,0,0,.3)}
+    .snowflake:nth-child(1){left:5%;animation-duration:12s;animation-delay:0s}
+    .snowflake:nth-child(2){left:18%;animation-duration:15s;animation-delay:2s}
+    .snowflake:nth-child(3){left:32%;animation-duration:11s;animation-delay:4s}
+    .snowflake:nth-child(4){left:46%;animation-duration:13s;animation-delay:1s}
+    .snowflake:nth-child(5){left:60%;animation-duration:16s;animation-delay:3s}
+    .snowflake:nth-child(6){left:74%;animation-duration:10s;animation-delay:5s}
+    .snowflake:nth-child(7){left:88%;animation-duration:14s;animation-delay:1s}
+    @keyframes fall{0%{transform:translateY(0);opacity:.95}100%{transform:translateY(110vh);opacity:0}}
 
-    body {
-      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-      margin: 0;
-      padding: 0;
-      background: radial-gradient(circle at top, #ffe9e9, #fdf5e6 45%, #e4f5ea 100%);
-      min-height: 100vh;
-      overflow-x: hidden;
-      position: relative;
+    .garland{
+      position:fixed;top:0;left:0;width:100%;height:60px;
+      background:radial-gradient(circle at center,rgba(31,122,58,.7),rgba(0,0,0,.3));
+      display:flex;align-items:center;justify-content:center;gap:10px;color:#ffe;font-size:1.4rem;
+      z-index:2;box-shadow:0 2px 8px rgba(0,0,0,.3)
     }
+    .garland span{animation:blink 2.2s linear infinite}
+    .garland span:nth-child(odd){animation-delay:.7s}
+    @keyframes blink{0%,100%{opacity:.4;transform:translateY(0)}50%{opacity:1;transform:translateY(1px)}}
 
-    .snowflake {
-      position: fixed;
-      top: -10px;
-      color: #ffffff;
-      font-size: 1.2rem;
-      pointer-events: none;
-      animation-name: fall;
-      animation-timing-function: linear;
-      animation-iteration-count: infinite;
-      opacity: 0.85;
-      z-index: 1;
-      text-shadow: 0 0 3px rgba(0,0,0,0.3);
+    #wrapper{
+      max-width:1200px;margin:90px auto 40px;padding:24px 26px 30px;
+      background:rgba(255,250,243,.96);border-radius:20px;
+      box-shadow:0 0 0 3px rgba(255,255,255,.8),0 0 18px rgba(176,32,48,.4);
+      position:relative;z-index:3;border:2px solid rgba(176,32,48,.35)
     }
-    .snowflake:nth-child(1)  { left: 5%;  animation-duration: 12s; animation-delay: 0s; }
-    .snowflake:nth-child(2)  { left: 18%; animation-duration: 15s; animation-delay: 2s; }
-    .snowflake:nth-child(3)  { left: 32%; animation-duration: 11s; animation-delay: 4s; }
-    .snowflake:nth-child(4)  { left: 46%; animation-duration: 13s; animation-delay: 1s; }
-    .snowflake:nth-child(5)  { left: 60%; animation-duration: 16s; animation-delay: 3s; }
-    .snowflake:nth-child(6)  { left: 74%; animation-duration: 10s; animation-delay: 5s; }
-    .snowflake:nth-child(7)  { left: 88%; animation-duration: 14s; animation-delay: 1s; }
-
-    @keyframes fall {
-      0%   { transform: translateY(0); opacity: 0.95; }
-      100% { transform: translateY(110vh); opacity: 0; }
+    #wrapper::before{
+      content:"";position:absolute;inset:8px;border-radius:16px;border:2px dashed rgba(243,208,138,.7);
+      pointer-events:none
     }
 
-    .garland {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 60px;
-      background: radial-gradient(circle at center, rgba(31,122,58,0.7), rgba(0,0,0,0.3));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      color: #ffe;
-      font-size: 1.4rem;
-      z-index: 2;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-    }
-    .garland span { animation: blink 2.2s linear infinite; }
-    .garland span:nth-child(odd) { animation-delay: 0.7s; }
-
-    @keyframes blink {
-      0%, 100% { opacity: 0.4; transform: translateY(0); }
-      50%      { opacity: 1;   transform: translateY(1px); }
+    .header-flex{display:flex;align-items:center;justify-content:center;gap:18px;margin-bottom:6px}
+    .xmas-icon{font-size:2rem}
+    .logo-amar{
+      height:80px;width:auto;border-radius:999px;box-shadow:0 0 6px rgba(0,0,0,.25);background:#fff
     }
 
-    #wrapper {
-      max-width: 1200px;
-      margin: 90px auto 40px;
-      padding: 24px 26px 30px;
-      background: rgba(255,250,243,0.96);
-      border-radius: 20px;
-      box-shadow: 0 0 0 3px rgba(255,255,255,0.8),
-                  0 0 18px rgba(176,32,48,0.4);
-      position: relative;
-      z-index: 3;
-      border: 2px solid rgba(176,32,48,0.35);
+    h1{text-align:center;margin:6px 0;font-size:1.8rem;color:var(--rosso-natale);
+      text-shadow:0 1px 0 #fff,0 0 6px rgba(176,32,48,.35)}
+    .subtitle{text-align:center;font-size:.9rem;color:#555;margin-bottom:12px}
+    .subtitle span{color:var(--verde-natale);font-weight:800}
+
+    .stats-bar{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:16px}
+    .stat-box{
+      background:linear-gradient(135deg,#fff,#fffdf7);border-radius:12px;padding:10px 12px;
+      border:1px solid rgba(176,32,48,.2);box-shadow:0 2px 6px rgba(0,0,0,.06);font-size:.85rem
+    }
+    .stat-label{text-transform:uppercase;color:#666;font-size:.75rem;letter-spacing:.05em;margin-bottom:4px;font-weight:900}
+    .stat-value{font-size:1.4rem;font-weight:900;color:var(--rosso-natale)}
+    .stat-note{font-size:.75rem;color:#777;margin-top:3px;font-weight:800}
+    .stat-top ol{margin:0;padding-left:18px;font-size:.8rem;font-weight:800}
+
+    .filters{
+      display:flex;flex-wrap:wrap;gap:14px;margin-bottom:16px;align-items:center;justify-content:space-between;
+      padding:10px 12px;border-radius:12px;background:linear-gradient(90deg,#fffdf7,#f7fff7);
+      border:1px solid rgba(31,122,58,.18)
+    }
+    .filters-left{display:flex;flex-wrap:wrap;gap:14px;align-items:center}
+    .filter-block{display:flex;flex-direction:column;gap:4px}
+    .filter-label{color:#444;font-size:.8rem;font-weight:900}
+    select,input[type="text"]{
+      padding:6px 8px;border-radius:6px;border:1px solid #ccc;font-size:.85rem;min-width:120px;
+      background:#fff;font-weight:800
+    }
+    #btnRefresh{
+      padding:7px 10px;border-radius:8px;border:1px solid var(--verde-natale);
+      background:#e9fff0;color:var(--verde-natale);font-size:.85rem;cursor:pointer;
+      display:inline-flex;align-items:center;gap:6px;font-weight:900
+    }
+    #btnRefresh:hover{background:#d6ffe5}
+
+    #tblCatalogo_wrapper{margin-top:6px}
+    table.dataTable thead th{
+      background:linear-gradient(180deg,#f7f7f7,#e3e3e3);
+      border-bottom:2px solid var(--rosso-natale);
+      font-weight:900
+    }
+    table.dataTable tbody tr:nth-child(even){background-color:#fffaf5}
+    table.dataTable tbody tr.disponibile-row{background:linear-gradient(90deg,#f7fff7,#fff)}
+    table.dataTable tbody tr.prestato-row{background:linear-gradient(90deg,#fff7f7,#fff)}
+
+    .badge{padding:4px 10px;border-radius:999px;font-size:.75rem;font-weight:900;display:inline-block;white-space:nowrap}
+    .badge-disponibile{background:#d4edda;color:#155724;border:1px solid #b1dfbb}
+    .badge-prestato{background:#f8d7da;color:#721c24;border:1px solid #f1b0b7}
+
+    .badge-richiesto{background:#efe1ff;color:#4a1a7a;border:1px solid #c9a7ff;margin-left:6px}
+    .badge-prenotato{background:#ffe8c7;color:#7a3d00;border:1px solid #ffc37a;margin-left:6px}
+
+    a.bgg-link{color:var(--rosso-natale);font-size:.8rem;text-decoration:none;font-weight:900}
+    a.bgg-link:hover{text-decoration:underline}
+
+    .footer-note{margin-top:10px;font-size:.8rem;color:#777;text-align:right;font-weight:800}
+
+    #errorBox{
+      display:none;margin:10px 0 12px;padding:10px 12px;border-radius:12px;
+      border:1px solid rgba(176,32,48,.35);background:rgba(255,231,231,.85);color:#7a0f1a;
+      font-size:.85rem;line-height:1.35;font-weight:900
     }
 
-    #wrapper::before {
-      content: "";
-      position: absolute;
-      inset: 8px;
-      border-radius: 16px;
-      border: 2px dashed rgba(243,208,138,0.7);
-      pointer-events: none;
-    }
-
-    .header-flex {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 18px;
-      margin-bottom: 6px;
-    }
-
-    .xmas-icon { font-size: 2rem; }
-
-    .logo-amar {
-      height: 80px;
-      width: auto;
-      border-radius: 999px;
-      box-shadow: 0 0 6px rgba(0,0,0,0.25);
-      background: #fff;
-    }
-
-    h1 {
-      text-align: center;
-      margin: 6px 0;
-      font-size: 1.8rem;
-      color: var(--rosso-natale);
-      text-shadow: 0 1px 0 #fff, 0 0 6px rgba(176,32,48,0.35);
-    }
-
-    .subtitle {
-      text-align: center;
-      font-size: 0.9rem;
-      color: #555;
-      margin-bottom: 12px;
-    }
-    .subtitle span { color: var(--verde-natale); font-weight: 700; }
-
-    .stats-bar {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0,1fr));
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .stat-box {
-      background: linear-gradient(135deg,#fff,#fffdf7);
-      border-radius: 12px;
-      padding: 10px 12px;
-      border: 1px solid rgba(176,32,48,0.2);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-      font-size: 0.85rem;
-    }
-
-    .stat-label {
-      text-transform: uppercase;
-      color: #666;
-      font-size: 0.75rem;
-      letter-spacing: 0.05em;
-      margin-bottom: 4px;
-      font-weight: 800;
-    }
-
-    .stat-value {
-      font-size: 1.4rem;
-      font-weight: 900;
-      color: var(--rosso-natale);
-    }
-
-    .stat-note {
-      font-size: 0.75rem;
-      color: #777;
-      margin-top: 3px;
-      font-weight: 700;
-    }
-
-    .stat-top ol {
-      margin: 0;
-      padding-left: 18px;
-      font-size: 0.8rem;
-      font-weight: 700;
-    }
-
-    .filters {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      margin-bottom: 16px;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 12px;
-      border-radius: 12px;
-      background: linear-gradient(90deg, #fffdf7, #f7fff7);
-      border: 1px solid rgba(31,122,58,0.18);
-    }
-
-    .filters-left {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      align-items: center;
-    }
-
-    .filter-block { display: flex; flex-direction: column; gap: 4px; }
-
-    .filter-label {
-      color: #444;
-      font-size: 0.8rem;
-      font-weight: 800;
-    }
-
-    select, input[type="text"] {
-      padding: 6px 8px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 0.85rem;
-      min-width: 120px;
-      background: #fff;
-      font-weight: 700;
-    }
-
-    #btnRefresh {
-      padding: 7px 10px;
-      border-radius: 8px;
-      border: 1px solid var(--verde-natale);
-      background: #e9fff0;
-      color: var(--verde-natale);
-      font-size: 0.85rem;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-weight: 900;
-    }
-    #btnRefresh:hover { background: #d6ffe5; }
-
-    #tblCatalogo_wrapper { margin-top: 6px; }
-
-    table.dataTable thead th {
-      background: linear-gradient(180deg,#f7f7f7,#e3e3e3);
-      border-bottom: 2px solid var(--rosso-natale);
-      font-weight: 900;
-    }
-    table.dataTable tbody tr:nth-child(even) { background-color: #fffaf5; }
-    table.dataTable tbody tr.disponibile-row {
-      background: linear-gradient(90deg, #f7fff7, #ffffff);
-    }
-    table.dataTable tbody tr.prestato-row {
-      background: linear-gradient(90deg, #fff7f7, #ffffff);
-    }
-
-    .badge {
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 0.75rem;
-      font-weight: 900;
-      display: inline-block;
-      white-space: nowrap;
-    }
-    .badge-disponibile {
-      background: #d4edda;
-      color: #155724;
-      border: 1px solid #b1dfbb;
-    }
-    .badge-prestato {
-      background: #f8d7da;
-      color: #721c24;
-      border: 1px solid #f1b0b7;
-    }
-    /* ✅ badge richiesto */
-    .badge-richiesto{
-      background:#efe1ff;
-      color:#4a1a7a;
-      border:1px solid #c9a7ff;
-      margin-left: 6px;
-    }
-
-    a.bgg-link {
-      color: var(--rosso-natale);
-      font-size: 0.8rem;
-      text-decoration: none;
-      font-weight: 900;
-    }
-    a.bgg-link:hover { text-decoration: underline; }
-
-    .footer-note {
-      margin-top: 10px;
-      font-size: 0.8rem;
-      color: #777;
-      text-align: right;
-      font-weight: 700;
-    }
-
-    #errorBox {
-      display: none;
-      margin: 10px 0 12px;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(176,32,48,0.35);
-      background: rgba(255, 231, 231, 0.85);
-      color: #7a0f1a;
-      font-size: 0.85rem;
-      line-height: 1.35;
-      font-weight: 800;
-    }
-
-    /* ===== COUNTDOWN BANNER + SPOILER SHIELD ===== */
+    /* COUNTDOWN */
     #countdownBanner{
-      position: fixed;
-      inset: 70px 16px auto 16px;
-      max-width: 1200px;
-      margin: 0 auto;
-      z-index: 9999;
-      background: rgba(255,250,243,0.98);
-      border: 2px solid rgba(176,32,48,0.35);
-      box-shadow: 0 0 18px rgba(176,32,48,0.25);
-      border-radius: 16px;
-      padding: 14px 16px;
-      text-align: center;
-      color: #7a0f1a;
-      font-weight: 900;
+      position:fixed;inset:70px 16px auto 16px;max-width:1200px;margin:0 auto;z-index:9999;
+      background:rgba(255,250,243,.98);border:2px solid rgba(176,32,48,.35);
+      box-shadow:0 0 18px rgba(176,32,48,.25);border-radius:16px;padding:14px 16px;
+      text-align:center;color:#7a0f1a;font-weight:900;display:none
     }
+    #countdownBanner small{display:block;margin-top:6px;font-weight:900;color:#444}
+    #countdownTime{font-variant-numeric:tabular-nums;font-size:1.4rem;color:#b02030}
 
-    #countdownBanner small{
-      display:block;
-      margin-top:6px;
-      font-weight: 800;
-      color:#444;
-    }
-
-    #countdownTime{
-      font-variant-numeric: tabular-nums;
-      font-size: 1.4rem;
-      color: #b02030;
-    }
-
-    .spoiler-hidden #wrapper{
-      filter: blur(10px);
-      pointer-events: none;
-      user-select: none;
-    }
-
+    .spoiler-hidden #wrapper{filter:blur(10px);pointer-events:none;user-select:none}
     .spoiler-hidden #wrapper::after{
-      content:"Catalogo in arrivo…";
-      position:absolute;
-      inset: 0;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size: 1.4rem;
-      font-weight: 900;
-      color: rgba(122,15,26,0.85);
+      content:"Catalogo in arrivo…";position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+      font-size:1.4rem;font-weight:900;color:rgba(122,15,26,.85)
     }
 
-    /* ===== ADMIN PIN ===== */
-    #countdownActions{
-      margin-top: 10px;
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
+    /* ADMIN PIN UI */
+    #countdownActions{margin-top:10px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
     .btn-mini{
-      padding: 8px 12px;
-      border-radius: 12px;
-      border: 1px solid #ccc;
-      background: #fff;
-      cursor: pointer;
-      font-weight: 900;
+      padding:8px 12px;border-radius:12px;border:1px solid #ccc;background:#fff;cursor:pointer;font-weight:900
     }
-    .btn-admin{
-      border: 1px solid rgba(31,122,58,0.55);
-      background: rgba(233,255,240,0.95);
-      color: #155724;
-    }
-    .btn-logout{
-      border: 1px solid rgba(176,32,48,0.55);
-      background: rgba(255,231,231,0.95);
-      color: #7a0f1a;
-      display: none;
-    }
+    .btn-admin{border:1px solid rgba(31,122,58,.55);background:rgba(233,255,240,.95);color:#155724}
+    .btn-logout{border:1px solid rgba(176,32,48,.55);background:rgba(255,231,231,.95);color:#7a0f1a;display:none}
 
     #pinModal{
-      position: fixed;
-      inset: 0;
-      z-index: 10001;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0,0,0,0.55);
-      padding: 16px;
+      position:fixed;inset:0;z-index:10001;display:none;align-items:center;justify-content:center;
+      background:rgba(0,0,0,.55);padding:16px
     }
     #pinModal .card{
-      width: min(420px, 100%);
-      background: rgba(255,250,243,0.98);
-      border: 2px solid rgba(176,32,48,0.35);
-      border-radius: 16px;
-      padding: 16px 14px;
-      box-shadow: 0 0 24px rgba(0,0,0,0.35);
-      color: #222;
+      width:min(420px,100%);background:rgba(255,250,243,.98);border:2px solid rgba(176,32,48,.35);
+      border-radius:16px;padding:16px 14px;box-shadow:0 0 24px rgba(0,0,0,.35);color:#222
     }
-    #pinModal h2{ margin: 0 0 8px; color: #7a0f1a; font-size: 1.15rem; }
-    #pinModal p{ margin: 0 0 12px; color: #444; font-size: 0.9rem; line-height: 1.35; font-weight: 700; }
+    #pinModal h2{margin:0 0 8px;color:#7a0f1a;font-size:1.15rem}
+    #pinModal p{margin:0 0 12px;color:#444;font-size:.9rem;line-height:1.35;font-weight:800}
     #pinModal input{
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid #ccc;
-      background: #fff;
-      font-size: 1rem;
-      font-weight: 800;
+      width:100%;padding:10px 12px;border-radius:12px;border:1px solid #ccc;background:#fff;font-size:1rem;font-weight:900
     }
-    #pinModal .row{ display:flex; gap:10px; margin-top: 12px; }
+    #pinModal .row{display:flex;gap:10px;margin-top:12px}
     #pinModal .row button{
-      flex: 1;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid #ccc;
-      background: #fff;
-      cursor: pointer;
-      font-weight: 900;
+      flex:1;padding:10px 12px;border-radius:12px;border:1px solid #ccc;background:#fff;cursor:pointer;font-weight:900
     }
-    #pinModal .row .ok{
-      border: 1px solid rgba(31,122,58,0.55);
-      background: rgba(233,255,240,0.95);
-      color: #155724;
-    }
-    #pinModal .row .cancel{
-      border: 1px solid rgba(0,0,0,0.2);
-      background: rgba(255,255,255,0.9);
-      color: #333;
-    }
+    #pinModal .row .ok{border:1px solid rgba(31,122,58,.55);background:rgba(233,255,240,.95);color:#155724}
+    #pinModal .row .cancel{border:1px solid rgba(0,0,0,.2);background:rgba(255,255,255,.9);color:#333}
     #pinModal .err{
-      margin-top: 10px;
-      color: #7a0f1a;
-      background: rgba(255,231,231,0.9);
-      border: 1px solid rgba(176,32,48,0.4);
-      padding: 8px 10px;
-      border-radius: 12px;
-      display: none;
-      font-weight: 900;
+      margin-top:10px;color:#7a0f1a;background:rgba(255,231,231,.9);border:1px solid rgba(176,32,48,.4);
+      padding:8px 10px;border-radius:12px;display:none;font-weight:900
     }
 
-    /* ===== PRENOTA MODAL ===== */
+    /* PRENOTA MODAL */
     #prenotaModal{
-      position: fixed;
-      inset: 0;
-      z-index: 10003;
-      display: none;
-      align-items: center;
-      justify-content: center;
-      background: rgba(0,0,0,0.55);
-      padding: 16px;
+      position:fixed;inset:0;z-index:10003;display:none;align-items:center;justify-content:center;
+      background:rgba(0,0,0,.55);padding:16px
     }
     #prenotaModal .card{
-      width: min(520px, 100%);
-      background: rgba(255,250,243,0.98);
-      border: 2px solid rgba(176,32,48,0.35);
-      border-radius: 16px;
-      padding: 16px 14px;
-      box-shadow: 0 0 24px rgba(0,0,0,0.35);
-      color: #222;
+      width:min(520px,100%);background:rgba(255,250,243,.98);border:2px solid rgba(176,32,48,.35);
+      border-radius:16px;padding:16px 14px;box-shadow:0 0 24px rgba(0,0,0,.35);color:#222
     }
-    #prenotaModal h2{ margin: 0 0 6px; color: #7a0f1a; font-size: 1.1rem; }
-    #prenotaModal .sub{ margin: 0 0 10px; color:#444; font-size: 0.9rem; line-height: 1.35; font-weight: 700; }
-    #prenotaModal input, #prenotaModal textarea{
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid #ccc;
-      background: #fff;
-      color: #111;
-      font-size: 0.95rem;
-      margin-top: 8px;
-      font-family: inherit;
-      font-weight: 700;
+    #prenotaModal h2{margin:0 0 6px;color:#7a0f1a;font-size:1.1rem}
+    #prenotaModal .sub{margin:0 0 10px;color:#444;font-size:.9rem;line-height:1.35;font-weight:800}
+    #prenotaModal input,#prenotaModal textarea{
+      width:100%;padding:10px 12px;border-radius:12px;border:1px solid #ccc;background:#fff;color:#111;
+      font-size:.95rem;margin-top:8px;font-family:inherit;font-weight:800
     }
-    #prenotaModal textarea{ min-height: 84px; resize: vertical; }
-    #prenotaModal .row{ display:flex; gap:10px; margin-top: 12px; flex-wrap: wrap; }
+    #prenotaModal textarea{min-height:84px;resize:vertical}
+    #prenotaModal .row{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
     #prenotaModal .row button{
-      flex: 1;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid #ccc;
-      background: #fff;
-      cursor: pointer;
-      font-weight: 900;
-      min-width: 140px;
+      flex:1;padding:10px 12px;border-radius:12px;border:1px solid #ccc;background:#fff;cursor:pointer;font-weight:900;min-width:140px
     }
-    #prenotaModal .row .ok{
-      border: 1px solid rgba(31,122,58,0.55);
-      background: rgba(233,255,240,0.95);
-      color: #155724;
-    }
-    #prenotaModal .row .cancel{
-      border: 1px solid rgba(0,0,0,0.2);
-      background: rgba(255,255,255,0.9);
-      color: #333;
-    }
+    #prenotaModal .row .ok{border:1px solid rgba(31,122,58,.55);background:rgba(233,255,240,.95);color:#155724}
+    #prenotaModal .row .cancel{border:1px solid rgba(0,0,0,.2);background:rgba(255,255,255,.9);color:#333}
     #prenotaModal .msg-ok{
-      margin-top: 10px;
-      color: #155724;
-      background: rgba(233,255,240,0.95);
-      border: 1px solid rgba(31,122,58,0.35);
-      padding: 8px 10px;
-      border-radius: 12px;
-      display: none;
-      font-weight: 900;
-      text-align:center;
+      margin-top:10px;color:#155724;background:rgba(233,255,240,.95);border:1px solid rgba(31,122,58,.35);
+      padding:8px 10px;border-radius:12px;display:none;font-weight:900;text-align:center
     }
-    #honeypotWebsite{ display:none; }
+    #honeypotWebsite{display:none}
 
     #adminBadge{
-      position: fixed;
-      top: 10px;
-      right: 10px;
-      z-index: 10000;
-      display: none;
-      align-items: center;
-      gap: 10px;
-      background: rgba(255,250,243,0.95);
-      border: 2px solid rgba(243,208,138,0.75);
-      border-radius: 999px;
-      padding: 8px 12px;
-      box-shadow: 0 2px 14px rgba(0,0,0,0.25);
-      color: #7a0f1a;
-      font-weight: 900;
+      position:fixed;top:10px;right:10px;z-index:10000;display:none;align-items:center;gap:10px;
+      background:rgba(255,250,243,.95);border:2px solid rgba(243,208,138,.75);border-radius:999px;padding:8px 12px;
+      box-shadow:0 2px 14px rgba(0,0,0,.25);color:#7a0f1a;font-weight:900
     }
-    #adminBadge .pill{
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      font-size: 0.82rem;
-    }
+    #adminBadge .pill{display:inline-flex;align-items:center;gap:8px;letter-spacing:.04em;text-transform:uppercase;font-size:.82rem}
     #adminBadge button{
-      border-radius: 999px;
-      border: 1px solid rgba(176,32,48,0.45);
-      background: rgba(255, 231, 231, 0.9);
-      color: #7a0f1a;
-      padding: 6px 10px;
-      cursor: pointer;
-      font-weight: 900;
+      border-radius:999px;border:1px solid rgba(176,32,48,.45);background:rgba(255,231,231,.9);
+      color:#7a0f1a;padding:6px 10px;cursor:pointer;font-weight:900
     }
 
-    @media(max-width: 900px) { .stats-bar { grid-template-columns: 1fr; } }
-    @media(max-width: 768px) {
-      #wrapper { margin: 80px 10px 20px; padding: 14px; }
-      .filters { flex-direction: column; align-items: stretch; }
-      .header-flex { flex-direction: column; }
-      .logo-amar { height: 70px; }
+    @media(max-width:900px){.stats-bar{grid-template-columns:1fr}}
+    @media(max-width:768px){
+      #wrapper{margin:80px 10px 20px;padding:14px}
+      .filters{flex-direction:column;align-items:stretch}
+      .header-flex{flex-direction:column}
+      .logo-amar{height:70px}
     }
   </style>
 </head>
@@ -607,7 +262,7 @@
   </div>
 </div>
 
-<div id="countdownBanner" style="display:none;">
+<div id="countdownBanner">
   🎁 La pagina della nostra Ludoteca si sbloccherà tra <span id="countdownTime">--:--:--</span>
   <small>Stiamo "intavolando" la nostra pagina, fino a quell’ora la pagina resta “coperta”.</small>
   <div id="countdownActions">
@@ -622,20 +277,13 @@
   <span>⭐</span><span>🎄</span><span>✨</span>
 </div>
 
-<div class="snowflake">❄</div>
-<div class="snowflake">✻</div>
-<div class="snowflake">❅</div>
-<div class="snowflake">❆</div>
-<div class="snowflake">❄</div>
-<div class="snowflake">✵</div>
-<div class="snowflake">❄</div>
+<div class="snowflake">❄</div><div class="snowflake">✻</div><div class="snowflake">❅</div>
+<div class="snowflake">❆</div><div class="snowflake">❄</div><div class="snowflake">✵</div><div class="snowflake">❄</div>
 
 <div id="wrapper">
   <div class="header-flex">
     <span class="xmas-icon">🎄</span>
-    <img class="logo-amar"
-         src="https://raw.githubusercontent.com/sakana2893/Ludoteca-Amarboard/main/logo_amarboard.png"
-         alt="AmarBoard Romagna">
+    <img class="logo-amar" src="https://raw.githubusercontent.com/sakana2893/Ludoteca-Amarboard/main/logo_amarboard.png" alt="AmarBoard Romagna">
     <span class="xmas-icon">🎲</span>
   </div>
 
@@ -701,108 +349,95 @@
     <tbody></tbody>
   </table>
 
-  <div class="footer-note">
-    🎅 Catalogo generato dalla ludoteca AmarBoard – versione natalizia
-  </div>
+  <div class="footer-note">🎅 Catalogo generato dalla ludoteca AmarBoard – versione natalizia</div>
 </div>
 
 <script>
-  /* =========================
-     CONFIG
-  ========================= */
-  // CSV RELATIVI (root della repo)
+  /* ===== CONFIG ===== */
   const CSV_BASE_URL   = "catalogo_ludoteca.csv";
   const STATS_BASE_URL = "stats_ludoteca.csv";
 
-  // Apps Script WebApp
   const API_URL = "https://script.google.com/macros/s/AKfycbymY3lNuMU13fv2NSXJBBAkGh0iOMzABjzuWnARGjsY_UHr7ZWEUM6wss9f1A2zbi9dcA/exec";
 
-  // Admin
   const ADMIN_PIN = "2486";
   const ADMIN_TTL_HOURS = 8;
 
-  // Countdown (metti la tua data/ora)
+  // countdown (modifica quando vuoi)
   const REVEAL_AT = new Date("2026-01-01T09:00:00+01:00").getTime();
 
   const REQ_COOLDOWN_MS = 12000;
 
   let table = null;
   let countdownTimer = null;
-
   let reqCtx = { titolo:"", giocatori:"" };
 
-  // ✅ mappa richieste: { "Titolo": 2, ... }
+  // { "Titolo": {open:2, approved:1} }
   let richiesteMap = {};
 
-  /* =========================
-     HELPERS
-  ========================= */
-  function renderEmoji() {
-    try { twemoji.parse(document.body, { folder: "svg", ext: ".svg" }); } catch(e) {}
+  function renderEmoji(){ try{ twemoji.parse(document.body,{folder:"svg",ext:".svg"}); }catch(e){} }
+
+  function showError(msg){
+    const box=document.getElementById("errorBox");
+    box.style.display="block"; box.textContent=msg;
+  }
+  function clearError(){
+    const box=document.getElementById("errorBox");
+    box.style.display="none"; box.textContent="";
   }
 
-  function showError(msg) {
-    const box = document.getElementById("errorBox");
-    box.style.display = "block";
-    box.textContent = msg;
-  }
-  function clearError() {
-    const box = document.getElementById("errorBox");
-    box.style.display = "none";
-    box.textContent = "";
+  function statoBadge(stato){
+    stato=(stato||"").toLowerCase().trim();
+    if(stato==="disponibile") return '<span class="badge badge-disponibile">🎄 Disponibile</span>';
+    if(stato==="in prestito") return '<span class="badge badge-prestato">🎁 In prestito</span>';
+    return stato||"";
   }
 
-  function statoBadge(stato) {
-    stato = (stato || "").toLowerCase().trim();
-    if (stato === "disponibile") return '<span class="badge badge-disponibile">🎄 Disponibile</span>';
-    if (stato === "in prestito") return '<span class="badge badge-prestato">🎁 In prestito</span>';
-    return stato || "";
+  function badgeStatoPrenotazioniHtml(titolo){
+    const info = richiesteMap[titolo];
+    if(!info) return "";
+
+    let open=0, approved=0;
+    if(typeof info === "number"){ open = info; }
+    else { open = Number(info.open||0); approved = Number(info.approved||0); }
+
+    let html="";
+    if(approved>0){
+      html += ` <span class="badge badge-prenotato">🟠 Prenotato${approved>1?` (${approved})`:""}</span>`;
+    }
+    if(open>0){
+      html += ` <span class="badge badge-richiesto">🟣 Richiesto${open>1?` (${open})`:""}</span>`;
+    }
+    return html;
   }
 
-  function badgeRichiestoHtml(titolo){
-    const n = richiesteMap[titolo] || 0;
-    if (!n) return "";
-    const txt = (n > 1) ? `🟣 Richiesto (${n})` : `🟣 Richiesto`;
-    return ` <span class="badge badge-richiesto">${txt}</span>`;
-  }
-
-  async function fetchTextNoStore(path) {
+  async function fetchTextNoStore(path){
     const url = path + "?v=" + Date.now();
-    const res = await fetch(url, { cache: "no-store" });
-    if (!res.ok) throw new Error(`Impossibile caricare ${path} (HTTP ${res.status})`);
+    const res = await fetch(url, { cache:"no-store" });
+    if(!res.ok) throw new Error(`Impossibile caricare ${path} (HTTP ${res.status})`);
     return await res.text();
   }
 
-  function parseCSVText(csvText) {
-    const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
+  function parseCSVText(csvText){
+    const parsed = Papa.parse(csvText, { header:true, skipEmptyLines:true });
     return parsed.data || [];
   }
 
-  /* =========================
-     JSONP (per evitare CORS su Apps Script)
-  ========================= */
+  /* ===== JSONP (anti-CORS) ===== */
   function jsonp(url){
-    return new Promise((resolve, reject) => {
-      const cb = "cb_" + Math.random().toString(36).slice(2);
-      const s = document.createElement("script");
-      const timeout = setTimeout(() => {
-        cleanup();
-        reject(new Error("JSONP timeout"));
-      }, 6000);
+    return new Promise((resolve,reject)=>{
+      const cb="cb_"+Math.random().toString(36).slice(2);
+      const s=document.createElement("script");
+      const timeout=setTimeout(()=>{cleanup(); reject(new Error("JSONP timeout"));},6000);
 
       function cleanup(){
         clearTimeout(timeout);
-        try{ delete window[cb]; } catch(e){ window[cb] = undefined; }
-        if (s && s.parentNode) s.parentNode.removeChild(s);
+        try{ delete window[cb]; }catch(e){ window[cb]=undefined; }
+        if(s && s.parentNode) s.parentNode.removeChild(s);
       }
 
-      window[cb] = (data) => {
-        cleanup();
-        resolve(data);
-      };
-
-      s.onerror = () => { cleanup(); reject(new Error("JSONP load error")); };
-      s.src = url + (url.includes("?") ? "&" : "?") + "callback=" + cb + "&v=" + Date.now();
+      window[cb]=(data)=>{ cleanup(); resolve(data); };
+      s.onerror=()=>{ cleanup(); reject(new Error("JSONP load error")); };
+      s.src = url + (url.includes("?")?"&":"?") + "callback=" + cb + "&v=" + Date.now();
       document.body.appendChild(s);
     });
   }
@@ -810,234 +445,173 @@
   async function caricaRichiesteMap(){
     try{
       const data = await jsonp(API_URL + "?action=requested_map");
-      if (data && data.ok && data.map) richiesteMap = data.map;
+      if(data && data.ok && data.map) richiesteMap = data.map;
     }catch(e){
-      // silenzioso: se non carica, nessun badge
-      richiesteMap = richiesteMap || {};
+      // silenzioso
     }
   }
 
-  /* =========================
-     ADMIN SESSION (solo per bypass countdown su index)
-  ========================= */
-  function isAdmin() {
-    try {
-      const raw = localStorage.getItem("AB_ADMIN");
-      if (!raw) return false;
-      const obj = JSON.parse(raw);
-      return obj && obj.until && Date.now() < obj.until;
-    } catch { return false; }
+  /* ===== ADMIN SESSION (solo bypass countdown su index) ===== */
+  function isAdmin(){
+    try{
+      const raw=localStorage.getItem("AB_ADMIN"); if(!raw) return false;
+      const obj=JSON.parse(raw); return obj && obj.until && Date.now() < obj.until;
+    }catch{ return false; }
   }
-
-  function setAdminSession() {
-    localStorage.setItem("AB_ADMIN", JSON.stringify({
-      until: Date.now() + ADMIN_TTL_HOURS * 3600000
-    }));
-  }
-
-  function clearAdminSession() {
-    localStorage.removeItem("AB_ADMIN");
-  }
-
-  function refreshAdminUI() {
-    const admin = isAdmin();
+  function setAdminSession(){ localStorage.setItem("AB_ADMIN", JSON.stringify({ until: Date.now()+ADMIN_TTL_HOURS*3600000 })); }
+  function clearAdminSession(){ localStorage.removeItem("AB_ADMIN"); }
+  function refreshAdminUI(){
+    const admin=isAdmin();
     document.getElementById("adminBadge").style.display = admin ? "flex" : "none";
     document.getElementById("btnLogoutBanner").style.display = admin ? "inline-flex" : "none";
     renderEmoji();
   }
-
-  function openPinModal() {
-    const m = document.getElementById("pinModal");
-    const input = document.getElementById("pinInput");
-    const err = document.getElementById("pinErr");
-    err.style.display = "none";
-    input.value = "";
-    m.style.display = "flex";
-    m.setAttribute("aria-hidden", "false");
-    setTimeout(() => input.focus(), 50);
-    renderEmoji();
+  function openPinModal(){
+    const m=document.getElementById("pinModal");
+    const input=document.getElementById("pinInput");
+    const err=document.getElementById("pinErr");
+    err.style.display="none"; input.value="";
+    m.style.display="flex"; m.setAttribute("aria-hidden","false");
+    setTimeout(()=>input.focus(),50); renderEmoji();
   }
-
-  function closePinModal() {
-    const m = document.getElementById("pinModal");
-    m.style.display = "none";
-    m.setAttribute("aria-hidden", "true");
+  function closePinModal(){
+    const m=document.getElementById("pinModal");
+    m.style.display="none"; m.setAttribute("aria-hidden","true");
   }
-
-  function submitPin() {
-    const input = document.getElementById("pinInput");
-    const err = document.getElementById("pinErr");
-    if (input.value === ADMIN_PIN) {
-      setAdminSession();
-      refreshAdminUI();
-      closePinModal();
-      unlockAndLoad();
-    } else {
-      err.style.display = "block";
-    }
+  function submitPin(){
+    const input=document.getElementById("pinInput");
+    const err=document.getElementById("pinErr");
+    if(input.value===ADMIN_PIN){
+      setAdminSession(); refreshAdminUI(); closePinModal(); unlockAndLoad();
+    } else err.style.display="block";
   }
-
-  function doLogout() {
-    clearAdminSession();
-    refreshAdminUI();
-    location.reload();
-  }
-
-  function unlockAndLoad() {
-    const banner = document.getElementById("countdownBanner");
+  function doLogout(){ clearAdminSession(); refreshAdminUI(); location.reload(); }
+  function unlockAndLoad(){
     document.body.classList.remove("spoiler-hidden");
-    banner.style.display = "none";
-    if (countdownTimer) clearInterval(countdownTimer);
-    countdownTimer = null;
+    document.getElementById("countdownBanner").style.display="none";
+    if(countdownTimer) clearInterval(countdownTimer);
+    countdownTimer=null;
     aggiornaTutto();
   }
-
-  function startCountdownShield() {
-    const banner = document.getElementById("countdownBanner");
-    const timeEl = document.getElementById("countdownTime");
-
-    function tick() {
+  function startCountdownShield(){
+    const banner=document.getElementById("countdownBanner");
+    const timeEl=document.getElementById("countdownTime");
+    function tick(){
       refreshAdminUI();
-
-      if (isAdmin()) { unlockAndLoad(); return; }
-
+      if(isAdmin()){ unlockAndLoad(); return; }
       const diff = REVEAL_AT - Date.now();
-      if (diff <= 0) { unlockAndLoad(); return; }
+      if(diff<=0){ unlockAndLoad(); return; }
 
       document.body.classList.add("spoiler-hidden");
-      banner.style.display = "block";
+      banner.style.display="block";
 
-      const totalSec = Math.floor(diff / 1000);
-      const h = String(Math.floor(totalSec / 3600)).padStart(2, "0");
-      const m = String(Math.floor((totalSec % 3600) / 60)).padStart(2, "0");
-      const s = String(totalSec % 60).padStart(2, "0");
-      timeEl.textContent = `${h}:${m}:${s}`;
+      const totalSec=Math.floor(diff/1000);
+      const h=String(Math.floor(totalSec/3600)).padStart(2,"0");
+      const m=String(Math.floor((totalSec%3600)/60)).padStart(2,"0");
+      const s=String(totalSec%60).padStart(2,"0");
+      timeEl.textContent=`${h}:${m}:${s}`;
       renderEmoji();
     }
-
-    tick();
-    countdownTimer = setInterval(tick, 1000);
+    tick(); countdownTimer=setInterval(tick,1000);
   }
 
-  /* =========================
-     PRENOTAZIONE MODAL
-  ========================= */
-  function openPrenotaModal(titolo, giocatori) {
-    reqCtx.titolo = titolo || "";
-    reqCtx.giocatori = giocatori || "";
-
-    document.getElementById("prenotaTitle").textContent = "📌 Richiedi: " + (reqCtx.titolo || "");
-    document.getElementById("prenotaSubtitle").textContent = reqCtx.giocatori ? ("Giocatori: " + reqCtx.giocatori) : "Compila e invia la richiesta.";
-    document.getElementById("reqOkMsg").style.display = "none";
-    document.getElementById("reqNome").value = "";
-    document.getElementById("reqTel").value = "";
-    document.getElementById("reqNote").value = "";
-    document.getElementById("honeypotWebsite").value = "";
-
-    const m = document.getElementById("prenotaModal");
-    m.style.display = "flex";
-    m.setAttribute("aria-hidden", "false");
-    setTimeout(() => document.getElementById("reqNome").focus(), 50);
+  /* ===== PRENOTA MODAL ===== */
+  function openPrenotaModal(titolo,giocatori){
+    reqCtx.titolo=titolo||""; reqCtx.giocatori=giocatori||"";
+    document.getElementById("prenotaTitle").textContent="📌 Richiedi: " + (reqCtx.titolo||"");
+    document.getElementById("prenotaSubtitle").textContent=reqCtx.giocatori?("Giocatori: "+reqCtx.giocatori):"Compila e invia la richiesta.";
+    document.getElementById("reqOkMsg").style.display="none";
+    document.getElementById("reqNome").value="";
+    document.getElementById("reqTel").value="";
+    document.getElementById("reqNote").value="";
+    document.getElementById("honeypotWebsite").value="";
+    const m=document.getElementById("prenotaModal");
+    m.style.display="flex"; m.setAttribute("aria-hidden","false");
+    setTimeout(()=>document.getElementById("reqNome").focus(),50);
     renderEmoji();
   }
-
-  function closePrenotaModal() {
-    const m = document.getElementById("prenotaModal");
-    m.style.display = "none";
-    m.setAttribute("aria-hidden", "true");
+  function closePrenotaModal(){
+    const m=document.getElementById("prenotaModal");
+    m.style.display="none"; m.setAttribute("aria-hidden","true");
   }
+  function sendPrenota(){
+    const nome=(document.getElementById("reqNome").value||"").trim();
+    if(nome.length<2) return;
 
-  function sendPrenota() {
-    const nome = (document.getElementById("reqNome").value || "").trim();
-    if (nome.length < 2) return;
-
-    const honey = (document.getElementById("honeypotWebsite").value || "").trim();
-    if (honey) {
-      document.getElementById("reqOkMsg").style.display = "block";
-      setTimeout(closePrenotaModal, 900);
+    const honey=(document.getElementById("honeypotWebsite").value||"").trim();
+    if(honey){
+      document.getElementById("reqOkMsg").style.display="block";
+      setTimeout(closePrenotaModal,900);
       return;
     }
 
-    const last = Number(localStorage.getItem("AB_LAST_REQ") || "0");
-    if (Date.now() - last < REQ_COOLDOWN_MS) return;
+    const last=Number(localStorage.getItem("AB_LAST_REQ")||"0");
+    if(Date.now()-last<REQ_COOLDOWN_MS) return;
 
     const payload = new URLSearchParams({
-      action: "submit",
-      Titolo: reqCtx.titolo,
-      Giocatori: reqCtx.giocatori,
-      Nome: nome,
-      Telefono: (document.getElementById("reqTel").value || "").trim(),
-      Note: (document.getElementById("reqNote").value || "").trim(),
-      Source: "index.html",
-      _: String(Date.now())
+      action:"submit",
+      Titolo:reqCtx.titolo,
+      Giocatori:reqCtx.giocatori,
+      Nome:nome,
+      Telefono:(document.getElementById("reqTel").value||"").trim(),
+      Note:(document.getElementById("reqNote").value||"").trim(),
+      Source:"index.html",
+      _:String(Date.now())
     }).toString();
 
-    // ✅ invio senza falsi errori: sendBeacon → fallback fetch no-cors
-    let sent = false;
-    try {
-      if (navigator.sendBeacon) {
-        const blob = new Blob([payload], { type: "application/x-www-form-urlencoded;charset=UTF-8" });
-        sent = navigator.sendBeacon(API_URL, blob);
+    let sent=false;
+    try{
+      if(navigator.sendBeacon){
+        const blob=new Blob([payload],{type:"application/x-www-form-urlencoded;charset=UTF-8"});
+        sent=navigator.sendBeacon(API_URL,blob);
       }
-    } catch(e) {}
+    }catch(e){}
 
-    if (!sent) {
-      fetch(API_URL, {
-        method: "POST",
-        mode: "no-cors",
-        headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
-        body: payload
-      }).catch(() => {});
+    if(!sent){
+      fetch(API_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"},body:payload})
+        .catch(()=>{});
     }
 
-    localStorage.setItem("AB_LAST_REQ", String(Date.now()));
-    document.getElementById("reqOkMsg").style.display = "block";
+    localStorage.setItem("AB_LAST_REQ",String(Date.now()));
+    document.getElementById("reqOkMsg").style.display="block";
     renderEmoji();
-    setTimeout(closePrenotaModal, 900);
+    setTimeout(()=>{ closePrenotaModal(); },900);
   }
 
-  /* =========================
-     DATA LOAD
-  ========================= */
-  async function caricaStats() {
-    try {
-      const text = await fetchTextNoStore(STATS_BASE_URL);
-      const rows = parseCSVText(text);
-      if (!rows.length) return;
+  /* ===== LOAD STATS + CATALOGO ===== */
+  async function caricaStats(){
+    try{
+      const text=await fetchTextNoStore(STATS_BASE_URL);
+      const rows=parseCSVText(text);
+      if(!rows.length) return;
+      const s=rows[0];
+      document.getElementById("cntAttivi").textContent=s["PrestitiAttivi"]||"0";
+      document.getElementById("cntTotali").textContent=s["PrestitiTotali"]||"0";
 
-      const s = rows[0];
-      document.getElementById("cntAttivi").textContent = s["PrestitiAttivi"] || "0";
-      document.getElementById("cntTotali").textContent = s["PrestitiTotali"] || "0";
-
-      const topList = document.getElementById("topList");
-      topList.innerHTML = "";
-
-      function addTop(titoloKey, countKey) {
-        const titolo = s[titoloKey];
-        const cnt = s[countKey];
-        if (titolo && cnt && Number(cnt) > 0) {
-          const li = document.createElement("li");
-          li.textContent = titolo + " (" + cnt + ")";
+      const topList=document.getElementById("topList");
+      topList.innerHTML="";
+      function addTop(tk,ck){
+        const titolo=s[tk], cnt=s[ck];
+        if(titolo && cnt && Number(cnt)>0){
+          const li=document.createElement("li");
+          li.textContent=titolo+" ("+cnt+")";
           topList.appendChild(li);
         }
       }
-
-      addTop("Top1Titolo", "Top1Prestiti");
-      addTop("Top2Titolo", "Top2Prestiti");
-      addTop("Top3Titolo", "Top3Prestiti");
+      addTop("Top1Titolo","Top1Prestiti");
+      addTop("Top2Titolo","Top2Prestiti");
+      addTop("Top3Titolo","Top3Prestiti");
       renderEmoji();
-    } catch (e) {
-      // stats opzionali
-    }
+    }catch(e){}
   }
 
-  async function caricaCatalogo() {
-    const text = await fetchTextNoStore(CSV_BASE_URL);
-    const raw = parseCSVText(text);
+  async function caricaCatalogo(){
+    const text=await fetchTextNoStore(CSV_BASE_URL);
+    const raw=parseCSVText(text);
 
-    const data = [];
-    raw.forEach(row => {
-      if (!row["Titolo"]) return;
+    const data=[];
+    raw.forEach(row=>{
+      if(!row["Titolo"]) return;
       data.push({
         Titolo: row["Titolo"] || "",
         Giocatori: row["NumeroGiocatori"] || "",
@@ -1050,68 +624,73 @@
       });
     });
 
-    if (!table) {
-      table = $("#tblCatalogo").DataTable({
-        data: data,
-        columns: [
+    if(!table){
+      table=$("#tblCatalogo").DataTable({
+        data,
+        columns:[
           {
-            data: "Titolo",
-            render: function(d, type){
-              if (type === "display") return d + badgeRichiestoHtml(d);
-              return d; // sort/filter pulito
+            data:"Titolo",
+            render:(d,type)=>{
+              if(type==="display") return d + badgeStatoPrenotazioniHtml(d);
+              return d;
             }
           },
-          { data: "Giocatori" },
-          { data: "Durata" },
-          { data: "Eta" },
-          { data: "Editore" },
-          { data: "Disponibili", render: d => `<strong>${d ?? ""}</strong>` },
-          { data: "Stato", render: d => statoBadge(d) },
+          {data:"Giocatori"},
+          {data:"Durata"},
+          {data:"Eta"},
+          {data:"Editore"},
+          {data:"Disponibili", render:d=>`<strong>${d ?? ""}</strong>`},
+          {data:"Stato", render:d=>statoBadge(d)},
           {
-            data: "BGG",
-            orderable: false,
-            render: d => {
-              if (!d) return "";
-              const safe = String(d).trim();
-              if (!/^https?:\/\//i.test(safe)) return "";
+            data:"BGG", orderable:false,
+            render:d=>{
+              if(!d) return "";
+              const safe=String(d).trim();
+              if(!/^https?:\/\//i.test(safe)) return "";
               return `<a class="bgg-link" href="${safe}" target="_blank" rel="noopener noreferrer">Scheda</a>`;
             }
           },
           {
-            data: null,
-            orderable: false,
-            render: r => {
-              const t = String(r.Titolo || "").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
-              const g = String(r.Giocatori || "").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
-              return `<button type="button" class="btn-mini btn-admin jsRichiedi" data-t="${t}" data-g="${g}">📌 Richiedi</button>`;
+            data:null, orderable:false,
+            render:r=>{
+              const t=String(r.Titolo||"").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+              const g=String(r.Giocatori||"").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
+
+              const info = richiesteMap[r.Titolo];
+              const approved = info ? Number(info.approved||0) : 0;
+              const disabled = approved > 0;
+
+              return `<button type="button"
+                        class="btn-mini btn-admin jsRichiedi"
+                        data-t="${t}" data-g="${g}"
+                        ${disabled ? "disabled style='opacity:.55;cursor:not-allowed;'" : ""}>
+                        ${disabled ? "🟠 Prenotato" : "📌 Richiedi"}
+                      </button>`;
             }
           }
         ],
-        paging: false,
-        info: false,
-        lengthChange: false,
-        order: [[0, "asc"]],
-        language: { url: "https://cdn.datatables.net/plug-ins/1.13.8/i18n/it-IT.json" },
-        rowCallback: function (row, rowData) {
-          row.classList.remove("disponibile-row", "prestato-row");
-          const stato = (rowData.Stato || "").toLowerCase().trim();
-          if (stato === "disponibile") row.classList.add("disponibile-row");
-          else if (stato === "in prestito") row.classList.add("prestato-row");
+        paging:false,info:false,lengthChange:false,order:[[0,"asc"]],
+        language:{url:"https://cdn.datatables.net/plug-ins/1.13.8/i18n/it-IT.json"},
+        rowCallback:(row,rowData)=>{
+          row.classList.remove("disponibile-row","prestato-row");
+          const st=(rowData.Stato||"").toLowerCase().trim();
+          if(st==="disponibile") row.classList.add("disponibile-row");
+          else if(st==="in prestito") row.classList.add("prestato-row");
         },
-        drawCallback: function(){ renderEmoji(); }
+        drawCallback:()=>renderEmoji()
       });
 
-      document.getElementById("filtroStato").addEventListener("change", function () {
-        table.column(6).search(this.value, false, false).draw();
+      document.getElementById("filtroStato").addEventListener("change",function(){
+        table.column(6).search(this.value,false,false).draw();
       });
-      document.getElementById("filtroGiocatori").addEventListener("keyup", function () {
-        table.column(1).search(this.value, false, false).draw();
+      document.getElementById("filtroGiocatori").addEventListener("keyup",function(){
+        table.column(1).search(this.value,false,false).draw();
       });
 
-      document.body.addEventListener("click", function(ev){
-        const t = ev.target;
-        if (t && t.classList && t.classList.contains("jsRichiedi")) {
-          openPrenotaModal(t.getAttribute("data-t") || "", t.getAttribute("data-g") || "");
+      document.body.addEventListener("click",(ev)=>{
+        const t=ev.target;
+        if(t && t.classList && t.classList.contains("jsRichiedi") && !t.disabled){
+          openPrenotaModal(t.getAttribute("data-t")||"", t.getAttribute("data-g")||"");
         }
       });
 
@@ -1123,49 +702,43 @@
     renderEmoji();
   }
 
-  async function aggiornaTutto() {
+  async function aggiornaTutto(){
     clearError();
-    try {
-      // ✅ prima aggiorno la mappa richieste, poi rendo la tabella
+    try{
       await caricaRichiesteMap();
-
       await Promise.all([caricaStats(), caricaCatalogo()]);
-
-      // dopo draw, DataTables potrebbe avere riusato DOM: rendo emoji
       renderEmoji();
-    } catch (e) {
+    }catch(e){
       console.error(e);
       showError("Errore aggiornamento dati: " + (e?.message ?? String(e)));
     }
   }
 
-  /* =========================
-     INIT
-  ========================= */
-  document.addEventListener("DOMContentLoaded", function () {
+  document.addEventListener("DOMContentLoaded",()=>{
     startCountdownShield();
 
-    document.getElementById("btnOpenPin").addEventListener("click", openPinModal);
-    document.getElementById("btnPinCancel").addEventListener("click", closePinModal);
-    document.getElementById("btnPinOk").addEventListener("click", submitPin);
-    document.getElementById("pinInput").addEventListener("keydown", function(e){ if (e.key === "Enter") submitPin(); });
+    document.getElementById("btnOpenPin").addEventListener("click",openPinModal);
+    document.getElementById("btnPinCancel").addEventListener("click",closePinModal);
+    document.getElementById("btnPinOk").addEventListener("click",submitPin);
+    document.getElementById("pinInput").addEventListener("keydown",(e)=>{ if(e.key==="Enter") submitPin(); });
 
-    document.getElementById("btnLogoutTop").addEventListener("click", doLogout);
-    document.getElementById("btnLogoutBanner").addEventListener("click", doLogout);
+    document.getElementById("btnLogoutTop").addEventListener("click",doLogout);
+    document.getElementById("btnLogoutBanner").addEventListener("click",doLogout);
 
-    document.getElementById("btnReqCancel").addEventListener("click", closePrenotaModal);
-    document.getElementById("btnReqSend").addEventListener("click", sendPrenota);
+    document.getElementById("btnReqCancel").addEventListener("click",closePrenotaModal);
+    document.getElementById("btnReqSend").addEventListener("click",sendPrenota);
 
-    document.getElementById("btnRefresh").addEventListener("click", function () {
-      if (!isAdmin() && Date.now() < REVEAL_AT) return;
+    document.getElementById("btnRefresh").addEventListener("click",()=>{
+      if(!isAdmin() && Date.now()<REVEAL_AT) return;
       aggiornaTutto();
     });
 
-    setInterval(() => {
-      if (!isAdmin() && Date.now() < REVEAL_AT) return;
+    setInterval(()=>{
+      if(!isAdmin() && Date.now()<REVEAL_AT) return;
       aggiornaTutto();
-    }, 30000);
+    },30000);
 
+    refreshAdminUI();
     renderEmoji();
   });
 </script>
