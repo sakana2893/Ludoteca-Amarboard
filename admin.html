@@ -4,54 +4,33 @@
   <meta charset="UTF-8" />
   <title>AmarBoard – Admin Prenotazioni</title>
 
-  <!-- No cache per l'HTML -->
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <!-- Twemoji per emoji compatibili -->
   <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
 
   <style>
-    :root{
-      --rosso-natale:#b02030;
-      --verde-natale:#1f7a3a;
-      --oro-soft:#f3d08a;
-    }
-
+    :root{ --rosso:#b02030; --verde:#1f7a3a; --oro:#f3d08a; }
     *{ box-sizing:border-box; }
-
     body{
       font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
-      margin:0;
-      padding:0;
+      margin:0; padding:0;
       background: radial-gradient(circle at top, #ffe9e9, #fdf5e6 45%, #e4f5ea 100%);
       min-height:100vh;
       overflow-x:hidden;
     }
-
     .garland{
-      position:fixed;
-      top:0; left:0;
-      width:100%;
-      height:60px;
+      position:fixed; top:0; left:0; width:100%; height:60px;
       background: radial-gradient(circle at center, rgba(31,122,58,0.7), rgba(0,0,0,0.3));
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:10px;
-      color:#ffe;
-      font-size:1.4rem;
-      z-index:2;
+      display:flex; align-items:center; justify-content:center; gap:10px;
+      color:#ffe; font-size:1.4rem; z-index:2;
       box-shadow:0 2px 8px rgba(0,0,0,0.3);
       user-select:none;
     }
     .garland span{ animation: blink 2.2s linear infinite; }
     .garland span:nth-child(odd){ animation-delay:0.7s; }
-    @keyframes blink{
-      0%,100%{ opacity:.4; transform:translateY(0); }
-      50%{ opacity:1; transform:translateY(1px); }
-    }
+    @keyframes blink{ 0%,100%{opacity:.4} 50%{opacity:1} }
 
     #wrapper{
       max-width:1200px;
@@ -61,27 +40,22 @@
       border-radius:20px;
       box-shadow: 0 0 0 3px rgba(255,255,255,0.8), 0 0 18px rgba(176,32,48,0.4);
       border:2px solid rgba(176,32,48,0.35);
-      position:relative;
-      z-index:3;
+      position:relative; z-index:3;
     }
     #wrapper::before{
-      content:"";
-      position:absolute;
-      inset:8px;
+      content:""; position:absolute; inset:8px;
       border-radius:16px;
       border:2px dashed rgba(243,208,138,0.7);
       pointer-events:none;
     }
-
     h1{
       margin:4px 0 6px;
       text-align:center;
       font-size:1.8rem;
-      color:var(--rosso-natale);
+      color:var(--rosso);
       text-shadow: 0 1px 0 #fff, 0 0 6px rgba(176,32,48,0.35);
       font-weight:900;
     }
-
     .subtitle{
       text-align:center;
       font-size:0.9rem;
@@ -91,25 +65,15 @@
     }
 
     .panel{
-      display:flex;
-      flex-wrap:wrap;
-      gap:12px;
-      align-items:center;
-      justify-content:space-between;
+      display:flex; flex-wrap:wrap; gap:12px;
+      align-items:center; justify-content:space-between;
       padding:10px 12px;
       border-radius:12px;
       background: linear-gradient(90deg, #fffdf7, #f7fff7);
       border: 1px solid rgba(31,122,58,0.18);
-      position:relative;
-      z-index:4;
+      position:relative; z-index:4;
     }
-
-    .left, .right{
-      display:flex;
-      flex-wrap:wrap;
-      gap:10px;
-      align-items:center;
-    }
+    .left, .right{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
 
     .btn{
       padding:8px 12px;
@@ -118,33 +82,15 @@
       background:#fff;
       cursor:pointer;
       font-weight:900;
-      user-select:none;
       display:inline-flex;
       align-items:center;
       gap:8px;
+      user-select:none;
     }
-    .btn:hover{ filter:brightness(0.98); }
-
-    .btn-ok{
-      border:1px solid rgba(31,122,58,.55);
-      background:rgba(233,255,240,.95);
-      color:#155724;
-    }
-    .btn-no{
-      border:1px solid rgba(176,32,48,.45);
-      background:rgba(255,231,231,.92);
-      color:#7a0f1a;
-    }
-    .btn-neutral{
-      border:1px solid rgba(0,0,0,.18);
-      background:rgba(255,255,255,.92);
-      color:#333;
-    }
-    .btn-del{
-      border:1px solid rgba(0,0,0,.25);
-      background:rgba(255,255,255,.92);
-      color:#111;
-    }
+    .btn-ok{ border-color: rgba(31,122,58,.55); background:rgba(233,255,240,.95); color:#155724; }
+    .btn-no{ border-color: rgba(176,32,48,.45); background:rgba(255,231,231,.92); color:#7a0f1a; }
+    .btn-neutral{ border-color: rgba(0,0,0,.18); background:rgba(255,255,255,.92); color:#333; }
+    .btn-del{ border-color: rgba(0,0,0,.25); background:rgba(255,255,255,.92); color:#111; }
 
     input[type="text"]{
       padding:8px 10px;
@@ -154,16 +100,7 @@
       font-weight:800;
       min-width:220px;
     }
-
-    label{
-      font-weight:900;
-      color:#333;
-      user-select:none;
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-    }
-
+    label{ font-weight:900; color:#333; user-select:none; display:inline-flex; align-items:center; gap:8px; }
     .counts{
       font-weight:900;
       color:#7a0f1a;
@@ -172,7 +109,6 @@
       border-radius:999px;
       padding:6px 10px;
     }
-
     #errBox{
       display:none;
       margin:12px 0 0;
@@ -182,8 +118,7 @@
       background: rgba(255, 231, 231, 0.85);
       color:#7a0f1a;
       font-weight:900;
-      position:relative;
-      z-index:5;
+      position:relative; z-index:5;
     }
     #loading{
       display:none;
@@ -194,8 +129,7 @@
       background: rgba(233,255,240,0.95);
       color:#155724;
       font-weight:900;
-      position:relative;
-      z-index:5;
+      position:relative; z-index:5;
     }
 
     table{
@@ -208,12 +142,11 @@
       overflow:hidden;
       box-shadow:0 2px 10px rgba(0,0,0,0.06);
       border:1px solid rgba(0,0,0,0.06);
-      position:relative;
-      z-index:4;
+      position:relative; z-index:4;
     }
     thead th{
       background: linear-gradient(180deg,#f7f7f7,#e3e3e3);
-      border-bottom:2px solid var(--rosso-natale);
+      border-bottom:2px solid var(--rosso);
       text-align:left;
       padding:10px 10px;
       font-weight:900;
@@ -232,6 +165,7 @@
     tbody tr:hover{ background:#fff3f3; }
 
     .mono{ font-variant-numeric: tabular-nums; }
+    .note{ max-width:360px; white-space:pre-wrap; color:#333; opacity:.95; font-weight:800; }
 
     .stato{
       display:inline-block;
@@ -250,106 +184,12 @@
     .stato-APPROVATA{ background:#ffe8c7; border-color:#ffc37a; color:#7a3d00; }
     .stato-RIFIUTATA{ background:#f8d7da; border-color:#f1b0b7; color:#721c24; }
 
-    .note{
-      max-width:360px;
-      white-space:pre-wrap;
-      color:#333;
-      opacity:.95;
-      font-weight:800;
-    }
-
-    /* ===== PIN MODAL ===== */
-    #pinModal{
-      position:fixed;
-      inset:0;
-      z-index:10001;
-      display:none;
-      align-items:center;
-      justify-content:center;
-      background:rgba(0,0,0,.55);
-      padding:16px;
-    }
-    #pinModal .card{
-      width:min(420px,100%);
-      background:rgba(255,250,243,.98);
-      border:2px solid rgba(176,32,48,0.35);
-      border-radius:16px;
-      padding:16px 14px;
-      box-shadow:0 0 24px rgba(0,0,0,.35);
-      color:#222;
-    }
-    #pinModal h2{margin:0 0 8px;color:#7a0f1a;font-size:1.15rem;font-weight:900}
-    #pinModal p{margin:0 0 12px;color:#444;font-size:.9rem;line-height:1.35;font-weight:800}
-    #pinModal input{
-      width:100%;
-      padding:10px 12px;
-      border-radius:12px;
-      border:1px solid #ccc;
-      background:#fff;
-      font-size:1rem;
-      font-weight:900;
-    }
-    #pinModal .row{display:flex;gap:10px;margin-top:12px}
-    #pinModal .row button{
-      flex:1;
-      padding:10px 12px;
-      border-radius:12px;
-      border:1px solid #ccc;
-      background:#fff;
-      cursor:pointer;
-      font-weight:900;
-    }
-    #pinModal .err{
-      margin-top:10px;
-      color:#7a0f1a;
-      background:rgba(255,231,231,.9);
-      border:1px solid rgba(176,32,48,.4);
-      padding:8px 10px;
-      border-radius:12px;
-      display:none;
-      font-weight:900;
-    }
-
-    /* Badge admin mode */
-    #adminBadge{
-      position:fixed;
-      top:10px;
-      right:10px;
-      z-index:10000;
-      display:none;
-      align-items:center;
-      gap:10px;
-      background:rgba(255,250,243,.95);
-      border:2px solid rgba(243,208,138,.75);
-      border-radius:999px;
-      padding:8px 12px;
-      box-shadow:0 2px 14px rgba(0,0,0,.25);
-      color:#7a0f1a;
-      font-weight:900;
-      user-select:none;
-    }
-    #adminBadge button{
-      border-radius:999px;
-      border:1px solid rgba(176,32,48,.45);
-      background:rgba(255,231,231,.9);
-      color:#7a0f1a;
-      padding:6px 10px;
-      cursor:pointer;
-      font-weight:900;
-    }
-
     .footer-note{
       margin-top:10px;
       font-size:0.8rem;
       color:#777;
       text-align:right;
       font-weight:800;
-    }
-
-    @media(max-width: 900px){
-      .panel{ justify-content:flex-start; }
-      input[type="text"]{ min-width: 160px; }
-      .note{ max-width: 220px; }
     }
   </style>
 </head>
@@ -361,26 +201,22 @@
     <span>⭐</span><span>🎄</span><span>✨</span>
   </div>
 
-  <div id="adminBadge">
-    <div>🛡️ ADMIN MODE</div>
-    <button id="btnLogoutTop" type="button">Logout</button>
-  </div>
-
   <div id="wrapper">
     <h1>Admin Prenotazioni – AmarBoard</h1>
-    <div class="subtitle">Gestisci richieste: approva, rifiuta o elimina. Ordinamento: <b>più nuove</b>.</div>
+    <div class="subtitle">
+      Accesso riservato agli admin. Ordinamento: <b>più nuove</b>.
+    </div>
 
-    <!-- Gate: visibile finché non inserisci PIN -->
-    <div id="adminGate" class="panel">
+    <div id="gate" class="panel">
       <div class="left">
-        <span class="counts">Accesso richiesto</span>
+        <span class="counts">Sessione richiesta</span>
+        <span id="gateMsg" style="font-weight:900;color:#333">Apri prima il catalogo e fai login.</span>
       </div>
       <div class="right">
-        <button class="btn btn-ok" id="btnOpenPin" type="button">🔑 Inserisci PIN</button>
+        <a class="btn btn-ok" href="index.html">🔑 Vai al Catalogo</a>
       </div>
     </div>
 
-    <!-- Area admin: visibile dopo PIN -->
     <div id="adminArea" style="display:none;">
       <div class="panel">
         <div class="left">
@@ -390,7 +226,7 @@
           <span class="counts">Tot: <span id="cntTot">0</span> — Visibili: <span id="cntVis">0</span></span>
         </div>
         <div class="right">
-          <button class="btn btn-no" id="btnLogout" type="button" style="display:none;">🚪 Logout</button>
+          <button class="btn btn-no" id="btnLogout" type="button">🚪 Logout</button>
         </div>
       </div>
 
@@ -400,54 +236,30 @@
       <table>
         <thead>
           <tr>
-            <th>Data</th>
-            <th>Titolo</th>
-            <th>Nome</th>
-            <th>Tel</th>
-            <th>Note</th>
-            <th>Stato</th>
-            <th>GestitoDa</th>
-            <th>GestitoIl</th>
-            <th>Azioni</th>
+            <th>Data</th><th>Titolo</th><th>Nome</th><th>Tel</th><th>Note</th>
+            <th>Stato</th><th>GestitoDa</th><th>GestitoIl</th><th>Azioni</th>
           </tr>
         </thead>
         <tbody id="tblBody"></tbody>
       </table>
 
-      <div class="footer-note">AmarBoard – pannello admin locale (PIN) + backend Apps Script</div>
-    </div>
-  </div>
-
-  <!-- PIN MODAL -->
-  <div id="pinModal" aria-hidden="true">
-    <div class="card">
-      <h2>Accesso Admin</h2>
-      <p>Inserisci il PIN per aprire il pannello. La sessione resta attiva per alcune ore.</p>
-      <input id="pinInput" type="password" inputmode="numeric" autocomplete="off" placeholder="PIN">
-      <div class="row">
-        <button class="btn btn-neutral" id="btnPinCancel" type="button">Annulla</button>
-        <button class="btn btn-ok" id="btnPinOk" type="button">Entra</button>
-      </div>
-      <div class="err" id="pinErr">PIN errato.</div>
+      <div class="footer-note">AmarBoard – admin con ruolo (token utente) + Apps Script</div>
     </div>
   </div>
 
   <script>
-    /* =========================
-       CONFIG
-    ========================= */
     const API_URL = "https://script.google.com/macros/s/AKfycbymY3lNuMU13fv2NSXJBBAkGh0iOMzABjzuWnARGjsY_UHr7ZWEUM6wss9f1A2zbi9dcA/exec";
-    const ADMIN_PIN = "011235813";
 
-    const LS_ADMIN = "AB_ADMIN_ADMINPAGE";
-    const ADMIN_TTL_HOURS = 8;
-    const REFRESH_EVERY_MS = 15000; // 15 sec
+    // Deve combaciare con index.html
+    const LS_USER_TOKEN = "AB_USER_TOKEN";
+    const LS_USER_PROFILE = "AB_USER_PROFILE";
 
+    const REFRESH_EVERY_MS = 15000;
+
+    let token = "";
+    let profile = null;
     let lastRows = [];
 
-    /* =========================
-       Helpers
-    ========================= */
     function $(id){ return document.getElementById(id); }
     function renderEmoji(){ try{ twemoji.parse(document.body, { folder:"svg", ext:".svg" }); }catch(e){} }
 
@@ -468,23 +280,6 @@
       return d.toLocaleString("it-IT", { year:"numeric", month:"2-digit", day:"2-digit", hour:"2-digit", minute:"2-digit", second:"2-digit" });
     }
 
-    function isAdmin(){
-      try{
-        const raw = localStorage.getItem(LS_ADMIN);
-        if(!raw) return false;
-        const obj = JSON.parse(raw);
-        return obj && obj.until && Date.now() < obj.until;
-      }catch(e){ return false; }
-    }
-
-    function setAdminSession(){
-      localStorage.setItem(LS_ADMIN, JSON.stringify({ until: Date.now() + ADMIN_TTL_HOURS*3600000 }));
-    }
-
-    function clearAdminSession(){
-      localStorage.removeItem(LS_ADMIN);
-    }
-
     function showErr(msg){
       $("errBox").style.display = "block";
       $("errBox").textContent = msg;
@@ -493,14 +288,11 @@
       $("errBox").style.display = "none";
       $("errBox").textContent = "";
     }
-
     function showLoading(on){
       $("loading").style.display = on ? "block" : "none";
     }
 
-    /* =========================
-       JSONP
-    ========================= */
+    // JSONP helper (GET) – evita CORS
     function jsonp(url){
       return new Promise((resolve,reject)=>{
         const cb = "cb_" + Math.random().toString(36).slice(2);
@@ -521,61 +313,22 @@
       });
     }
 
-    /* =========================
-       UI Gate / Modal
-    ========================= */
-    function refreshAdminUI(){
-      const admin = isAdmin();
-      $("adminGate").style.display = admin ? "none" : "flex";
-      $("adminArea").style.display = admin ? "block" : "none";
-      $("btnLogout").style.display = admin ? "inline-flex" : "none";
-      $("adminBadge").style.display = admin ? "flex" : "none";
-      renderEmoji();
+    async function loadMe(){
+      token = localStorage.getItem(LS_USER_TOKEN) || "";
+      if(!token) return { ok:false, error:"missing_token" };
+
+      const data = await jsonp(API_URL + "?action=me&token=" + encodeURIComponent(token));
+      return data;
     }
 
-    function openPin(){
-      $("pinErr").style.display = "none";
-      $("pinInput").value = "";
-      $("pinModal").style.display = "flex";
-      $("pinModal").setAttribute("aria-hidden","false");
-      setTimeout(()=> $("pinInput").focus(), 50);
-      renderEmoji();
+    function logout(){
+      localStorage.removeItem(LS_USER_TOKEN);
+      localStorage.removeItem(LS_USER_PROFILE);
+      location.reload();
     }
 
-    function closePin(){
-      $("pinModal").style.display = "none";
-      $("pinModal").setAttribute("aria-hidden","true");
-    }
-
-    function submitPin(){
-      const v = $("pinInput").value;
-      if(v === ADMIN_PIN){
-        setAdminSession();
-        closePin();
-        refreshAdminUI();
-        loadAdminList();
-      } else {
-        $("pinErr").style.display = "block";
-      }
-      renderEmoji();
-    }
-
-    function logoutAdmin(){
-      clearAdminSession();
-      refreshAdminUI();
-      lastRows = [];
-      $("tblBody").innerHTML = "";
-      $("cntTot").textContent = "0";
-      $("cntVis").textContent = "0";
-    }
-
-    /* =========================
-       Render table
-    ========================= */
     function renderTable(rows){
-      // ordina per DataISO desc
       rows = [...rows].sort((a,b)=> String(b.DataISO||"").localeCompare(String(a.DataISO||"")));
-
       lastRows = rows;
 
       $("cntTot").textContent = String(rows.length);
@@ -584,15 +337,13 @@
       const q = ($("txtSearch").value || "").trim().toLowerCase();
 
       let filtered = rows;
-
       if(onlyOpen){
         filtered = filtered.filter(r => String(r.Stato||"").toUpperCase() === "NUOVA");
       }
       if(q){
         filtered = filtered.filter(r => {
-          const blob = [
-            r.Titolo, r.Nome, r.Telefono, r.Giocatori, r.Note, r.Stato, r.ID
-          ].map(x=>String(x||"").toLowerCase()).join(" | ");
+          const blob = [r.Titolo,r.Nome,r.Telefono,r.Giocatori,r.Note,r.Stato,r.ID]
+            .map(x=>String(x||"").toLowerCase()).join(" | ");
           return blob.includes(q);
         });
       }
@@ -604,8 +355,8 @@
 
       filtered.forEach(r=>{
         const stato = String(r.Stato||"").toUpperCase();
-
         const tr = document.createElement("tr");
+
         tr.innerHTML = `
           <td class="mono">${esc(fmtDate(r.DataISO))}</td>
           <td>
@@ -632,17 +383,11 @@
       renderEmoji();
     }
 
-    /* =========================
-       API calls
-    ========================= */
     async function loadAdminList(){
-      if(!isAdmin()) return;
-
       clearErr();
       showLoading(true);
-
       try{
-        const data = await jsonp(API_URL + "?action=list_admin&limit=400");
+        const data = await jsonp(API_URL + "?action=list_admin&limit=500&token=" + encodeURIComponent(token));
         if(!data || !data.ok) throw new Error(data?.error || "Errore list_admin");
         renderTable(data.rows || []);
       }catch(e){
@@ -653,12 +398,11 @@
     }
 
     async function setStatus(id, stato){
-      if(!isAdmin()) return;
-
       try{
         const data = await jsonp(
           API_URL + "?action=admin_set_status&id=" + encodeURIComponent(id) +
-          "&stato=" + encodeURIComponent(stato)
+          "&stato=" + encodeURIComponent(stato) +
+          "&token=" + encodeURIComponent(token)
         );
         if(!data || !data.ok) throw new Error(data?.error || "Errore admin_set_status");
         await loadAdminList();
@@ -668,11 +412,12 @@
     }
 
     async function deleteReq(id){
-      if(!isAdmin()) return;
       if(!confirm("Vuoi cancellare DEFINITIVAMENTE questa richiesta?")) return;
-
       try{
-        const data = await jsonp(API_URL + "?action=admin_delete&id=" + encodeURIComponent(id));
+        const data = await jsonp(
+          API_URL + "?action=admin_delete&id=" + encodeURIComponent(id) +
+          "&token=" + encodeURIComponent(token)
+        );
         if(!data || !data.ok) throw new Error(data?.error || "Errore admin_delete");
         await loadAdminList();
       }catch(e){
@@ -680,22 +425,12 @@
       }
     }
 
-    /* =========================
-       Events
-    ========================= */
-    function wireEvents(){
-      $("btnOpenPin").addEventListener("click", openPin);
-      $("btnPinCancel").addEventListener("click", closePin);
-      $("btnPinOk").addEventListener("click", submitPin);
-      $("pinInput").addEventListener("keydown", (e)=>{ if(e.key==="Enter") submitPin(); });
-
-      $("btnLogout").addEventListener("click", logoutAdmin);
-      $("btnLogoutTop").addEventListener("click", logoutAdmin);
-
+    function wire(){
       $("btnRefresh").addEventListener("click", loadAdminList);
+      $("btnLogout").addEventListener("click", logout);
 
-      $("chkOnlyOpen").addEventListener("change", () => renderTable(lastRows));
-      $("txtSearch").addEventListener("input", () => renderTable(lastRows));
+      $("chkOnlyOpen").addEventListener("change", ()=>renderTable(lastRows));
+      $("txtSearch").addEventListener("input", ()=>renderTable(lastRows));
 
       $("tblBody").addEventListener("click", (e)=>{
         const b = e.target.closest("button");
@@ -704,31 +439,47 @@
         const act = b.getAttribute("data-act");
         if(!id || !act) return;
 
-        if(act === "approve") setStatus(id, "APPROVATA");
-        else if(act === "reject") setStatus(id, "RIFIUTATA");
-        else if(act === "new") setStatus(id, "NUOVA");
-        else if(act === "del") deleteReq(id);
+        if(act==="approve") setStatus(id, "APPROVATA");
+        else if(act==="reject") setStatus(id, "RIFIUTATA");
+        else if(act==="new") setStatus(id, "NUOVA");
+        else if(act==="del") deleteReq(id);
       });
     }
 
-    /* =========================
-       Boot
-    ========================= */
-    document.addEventListener("DOMContentLoaded", ()=>{
-      wireEvents();
-      refreshAdminUI();
-
-      // Se già loggato (sessione ancora valida), carica subito
-      if(isAdmin()){
-        loadAdminList();
-      }
-
-      // auto refresh
-      setInterval(()=>{
-        if(isAdmin()) loadAdminList();
-      }, REFRESH_EVERY_MS);
-
+    document.addEventListener("DOMContentLoaded", async ()=>{
+      wire();
       renderEmoji();
+
+      try{
+        const me = await loadMe();
+        if(!me || !me.ok){
+          $("gate").style.display = "flex";
+          $("adminArea").style.display = "none";
+          $("gateMsg").textContent = "Sessione mancante o scaduta. Fai login dal catalogo.";
+          return;
+        }
+
+        profile = me.profile;
+        localStorage.setItem(LS_USER_PROFILE, JSON.stringify(profile));
+
+        if(String(profile.Ruolo||"") !== "admin"){
+          $("gate").style.display = "flex";
+          $("adminArea").style.display = "none";
+          $("gateMsg").textContent = "Accesso negato: il tuo account non è admin.";
+          return;
+        }
+
+        $("gate").style.display = "none";
+        $("adminArea").style.display = "block";
+
+        await loadAdminList();
+        setInterval(loadAdminList, REFRESH_EVERY_MS);
+
+      }catch(e){
+        $("gate").style.display = "flex";
+        $("adminArea").style.display = "none";
+        $("gateMsg").textContent = "Errore: " + (e?.message ?? String(e));
+      }
     });
   </script>
 </body>
