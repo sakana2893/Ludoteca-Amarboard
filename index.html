@@ -4,24 +4,14 @@
   <meta charset="UTF-8" />
   <title>Catalogo Giochi – AmarBoard Natale</title>
 
-  <!-- No cache per l'HTML -->
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <!-- DataTables CSS -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
-
-  <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
-  <!-- DataTables JS -->
   <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
-
-  <!-- PapaParse per leggere CSV -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-
-  <!-- Twemoji (emoji compatibili ovunque) -->
   <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
 
   <style>
@@ -44,7 +34,6 @@
       position: relative;
     }
 
-    /* neve */
     .snowflake {
       position: fixed;
       top: -10px;
@@ -108,6 +97,7 @@
       z-index: 3;
       border: 2px solid rgba(176,32,48,0.35);
     }
+
     #wrapper::before {
       content: "";
       position: absolute;
@@ -117,7 +107,7 @@
       pointer-events: none;
     }
 
-    /* ✅ header con logo centrato */
+    /* header con logo centrato */
     .header-flex {
       display: grid;
       grid-template-columns: 1fr auto 1fr;
@@ -128,19 +118,8 @@
       z-index: 4;
     }
     .header-left { min-height: 1px; }
-    .header-center {
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      gap:12px;
-    }
-    .header-right {
-      display:flex;
-      align-items:center;
-      justify-content:flex-end;
-      gap:10px;
-      flex-wrap: wrap;
-    }
+    .header-center { display:flex; align-items:center; justify-content:center; gap:12px; }
+    .header-right { display:flex; align-items:center; justify-content:flex-end; gap:10px; flex-wrap: wrap; }
 
     .xmas-icon { font-size: 2rem; }
 
@@ -231,6 +210,19 @@
     }
     #adminLink:hover{ text-decoration: underline; }
 
+    #registerLink{
+      font-weight:900;
+      color:var(--verde-natale);
+      text-decoration:none;
+      background:rgba(255,250,243,0.95);
+      border:1px solid rgba(31,122,58,0.25);
+      padding:6px 10px;
+      border-radius:999px;
+      user-select:none;
+      white-space:nowrap;
+    }
+    #registerLink:hover{ text-decoration: underline; }
+
     .stats-bar {
       display: grid;
       grid-template-columns: repeat(3, minmax(0,1fr));
@@ -288,12 +280,7 @@
       position: relative;
       z-index: 4;
     }
-    .filters-left {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 14px;
-      align-items: center;
-    }
+    .filters-left { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
     .filter-block { display: flex; flex-direction: column; gap: 4px; }
     .filter-label { color: #444; font-size: 0.8rem; font-weight: 900; }
     select, input[type="text"] {
@@ -331,6 +318,21 @@
       z-index: 4;
     }
 
+    #infoBox{
+      display:none;
+      margin: 10px 0 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(31,122,58,0.25);
+      background: rgba(233,255,240,0.95);
+      color: #155724;
+      font-size: 0.85rem;
+      line-height: 1.35;
+      font-weight: 900;
+      position: relative;
+      z-index: 4;
+    }
+
     #errorBox {
       display: none;
       margin: 10px 0 12px;
@@ -346,7 +348,6 @@
       z-index: 4;
     }
 
-    /* DataTables */
     #tblCatalogo_wrapper { margin-top: 6px; position: relative; z-index: 4; }
     table.dataTable thead th {
       background: linear-gradient(180deg,#f7f7f7,#e3e3e3);
@@ -389,7 +390,7 @@
       flex-wrap: wrap;
     }
 
-    /* ===== MODALI ===== */
+    /* MODALI */
     .modal-backdrop{
       position: fixed;
       inset: 0;
@@ -457,10 +458,10 @@
     .msg-ok{ border-color: rgba(31,122,58,.25); background: rgba(233,255,240,.95); color:#155724; }
     .msg-no{ border-color: rgba(176,32,48,.25); background: rgba(255,231,231,.92); color:#7a0f1a; }
 
-    /* twemoji sizing */
+    /* twemoji */
     img.emoji{ height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.1em; }
 
-    /* ===== COUNTDOWN + SPOILER ===== */
+    /* COUNTDOWN + BYPASS */
     #countdownBanner{
       position: fixed;
       inset: 70px 16px auto 16px;
@@ -487,8 +488,6 @@
       font-size: 1.4rem;
       color: #b02030;
     }
-
-    /* barra bypass sotto al banner */
     #adminBypassBar{
       position: fixed;
       inset: 132px 16px auto 16px;
@@ -499,7 +498,6 @@
       text-align:center;
       user-select:none;
     }
-
     .spoiler-hidden #wrapper{
       filter: blur(10px);
       pointer-events: none;
@@ -536,13 +534,11 @@
 
 <body>
 
-<!-- Countdown banner -->
 <div id="countdownBanner" style="display:none;">
   🎁 La pagina si sblocca tra <span id="countdownTime">--:--:--</span>
   <small>Fino a quell’ora il catalogo resta “coperto”.</small>
 </div>
 
-<!-- PIN bypass -->
 <div id="adminBypassBar">
   <button id="btnAdminBypass" class="btn btn-neutral" type="button">🔓 Bypass (PIN)</button>
   <span id="adminBypassBadge" class="badge badge-booked" style="display:none;">🛡️ Admin ON</span>
@@ -554,7 +550,6 @@
   <span>⭐</span><span>🎄</span><span>✨</span>
 </div>
 
-<!-- Neve -->
 <div class="snowflake">❄</div>
 <div class="snowflake">✻</div>
 <div class="snowflake">❅</div>
@@ -575,6 +570,7 @@
 
     <div class="header-right">
       <a id="adminLink" href="admin.html">🛡️ Area Admin</a>
+      <a id="registerLink" href="register.html">🧾 Registrati</a>
 
       <span class="pill" id="userPill" style="display:none;">
         👤 <span id="userName">–</span>
@@ -587,7 +583,6 @@
   </div>
 
   <h1>Catalogo Giochi – AmarBoard</h1>
-
   <div class="subtitle">
     <span>Speciale Natale:</span> trova il gioco giusto (o fatti suggerire dai nostri Volontari) da intavolare con gli amici sui nostri tavoli.
   </div>
@@ -629,6 +624,7 @@
     <button id="btnRefresh" type="button">🔄 Aggiorna dati</button>
   </div>
 
+  <div id="infoBox"></div>
   <div id="errorBox"></div>
   <div id="lastUpdate">Ultimo aggiornamento: –</div>
 
@@ -654,7 +650,7 @@
   </div>
 </div>
 
-<!-- ===== MODAL LOGIN ===== -->
+<!-- LOGIN -->
 <div class="modal-backdrop" id="loginBackdrop">
   <div class="modal">
     <h2>🔑 Accesso Utente</h2>
@@ -680,7 +676,7 @@
   </div>
 </div>
 
-<!-- ===== MODAL RICHIEDI ===== -->
+<!-- RICHIEDI -->
 <div class="modal-backdrop" id="reqBackdrop">
   <div class="modal">
     <h2>📝 Richiedi Prestito</h2>
@@ -723,7 +719,7 @@
 
 <script>
 /* =========================
-   CONFIG
+   CONFIG (METTI IL TUO LINK)
 ========================= */
 const API_URL = "https://script.google.com/macros/s/AKfycbymY3lNuMU13fv2NSXJBBAkGh0iOMzABjzuWnARGjsY_UHr7ZWEUM6wss9f1A2zbi9dcA/exec";
 
@@ -733,13 +729,13 @@ const STATS_BASE_URL = "stats_ludoteca.csv";
 const LS_USER_TOKEN   = "AB_USER_TOKEN";
 const LS_USER_PROFILE = "AB_USER_PROFILE";
 
-/* ✅ BYPASS PIN (come prima) */
+/* PIN bypass countdown */
 const LS_ADMIN_BYPASS = "AB_ADMIN_BYPASS";
-const ADMIN_PIN = "1234"; // <-- CAMBIA QUI col tuo PIN vero
+const ADMIN_PIN = "1234"; // <- cambia se vuoi
 
 const AUTO_REFRESH_MS = 30000;
 
-/* countdown: default "domani alle 09:00" */
+/* countdown default: domani alle 09:00 */
 const REVEAL_AT = (function(){
   const now = new Date();
   return new Date(now.getFullYear(), now.getMonth(), now.getDate()+1, 9, 0, 0, 0).getTime();
@@ -752,9 +748,10 @@ let table = null;
 let currentUser = null;
 let requestedMap = {};
 let countdownTimer = null;
+let appConfig = { requireLoginForRequest: false }; // letto da server
 
 /* =========================
-   Helpers base
+   Helpers
 ========================= */
 function E(id){ return document.getElementById(id); }
 
@@ -762,6 +759,16 @@ function renderEmoji(){
   try { twemoji.parse(document.body, { folder:"svg", ext:".svg" }); } catch(e){}
 }
 
+function showInfo(msg){
+  const box = E("infoBox");
+  box.style.display = "block";
+  box.textContent = msg;
+}
+function clearInfo(){
+  const box = E("infoBox");
+  box.style.display = "none";
+  box.textContent = "";
+}
 function showError(msg){
   const box = E("errorBox");
   box.style.display = "block";
@@ -772,7 +779,6 @@ function clearError(){
   box.style.display = "none";
   box.textContent = "";
 }
-
 function aggiornaTimestamp(){
   const now = new Date();
   E("lastUpdate").textContent = "Ultimo aggiornamento: " +
@@ -793,34 +799,8 @@ function isAdminUser(){ return currentUser && String(currentUser.Ruolo||"") === 
 function isBypassEnabled(){ return localStorage.getItem(LS_ADMIN_BYPASS) === "1"; }
 function setBypassEnabled(on){ localStorage.setItem(LS_ADMIN_BYPASS, on ? "1" : "0"); }
 
-function refreshUserUI(){
-  const pill = E("userPill");
-  const btnLogin = E("btnLogin");
-  const btnLogout = E("btnLogout");
-  const adminLink = E("adminLink");
-  const role = E("userRole");
-
-  if(currentUser){
-    E("userName").textContent = currentUser.Nome || currentUser.Username || "Utente";
-    pill.style.display = "inline-flex";
-    btnLogin.style.display = "none";
-    btnLogout.style.display = "inline-flex";
-
-    const a = isAdminUser();
-    adminLink.style.display = a ? "inline-flex" : "none";
-    role.style.display = a ? "inline" : "none";
-  } else {
-    pill.style.display = "none";
-    btnLogin.style.display = "inline-flex";
-    btnLogout.style.display = "none";
-    adminLink.style.display = "none";
-    role.style.display = "none";
-  }
-  renderEmoji();
-}
-
 /* =========================
-   Countdown + bypass PIN
+   COUNTDOWN + BYPASS
 ========================= */
 function startCountdownShield(){
   const banner = E("countdownBanner");
@@ -835,15 +815,13 @@ function startCountdownShield(){
   }
 
   function tick(){
-    // ✅ bypass: admin loggato O PIN attivo
+    bar.style.display = "block";
+
     if (isAdminUser() || isBypassEnabled()){
       unlock();
-      bar.style.display = "block";
       badge.style.display = "inline-block";
       return;
     }
-
-    bar.style.display = "block";
     badge.style.display = "none";
 
     const diff = REVEAL_AT - Date.now();
@@ -868,7 +846,7 @@ function startCountdownShield(){
 }
 
 /* =========================
-   JSONP helper (GET)
+   JSONP helper
 ========================= */
 function jsonp(url){
   return new Promise((resolve,reject)=>{
@@ -902,6 +880,18 @@ async function fetchTextNoStore(path){
 function parseCSVText(csvText){
   const parsed = Papa.parse(csvText, { header:true, skipEmptyLines:true });
   return parsed.data || [];
+}
+
+/* =========================
+   Config dal server (B)
+========================= */
+async function caricaConfig(){
+  try{
+    const cfg = await jsonp(API_URL + "?action=get_config");
+    if(cfg && cfg.ok && cfg.config){
+      appConfig = cfg.config;
+    }
+  }catch(e){}
 }
 
 /* =========================
@@ -959,7 +949,6 @@ async function caricaStats(){
     addTop("TopEvento1Titolo","TopEvento1Val");
     addTop("TopEvento2Titolo","TopEvento2Val");
     addTop("TopEvento3Titolo","TopEvento3Val");
-
   }catch(e){}
 }
 
@@ -979,6 +968,23 @@ function statoBadge(stato){
   if (stato === "disponibile") return '<span class="badge badge-disponibile">🎄 Disponibile</span>';
   if (stato === "in prestito")  return '<span class="badge badge-prestato">🎁 In prestito</span>';
   return (stato || "");
+}
+
+/* =========================
+   Richieste solo utenti registrati (B)
+========================= */
+function canRequest(){
+  if(!appConfig.requireLoginForRequest) return true;
+  return !!(localStorage.getItem(LS_USER_TOKEN));
+}
+
+function requestButtonHtml(title, gioc){
+  if(!canRequest()){
+    return `<button class="btn btn-neutral" type="button" disabled title="Devi essere registrato e fare accesso per richiedere.">🔒 Accedi</button>`;
+  }
+  return `<button class="btn btn-ok btnReq" type="button"
+            data-titolo="${escapeAttr(title)}"
+            data-giocatori="${escapeAttr(gioc)}">📝 Richiedi</button>`;
 }
 
 async function caricaCatalogo(){
@@ -1002,7 +1008,6 @@ async function caricaCatalogo(){
     });
   });
 
-  // micro-delay: evita "Cannot read properties of null (reading 'DataTable')"
   await new Promise(r => setTimeout(r, 0));
 
   if(!table){
@@ -1026,14 +1031,7 @@ async function caricaCatalogo(){
               return `<a class="bgg-link" href="${safe}" target="_blank" rel="noopener noreferrer">Scheda</a>`;
             }
           },
-          { data:null, orderable:false, render:(d,t,row)=>{
-              const title = String(row.Titolo||"");
-              const gioc  = String(row.Giocatori||"");
-              return `<button class="btn btn-ok btnReq" type="button"
-                        data-titolo="${escapeAttr(title)}"
-                        data-giocatori="${escapeAttr(gioc)}">📝 Richiedi</button>`;
-            }
-          }
+          { data:null, orderable:false, render:(d,t,row)=> requestButtonHtml(String(row.Titolo||""), String(row.Giocatori||"")) }
         ],
         paging:false,
         info:false,
@@ -1048,7 +1046,6 @@ async function caricaCatalogo(){
         drawCallback:function(){ renderEmoji(); }
       });
 
-      // filtri
       E("filtroStato").addEventListener("change", function(){
         table.column(6).search(this.value, false, false).draw();
       });
@@ -1056,7 +1053,6 @@ async function caricaCatalogo(){
         table.column(1).search(this.value, false, false).draw();
       });
 
-      // delegation per Richiedi
       document.addEventListener("click", (e)=>{
         const btn = e.target.closest(".btnReq");
         if(!btn) return;
@@ -1072,7 +1068,6 @@ async function caricaCatalogo(){
       table.clear();
       table.rows.add(data).draw(false);
     }catch(e){
-      // se si rompe, riparto
       try{ table.destroy(); }catch(_){}
       table = null;
       await caricaCatalogo();
@@ -1085,7 +1080,12 @@ async function caricaCatalogo(){
 ========================= */
 async function aggiornaTutto(){
   clearError();
+  clearInfo();
   try{
+    await caricaConfig();
+    if(appConfig.requireLoginForRequest && !localStorage.getItem(LS_USER_TOKEN)){
+      showInfo("🔒 Le richieste sono abilitate solo per utenti registrati: fai accesso o registrati.");
+    }
     await caricaRequestedMap();
     await Promise.all([caricaStats(), caricaCatalogo()]);
     aggiornaTimestamp();
@@ -1096,7 +1096,7 @@ async function aggiornaTutto(){
 }
 
 /* =========================
-   Modali
+   MODALI
 ========================= */
 function openLogin(){
   E("loginMsg").style.display = "none";
@@ -1110,13 +1110,16 @@ function openLogin(){
 function closeLogin(){ E("loginBackdrop").style.display = "none"; }
 
 function openRequestModal(titolo, giocatori){
+  if(!canRequest()){
+    showInfo("🔒 Per richiedere devi essere registrato e fare accesso.");
+    return;
+  }
+
   E("reqTitolo").value = titolo || "";
   E("reqGiocatori").value = giocatori || "";
 
   let prof = null;
-  try{
-    prof = JSON.parse(localStorage.getItem(LS_USER_PROFILE) || "null");
-  }catch(e){}
+  try{ prof = JSON.parse(localStorage.getItem(LS_USER_PROFILE) || "null"); }catch(e){}
 
   E("reqNome").value = (prof && prof.Nome) ? prof.Nome : "";
   E("reqTelefono").value = (prof && prof.Telefono) ? prof.Telefono : "";
@@ -1203,7 +1206,7 @@ function sha256Hex(ascii){
 }
 
 /* =========================
-   Login challenge flow (JSONP)
+   Login challenge flow
 ========================= */
 async function doLogin(){
   const u = String(E("loginUser").value || "").trim().toLowerCase();
@@ -1240,13 +1243,8 @@ async function doLogin(){
     refreshUserUI();
     closeLogin();
 
-    // se admin, bypass countdown subito
     startCountdownShield();
-
-    if(isAdminUser()){
-      await aggiornaTutto();
-    }
-
+    await aggiornaTutto();
   }catch(e){
     const m = E("loginMsg");
     m.style.display = "block";
@@ -1274,16 +1272,39 @@ async function restoreSession(){
   refreshUserUI();
 }
 
+function refreshUserUI(){
+  const pill = E("userPill");
+  const btnLogin = E("btnLogin");
+  const btnLogout = E("btnLogout");
+  const adminLink = E("adminLink");
+  const role = E("userRole");
+
+  if(currentUser){
+    E("userName").textContent = currentUser.Nome || currentUser.Username || "Utente";
+    pill.style.display = "inline-flex";
+    btnLogin.style.display = "none";
+    btnLogout.style.display = "inline-flex";
+
+    const a = isAdminUser();
+    adminLink.style.display = a ? "inline-flex" : "none";
+    role.style.display = a ? "inline" : "none";
+  } else {
+    pill.style.display = "none";
+    btnLogin.style.display = "inline-flex";
+    btnLogout.style.display = "none";
+    adminLink.style.display = "none";
+    role.style.display = "none";
+  }
+  renderEmoji();
+}
+
 function doLogout(){
   localStorage.removeItem(LS_USER_TOKEN);
   localStorage.removeItem(LS_USER_PROFILE);
   currentUser = null;
-
-  // (opzionale) se vuoi che il PIN bypass resti anche dopo logout, commenta la riga sotto
-  // setBypassEnabled(false);
-
   refreshUserUI();
   startCountdownShield();
+  aggiornaTutto();
 }
 
 /* =========================
@@ -1308,10 +1329,16 @@ async function sendRequest(){
     return;
   }
 
+  const token = localStorage.getItem(LS_USER_TOKEN) || "";
+  if(appConfig.requireLoginForRequest && !token){
+    msg.className = "msg msg-no";
+    msg.style.display = "block";
+    msg.textContent = "🔒 Richieste abilitate solo per utenti registrati: fai accesso.";
+    return;
+  }
+
   E("btnReqSend").disabled = true;
   E("btnReqSend").style.opacity = "0.7";
-
-  const token = localStorage.getItem(LS_USER_TOKEN) || "";
 
   const body = new URLSearchParams();
   body.set("action", "submit");
@@ -1325,7 +1352,7 @@ async function sendRequest(){
   try{
     let sent = false;
 
-    // tentativo standard
+    // standard
     try{
       const res = await fetch(API_URL, {
         method: "POST",
@@ -1335,7 +1362,7 @@ async function sendRequest(){
       const j = await res.json();
       if(j && j.ok) sent = true;
     }catch(e1){
-      // fallback no-cors (invio senza poter leggere response)
+      // fallback no-cors (invio senza leggere response)
       try{
         await fetch(API_URL, {
           method: "POST",
@@ -1374,7 +1401,6 @@ async function sendRequest(){
    Boot
 ========================= */
 document.addEventListener("DOMContentLoaded", async function(){
-  // login modal
   E("btnLogin").addEventListener("click", openLogin);
   E("btnLogout").addEventListener("click", doLogout);
   E("btnLoginCancel").addEventListener("click", closeLogin);
@@ -1382,18 +1408,15 @@ document.addEventListener("DOMContentLoaded", async function(){
   E("loginBackdrop").addEventListener("click", (e)=>{ if(e.target === E("loginBackdrop")) closeLogin(); });
   E("loginPass").addEventListener("keydown", (e)=>{ if(e.key==="Enter") doLogin(); });
 
-  // richiesta modal
   E("btnReqCancel").addEventListener("click", closeRequestModal);
   E("btnReqSend").addEventListener("click", sendRequest);
   E("reqBackdrop").addEventListener("click", (e)=>{ if(e.target === E("reqBackdrop")) closeRequestModal(); });
 
-  // refresh
   E("btnRefresh").addEventListener("click", async ()=>{
     if(!isAdminUser() && !isBypassEnabled() && Date.now() < REVEAL_AT) return;
     await aggiornaTutto();
   });
 
-  // bypass PIN
   E("btnAdminBypass").addEventListener("click", async ()=>{
     const pin = prompt("Inserisci PIN admin:");
     if(pin === null) return;
@@ -1409,13 +1432,9 @@ document.addEventListener("DOMContentLoaded", async function(){
     }
   });
 
-  // session
   await restoreSession();
-
-  // countdown
   startCountdownShield();
 
-  // se bloccato e non bypass/admin: stop
   if(!isAdminUser() && !isBypassEnabled() && Date.now() < REVEAL_AT){
     renderEmoji();
     return;
