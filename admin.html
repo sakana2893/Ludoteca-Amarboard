@@ -2,81 +2,81 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8" />
-  <title>AmarBoard – Admin Prenotazioni</title>
+  <title>Admin Prenotazioni – AmarBoard</title>
 
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
   <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
 
   <style>
-    :root{ --rosso:#b02030; --verde:#1f7a3a; --oro:#f3d08a; }
+    :root{
+      --rosso:#b02030;
+      --verde:#1f7a3a;
+      --oro:#f3d08a;
+    }
     *{ box-sizing:border-box; }
     body{
-      font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
-      margin:0; padding:0;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      margin:0;
       background: radial-gradient(circle at top, #ffe9e9, #fdf5e6 45%, #e4f5ea 100%);
       min-height:100vh;
-      overflow-x:hidden;
+      padding: 22px 14px 30px;
+      color:#222;
     }
-    .garland{
-      position:fixed; top:0; left:0; width:100%; height:60px;
-      background: radial-gradient(circle at center, rgba(31,122,58,0.7), rgba(0,0,0,0.3));
-      display:flex; align-items:center; justify-content:center; gap:10px;
-      color:#ffe; font-size:1.4rem; z-index:2;
-      box-shadow:0 2px 8px rgba(0,0,0,0.3);
-      user-select:none;
-    }
-    .garland span{ animation: blink 2.2s linear infinite; }
-    .garland span:nth-child(odd){ animation-delay:0.7s; }
-    @keyframes blink{ 0%,100%{opacity:.4} 50%{opacity:1} }
-
-    #wrapper{
+    .wrap{
       max-width:1200px;
-      margin:90px auto 40px;
-      padding:24px 26px 30px;
+      margin:0 auto;
       background: rgba(255,250,243,0.96);
       border-radius:20px;
-      box-shadow: 0 0 0 3px rgba(255,255,255,0.8), 0 0 18px rgba(176,32,48,0.4);
-      border:2px solid rgba(176,32,48,0.35);
-      position:relative; z-index:3;
+      border: 2px solid rgba(176,32,48,0.25);
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.8), 0 0 18px rgba(176,32,48,0.2);
+      padding: 18px 18px 16px;
     }
-    #wrapper::before{
-      content:""; position:absolute; inset:8px;
-      border-radius:16px;
-      border:2px dashed rgba(243,208,138,0.7);
-      pointer-events:none;
+    .topbar{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+    .left{
+      display:flex;
+      align-items:center;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .logo{
+      height:56px;
+      border-radius:999px;
+      background:#fff;
+      box-shadow:0 0 6px rgba(0,0,0,0.15);
     }
     h1{
-      margin:4px 0 6px;
-      text-align:center;
-      font-size:1.8rem;
+      margin:0;
       color:var(--rosso);
-      text-shadow: 0 1px 0 #fff, 0 0 6px rgba(176,32,48,0.35);
+      font-size:1.35rem;
       font-weight:900;
     }
-    .subtitle{
-      text-align:center;
-      font-size:0.9rem;
-      color:#555;
-      margin-bottom:14px;
-      font-weight:800;
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      font-weight:900;
+      background:rgba(255,250,243,0.95);
+      border:1px solid rgba(243,208,138,0.85);
+      color:#7a0f1a;
+      white-space:nowrap;
     }
-
-    .panel{
-      display:flex; flex-wrap:wrap; gap:12px;
-      align-items:center; justify-content:space-between;
-      padding:10px 12px;
-      border-radius:12px;
-      background: linear-gradient(90deg, #fffdf7, #f7fff7);
-      border: 1px solid rgba(31,122,58,0.18);
-      position:relative; z-index:4;
-    }
-    .left, .right{ display:flex; flex-wrap:wrap; gap:10px; align-items:center; }
-
     .btn{
-      padding:8px 12px;
+      padding:7px 10px;
       border-radius:12px;
       border:1px solid #ccc;
       background:#fff;
@@ -86,401 +86,303 @@
       align-items:center;
       gap:8px;
       user-select:none;
+      text-decoration:none;
+      color:#222;
     }
-    .btn-ok{ border-color: rgba(31,122,58,.55); background:rgba(233,255,240,.95); color:#155724; }
-    .btn-no{ border-color: rgba(176,32,48,.45); background:rgba(255,231,231,.92); color:#7a0f1a; }
-    .btn-neutral{ border-color: rgba(0,0,0,.18); background:rgba(255,255,255,.92); color:#333; }
-    .btn-del{ border-color: rgba(0,0,0,.25); background:rgba(255,255,255,.92); color:#111; }
+    .btn:hover{ filter:brightness(.98); }
+    .btn-ok{ border-color: rgba(31,122,58,.55); background: rgba(233,255,240,.95); color:#155724; }
+    .btn-no{ border-color: rgba(176,32,48,.45); background: rgba(255,231,231,.92); color:#7a0f1a; }
+    .btn-neutral{ border-color: rgba(0,0,0,.18); background: rgba(255,255,255,.92); color:#333; }
 
-    input[type="text"]{
-      padding:8px 10px;
-      border-radius:12px;
-      border:1px solid #ccc;
-      background:#fff;
-      font-weight:800;
-      min-width:220px;
-    }
-    label{ font-weight:900; color:#333; user-select:none; display:inline-flex; align-items:center; gap:8px; }
-    .counts{
-      font-weight:900;
-      color:#7a0f1a;
-      background:rgba(255,250,243,0.95);
-      border:1px solid rgba(243,208,138,0.9);
-      border-radius:999px;
-      padding:6px 10px;
-    }
-    #errBox{
-      display:none;
-      margin:12px 0 0;
+    .bar{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      margin: 10px 0 12px;
       padding:10px 12px;
       border-radius:12px;
-      border:1px solid rgba(176,32,48,0.35);
-      background: rgba(255, 231, 231, 0.85);
-      color:#7a0f1a;
+      border:1px solid rgba(31,122,58,0.18);
+      background: linear-gradient(90deg, #fffdf7, #f7fff7);
+      align-items:center;
+    }
+    .toggle{
+      display:flex;
+      align-items:center;
+      gap:10px;
       font-weight:900;
-      position:relative; z-index:5;
-    }
-    #loading{
-      display:none;
-      margin:12px 0 0;
-      padding:10px 12px;
-      border-radius:12px;
-      border:1px solid rgba(31,122,58,0.25);
-      background: rgba(233,255,240,0.95);
-      color:#155724;
-      font-weight:900;
-      position:relative; z-index:5;
-    }
-
-    table{
-      width:100%;
-      border-collapse:separate;
-      border-spacing:0;
-      margin-top:12px;
-      background:#fff;
-      border-radius:14px;
-      overflow:hidden;
-      box-shadow:0 2px 10px rgba(0,0,0,0.06);
-      border:1px solid rgba(0,0,0,0.06);
-      position:relative; z-index:4;
-    }
-    thead th{
-      background: linear-gradient(180deg,#f7f7f7,#e3e3e3);
-      border-bottom:2px solid var(--rosso);
-      text-align:left;
-      padding:10px 10px;
-      font-weight:900;
-      color:#222;
-      font-size:0.9rem;
-    }
-    tbody td{
-      padding:10px 10px;
-      border-bottom:1px solid rgba(0,0,0,0.06);
-      vertical-align:top;
-      font-weight:800;
-      color:#222;
-      font-size:0.9rem;
-    }
-    tbody tr:nth-child(even){ background:#fffaf5; }
-    tbody tr:hover{ background:#fff3f3; }
-
-    .mono{ font-variant-numeric: tabular-nums; }
-    .note{ max-width:360px; white-space:pre-wrap; color:#333; opacity:.95; font-weight:800; }
-
-    .stato{
-      display:inline-block;
-      padding:6px 10px;
-      border-radius:999px;
-      font-weight:900;
-      font-size:.78rem;
-      border:1px solid rgba(0,0,0,0.08);
-      background:#f3f3f3;
       color:#333;
-      letter-spacing:.03em;
-      text-transform:uppercase;
+    }
+    .toggle input{ transform:scale(1.2); }
+
+    #msg{
+      display:none;
+      margin: 10px 0 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(0,0,0,.1);
+      background: rgba(255,255,255,.85);
+      font-weight:900;
+    }
+    .ok{ border-color: rgba(31,122,58,.25); background: rgba(233,255,240,.95); color:#155724; }
+    .no{ border-color: rgba(176,32,48,.25); background: rgba(255,231,231,.92); color:#7a0f1a; }
+
+    table.dataTable thead th{
+      background: linear-gradient(180deg,#f7f7f7,#e3e3e3);
+      border-bottom: 2px solid var(--rosso);
+      font-weight:900;
+    }
+
+    .badge{
+      padding:5px 10px;
+      border-radius:999px;
+      font-size:.75rem;
+      font-weight:900;
+      display:inline-block;
       white-space:nowrap;
     }
-    .stato-NUOVA{ background:#efe1ff; border-color:#c9a7ff; color:#4a1a7a; }
-    .stato-APPROVATA{ background:#ffe8c7; border-color:#ffc37a; color:#7a3d00; }
-    .stato-RIFIUTATA{ background:#f8d7da; border-color:#f1b0b7; color:#721c24; }
+    .b-new{ background:#efe1ff; border:1px solid #c9a7ff; color:#4a1a7a; }
+    .b-ok{ background:#ffe8c7; border:1px solid #ffc37a; color:#7a3d00; }
+    .b-rej{ background:#f8d7da; border:1px solid #f1b0b7; color:#721c24; }
+    .b-del{ background:#eee; border:1px solid #ddd; color:#444; }
 
-    .footer-note{
-      margin-top:10px;
-      font-size:0.8rem;
-      color:#777;
-      text-align:right;
-      font-weight:800;
+    img.emoji{ height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.1em; }
+
+    @media (max-width: 700px){
+      .wrap{ padding:14px; }
+      .logo{ height:48px; }
+      h1{ font-size:1.2rem; }
     }
   </style>
 </head>
 
 <body>
-  <div class="garland">
-    <span>✨</span><span>🎄</span><span>⭐</span><span>🕯️</span>
-    <span>🛡️ AmarBoard Admin – Prenotazioni 🛡️</span>
-    <span>⭐</span><span>🎄</span><span>✨</span>
-  </div>
-
-  <div id="wrapper">
-    <h1>Admin Prenotazioni – AmarBoard</h1>
-    <div class="subtitle">
-      Accesso riservato agli admin. Ordinamento: <b>più nuove</b>.
-    </div>
-
-    <div id="gate" class="panel">
+  <div class="wrap">
+    <div class="topbar">
       <div class="left">
-        <span class="counts">Sessione richiesta</span>
-        <span id="gateMsg" style="font-weight:900;color:#333">Apri prima il catalogo e fai login.</span>
-      </div>
-      <div class="right">
-        <a class="btn btn-ok" href="index.html">🔑 Vai al Catalogo</a>
-      </div>
-    </div>
-
-    <div id="adminArea" style="display:none;">
-      <div class="panel">
-        <div class="left">
-          <button class="btn btn-neutral" id="btnRefresh" type="button">🔄 Aggiorna</button>
-          <label><input id="chkOnlyOpen" type="checkbox"> Solo NUOVA</label>
-          <input id="txtSearch" type="text" placeholder="Cerca titolo/nome/tel/note...">
-          <span class="counts">Tot: <span id="cntTot">0</span> — Visibili: <span id="cntVis">0</span></span>
-        </div>
-        <div class="right">
-          <button class="btn btn-no" id="btnLogout" type="button">🚪 Logout</button>
+        <img class="logo" src="logo_amarboard.png" alt="AmarBoard">
+        <div>
+          <h1>Admin Prenotazioni</h1>
+          <div style="font-weight:900; color:#555; font-size:.9rem;">Gestione richieste + storico</div>
         </div>
       </div>
 
-      <div id="errBox"></div>
-      <div id="loading">Caricamento…</div>
-
-      <table>
-        <thead>
-          <tr>
-            <th>Data</th><th>Titolo</th><th>Nome</th><th>Tel</th><th>Note</th>
-            <th>Stato</th><th>GestitoDa</th><th>GestitoIl</th><th>Azioni</th>
-          </tr>
-        </thead>
-        <tbody id="tblBody"></tbody>
-      </table>
-
-      <div class="footer-note">AmarBoard – admin con ruolo (token utente) + Apps Script</div>
+      <div class="right" style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+        <a class="btn btn-neutral" href="index.html">⬅ Torna al catalogo</a>
+        <span class="pill" id="who">👤 –</span>
+        <button class="btn btn-no" id="btnLogout" type="button">🚪 Logout</button>
+      </div>
     </div>
+
+    <div class="bar">
+      <div class="toggle">
+        <input id="chkRequireLogin" type="checkbox">
+        <label for="chkRequireLogin">🔒 Abilita richieste <u>solo</u> per utenti registrati</label>
+      </div>
+
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button class="btn btn-neutral" id="btnRefresh" type="button">🔄 Aggiorna</button>
+      </div>
+    </div>
+
+    <div id="msg"></div>
+
+    <table id="tbl" class="display" style="width:100%">
+      <thead>
+        <tr>
+          <th>Data</th>
+          <th>ID</th>
+          <th>Titolo</th>
+          <th>Giocatori</th>
+          <th>Nome</th>
+          <th>Telefono</th>
+          <th>Note</th>
+          <th>Stato</th>
+          <th>Azioni</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
   </div>
 
-  <script>
-    const API_URL = "https://script.google.com/macros/s/AKfycbymY3lNuMU13fv2NSXJBBAkGh0iOMzABjzuWnARGjsY_UHr7ZWEUM6wss9f1A2zbi9dcA/exec";
+<script>
+/* CONFIG */
+const API_URL = "https://script.google.com/macros/s/AKfycbymY3lNuMU13fv2NSXJBBAkGh0iOMzABjzuWnARGjsY_UHr7ZWEUM6wss9f1A2zbi9dcA/exec";
+const LS_USER_TOKEN   = "AB_USER_TOKEN";
+const LS_USER_PROFILE = "AB_USER_PROFILE";
 
-    // Deve combaciare con index.html
-    const LS_USER_TOKEN = "AB_USER_TOKEN";
-    const LS_USER_PROFILE = "AB_USER_PROFILE";
+let table = null;
+let me = null;
 
-    const REFRESH_EVERY_MS = 15000;
+/* UI */
+function showMsg(text, ok=true){
+  const el = document.getElementById("msg");
+  el.className = ok ? "ok" : "no";
+  el.style.display = "block";
+  el.textContent = text;
+  try{ twemoji.parse(document.body, { folder:"svg", ext:".svg" }); }catch(e){}
+}
+function clearMsg(){
+  const el = document.getElementById("msg");
+  el.style.display = "none";
+  el.textContent = "";
+}
+function jsonp(url){
+  return new Promise((resolve,reject)=>{
+    const cb = "cb_" + Math.random().toString(36).slice(2);
+    const s = document.createElement("script");
+    const t = setTimeout(()=>{ cleanup(); reject(new Error("JSONP timeout")); }, 10000);
 
-    let token = "";
-    let profile = null;
-    let lastRows = [];
-
-    function $(id){ return document.getElementById(id); }
-    function renderEmoji(){ try{ twemoji.parse(document.body, { folder:"svg", ext:".svg" }); }catch(e){} }
-
-    function esc(s){
-      return String(s ?? "")
-        .replace(/&/g,"&amp;")
-        .replace(/</g,"&lt;")
-        .replace(/>/g,"&gt;")
-        .replace(/"/g,"&quot;")
-        .replace(/'/g,"&#39;");
+    function cleanup(){
+      clearTimeout(t);
+      try{ delete window[cb]; }catch(e){ window[cb] = undefined; }
+      if(s && s.parentNode) s.parentNode.removeChild(s);
     }
 
-    function fmtDate(iso){
-      const s = String(iso||"").trim();
-      if(!s) return "";
-      const d = new Date(s);
-      if(isNaN(d.getTime())) return s;
-      return d.toLocaleString("it-IT", { year:"numeric", month:"2-digit", day:"2-digit", hour:"2-digit", minute:"2-digit", second:"2-digit" });
-    }
+    window[cb] = (data)=>{ cleanup(); resolve(data); };
+    s.onerror = ()=>{ cleanup(); reject(new Error("JSONP load error")); };
+    s.src = url + (url.includes("?") ? "&" : "?") + "callback=" + cb + "&v=" + Date.now();
+    document.body.appendChild(s);
+  });
+}
+function escapeHtml(s){
+  return String(s ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#39;");
+}
+function badgeStato(st){
+  const s = String(st||"").toLowerCase().trim();
+  if(s === "nuova" || s === "richiesta") return '<span class="badge b-new">🟣 Nuova</span>';
+  if(s === "approvata" || s === "prenotata") return '<span class="badge b-ok">📌 Approvata</span>';
+  if(s === "rifiutata") return '<span class="badge b-rej">⛔ Rifiutata</span>';
+  if(s === "eliminata" || s === "cancellata") return '<span class="badge b-del">🗑️ Eliminata</span>';
+  return escapeHtml(st||"");
+}
 
-    function showErr(msg){
-      $("errBox").style.display = "block";
-      $("errBox").textContent = msg;
-    }
-    function clearErr(){
-      $("errBox").style.display = "none";
-      $("errBox").textContent = "";
-    }
-    function showLoading(on){
-      $("loading").style.display = on ? "block" : "none";
-    }
+async function loadMe(){
+  const token = localStorage.getItem(LS_USER_TOKEN) || "";
+  if(!token) throw new Error("Non autenticato");
+  const r = await jsonp(API_URL + "?action=me&token=" + encodeURIComponent(token));
+  if(!r || !r.ok || !r.profile) throw new Error("Token non valido");
+  me = r.profile;
+  if(String(me.Ruolo||"") !== "admin") throw new Error("Non sei admin");
+  document.getElementById("who").textContent = "👤 " + (me.Nome || me.Username || "admin");
+  try{ twemoji.parse(document.body, { folder:"svg", ext:".svg" }); }catch(e){}
+  return token;
+}
 
-    // JSONP helper (GET) – evita CORS
-    function jsonp(url){
-      return new Promise((resolve,reject)=>{
-        const cb = "cb_" + Math.random().toString(36).slice(2);
-        const s = document.createElement("script");
-        const t = setTimeout(()=>{ cleanup(); reject(new Error("JSONP timeout")); }, 8000);
+async function loadConfig(token){
+  const r = await jsonp(API_URL + "?action=get_config&token=" + encodeURIComponent(token));
+  if(r && r.ok && r.config){
+    document.getElementById("chkRequireLogin").checked = !!r.config.requireLoginForRequest;
+  }
+}
 
-        function cleanup(){
-          clearTimeout(t);
-          try{ delete window[cb]; }catch(e){ window[cb]=undefined; }
-          if(s && s.parentNode) s.parentNode.removeChild(s);
+async function setConfigRequireLogin(token, value){
+  const r = await jsonp(API_URL + "?action=set_config&token=" + encodeURIComponent(token) + "&requireLoginForRequest=" + (value ? "1":"0"));
+  if(!r || !r.ok) throw new Error(r?.error || "Errore set config");
+}
+
+async function loadRequests(token){
+  clearMsg();
+  const r = await jsonp(API_URL + "?action=list_requests&token=" + encodeURIComponent(token));
+  if(!r || !r.ok) throw new Error(r?.error || "Errore list");
+  const rows = r.rows || [];
+
+  if(!table){
+    table = $("#tbl").DataTable({
+      data: rows,
+      columns: [
+        { data:"DataISO", render:(d)=> escapeHtml(d||"") },
+        { data:"ID", render:(d)=> `<strong>${escapeHtml(d||"")}</strong>` },
+        { data:"Titolo", render:(d)=> `<strong>${escapeHtml(d||"")}</strong>` },
+        { data:"Giocatori", render:(d)=> escapeHtml(d||"") },
+        { data:"Nome", render:(d)=> escapeHtml(d||"") },
+        { data:"Telefono", render:(d)=> escapeHtml(d||"") },
+        { data:"Note", render:(d)=> escapeHtml(d||"") },
+        { data:"Stato", render:(d)=> badgeStato(d) },
+        { data:null, orderable:false, render:(d,t,row)=>{
+            const id = encodeURIComponent(row.ID||"");
+            return `
+              <button class="btn btn-ok act" data-act="approve" data-id="${id}">✅ Approva</button>
+              <button class="btn btn-no act" data-act="reject" data-id="${id}">⛔ Rifiuta</button>
+              <button class="btn btn-neutral act" data-act="delete" data-id="${id}">🗑️ Elimina</button>
+            `;
+          }
         }
+      ],
+      order: [[0,"desc"]],   /* ordina per nuove (DataISO) */
+      pageLength: 25,        /* ✅ paginazione (A) */
+      lengthMenu: [10, 25, 50, 100],
+      language: { url: "https://cdn.datatables.net/plug-ins/1.13.8/i18n/it-IT.json" }
+    });
 
-        window[cb] = (data)=>{ cleanup(); resolve(data); };
-        s.onerror = ()=>{ cleanup(); reject(new Error("JSONP load error")); };
+    document.addEventListener("click", async (e)=>{
+      const btn = e.target.closest(".act");
+      if(!btn) return;
+      const act = btn.getAttribute("data-act");
+      const id  = decodeURIComponent(btn.getAttribute("data-id")||"");
+      if(!id) return;
 
-        s.src = url + (url.includes("?") ? "&" : "?") + "callback=" + cb + "&v=" + Date.now();
-        document.body.appendChild(s);
-      });
-    }
-
-    async function loadMe(){
-      token = localStorage.getItem(LS_USER_TOKEN) || "";
-      if(!token) return { ok:false, error:"missing_token" };
-
-      const data = await jsonp(API_URL + "?action=me&token=" + encodeURIComponent(token));
-      return data;
-    }
-
-    function logout(){
-      localStorage.removeItem(LS_USER_TOKEN);
-      localStorage.removeItem(LS_USER_PROFILE);
-      location.reload();
-    }
-
-    function renderTable(rows){
-      rows = [...rows].sort((a,b)=> String(b.DataISO||"").localeCompare(String(a.DataISO||"")));
-      lastRows = rows;
-
-      $("cntTot").textContent = String(rows.length);
-
-      const onlyOpen = $("chkOnlyOpen").checked;
-      const q = ($("txtSearch").value || "").trim().toLowerCase();
-
-      let filtered = rows;
-      if(onlyOpen){
-        filtered = filtered.filter(r => String(r.Stato||"").toUpperCase() === "NUOVA");
+      if(act === "delete"){
+        if(!confirm("Eliminare la richiesta? (Non cancella righe da Sheets: mette Stato=Eliminata)")) return;
       }
-      if(q){
-        filtered = filtered.filter(r => {
-          const blob = [r.Titolo,r.Nome,r.Telefono,r.Giocatori,r.Note,r.Stato,r.ID]
-            .map(x=>String(x||"").toLowerCase()).join(" | ");
-          return blob.includes(q);
-        });
-      }
+      await doAction(token, act, id);
+    });
+  } else {
+    table.clear();
+    table.rows.add(rows).draw(false);
+  }
 
-      $("cntVis").textContent = String(filtered.length);
+  try{ twemoji.parse(document.body, { folder:"svg", ext:".svg" }); }catch(e){}
+}
 
-      const tbody = $("tblBody");
-      tbody.innerHTML = "";
+async function doAction(token, act, id){
+  clearMsg();
+  const url = API_URL + "?action=admin_" + act + "&token=" + encodeURIComponent(token) + "&id=" + encodeURIComponent(id);
+  const r = await jsonp(url);
+  if(!r || !r.ok) throw new Error(r?.error || "Errore azione");
+  showMsg("✅ Operazione eseguita.");
+  await loadRequests(token);
+}
 
-      filtered.forEach(r=>{
-        const stato = String(r.Stato||"").toUpperCase();
-        const tr = document.createElement("tr");
+function logout(){
+  localStorage.removeItem(LS_USER_TOKEN);
+  localStorage.removeItem(LS_USER_PROFILE);
+  location.href = "index.html";
+}
 
-        tr.innerHTML = `
-          <td class="mono">${esc(fmtDate(r.DataISO))}</td>
-          <td>
-            <strong>${esc(r.Titolo)}</strong>
-            <div style="opacity:.75;font-size:.85em">${esc(r.Giocatori||"")}</div>
-            <div style="opacity:.55;font-size:.78em" class="mono">ID: ${esc(r.ID||"")}</div>
-          </td>
-          <td>${esc(r.Nome||"")}</td>
-          <td>${esc(r.Telefono||"")}</td>
-          <td class="note">${esc(r.Note||"")}</td>
-          <td><span class="stato stato-${esc(stato)}">${esc(stato||"")}</span></td>
-          <td>${esc(r.GestitoDa||"")}</td>
-          <td class="mono">${esc(fmtDate(r.GestitoIl||""))}</td>
-          <td style="white-space:nowrap">
-            <button class="btn btn-ok" data-act="approve" data-id="${esc(r.ID)}">✅ Approva</button>
-            <button class="btn btn-no" data-act="reject" data-id="${esc(r.ID)}">⛔ Rifiuta</button>
-            <button class="btn btn-neutral" data-act="new" data-id="${esc(r.ID)}">↩️ Nuova</button>
-            <button class="btn btn-del" data-act="del" data-id="${esc(r.ID)}">🗑️ Elimina</button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
+document.addEventListener("DOMContentLoaded", async ()=>{
+  try{
+    const token = await loadMe();
+    await loadConfig(token);
+    await loadRequests(token);
 
-      renderEmoji();
-    }
+    document.getElementById("btnRefresh").addEventListener("click", ()=> loadRequests(token));
 
-    async function loadAdminList(){
-      clearErr();
-      showLoading(true);
+    document.getElementById("chkRequireLogin").addEventListener("change", async function(){
       try{
-        const data = await jsonp(API_URL + "?action=list_admin&limit=500&token=" + encodeURIComponent(token));
-        if(!data || !data.ok) throw new Error(data?.error || "Errore list_admin");
-        renderTable(data.rows || []);
+        await setConfigRequireLogin(token, this.checked);
+        showMsg(this.checked
+          ? "🔒 Ora SOLO utenti registrati possono inviare richieste."
+          : "✅ Ora chiunque può inviare richieste (anche senza login)."
+        , true);
       }catch(e){
-        showErr("Errore refresh admin: " + (e?.message ?? String(e)));
-      }finally{
-        showLoading(false);
-      }
-    }
-
-    async function setStatus(id, stato){
-      try{
-        const data = await jsonp(
-          API_URL + "?action=admin_set_status&id=" + encodeURIComponent(id) +
-          "&stato=" + encodeURIComponent(stato) +
-          "&token=" + encodeURIComponent(token)
-        );
-        if(!data || !data.ok) throw new Error(data?.error || "Errore admin_set_status");
-        await loadAdminList();
-      }catch(e){
-        alert("Errore cambio stato: " + (e?.message ?? String(e)));
-      }
-    }
-
-    async function deleteReq(id){
-      if(!confirm("Vuoi cancellare DEFINITIVAMENTE questa richiesta?")) return;
-      try{
-        const data = await jsonp(
-          API_URL + "?action=admin_delete&id=" + encodeURIComponent(id) +
-          "&token=" + encodeURIComponent(token)
-        );
-        if(!data || !data.ok) throw new Error(data?.error || "Errore admin_delete");
-        await loadAdminList();
-      }catch(e){
-        alert("Errore cancellazione: " + (e?.message ?? String(e)));
-      }
-    }
-
-    function wire(){
-      $("btnRefresh").addEventListener("click", loadAdminList);
-      $("btnLogout").addEventListener("click", logout);
-
-      $("chkOnlyOpen").addEventListener("change", ()=>renderTable(lastRows));
-      $("txtSearch").addEventListener("input", ()=>renderTable(lastRows));
-
-      $("tblBody").addEventListener("click", (e)=>{
-        const b = e.target.closest("button");
-        if(!b) return;
-        const id = b.getAttribute("data-id");
-        const act = b.getAttribute("data-act");
-        if(!id || !act) return;
-
-        if(act==="approve") setStatus(id, "APPROVATA");
-        else if(act==="reject") setStatus(id, "RIFIUTATA");
-        else if(act==="new") setStatus(id, "NUOVA");
-        else if(act==="del") deleteReq(id);
-      });
-    }
-
-    document.addEventListener("DOMContentLoaded", async ()=>{
-      wire();
-      renderEmoji();
-
-      try{
-        const me = await loadMe();
-        if(!me || !me.ok){
-          $("gate").style.display = "flex";
-          $("adminArea").style.display = "none";
-          $("gateMsg").textContent = "Sessione mancante o scaduta. Fai login dal catalogo.";
-          return;
-        }
-
-        profile = me.profile;
-        localStorage.setItem(LS_USER_PROFILE, JSON.stringify(profile));
-
-        if(String(profile.Ruolo||"") !== "admin"){
-          $("gate").style.display = "flex";
-          $("adminArea").style.display = "none";
-          $("gateMsg").textContent = "Accesso negato: il tuo account non è admin.";
-          return;
-        }
-
-        $("gate").style.display = "none";
-        $("adminArea").style.display = "block";
-
-        await loadAdminList();
-        setInterval(loadAdminList, REFRESH_EVERY_MS);
-
-      }catch(e){
-        $("gate").style.display = "flex";
-        $("adminArea").style.display = "none";
-        $("gateMsg").textContent = "Errore: " + (e?.message ?? String(e));
+        this.checked = !this.checked;
+        showMsg("Errore: " + (e?.message || String(e)), false);
       }
     });
-  </script>
+
+    document.getElementById("btnLogout").addEventListener("click", logout);
+
+  }catch(e){
+    showMsg("Accesso negato: " + (e?.message || String(e)), false);
+    setTimeout(()=> location.href = "index.html", 1200);
+  }
+});
+</script>
 </body>
 </html>
