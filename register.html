@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <title>Registrazione – AmarBoard</title>
+
+  <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+
+  <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+
+  <style>
+    :root{ --rosso:#b02030; --verde:#1f7a3a; --oro:#f3d08a; }
+    *{ box-sizing:border-box; }
+    body{
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      margin:0;
+      background: radial-gradient(circle at top, #ffe9e9, #fdf5e6 45%, #e4f5ea 100%);
+      min-height:100vh;
+      padding: 22px 14px 30px;
+      color:#222;
+    }
+    .wrap{
+      max-width:720px;
+      margin:0 auto;
+      background: rgba(255,250,243,0.96);
+      border-radius:20px;
+      border: 2px solid rgba(176,32,48,0.25);
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.8), 0 0 18px rgba(176,32,48,0.2);
+      padding: 18px 18px 16px;
+    }
+    .top{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom:10px;
+    }
+    .logo{
+      height:56px;
+      border-radius:999px;
+      background:#fff;
+      box-shadow:0 0 6px rgba(0,0,0,0.15);
+    }
+    h1{
+      margin:0;
+      color:var(--rosso);
+      font-size:1.35rem;
+      font-weight:900;
+    }
+    .btn{
+      padding:7px 10px;
+      border-radius:12px;
+      border:1px solid #ccc;
+      background:#fff;
+      cursor:pointer;
+      font-weight:900;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      user-select:none;
+      text-decoration:none;
+      color:#222;
+    }
+    .btn:hover{ filter:brightness(.98); }
+    .btn-ok{ border-color: rgba(31,122,58,.55); background: rgba(233,255,240,.95); color:#155724; }
+    .btn-neutral{ border-color: rgba(0,0,0,.18); background: rgba(255,255,255,.92); color:#333; }
+
+    .field{ display:flex; flex-direction:column; gap:6px; margin:10px 0; }
+    .field label{ font-size:.85rem; font-weight:900; color:#333; }
+    .field input{
+      border:1px solid #ccc;
+      border-radius: 12px;
+      padding:10px 10px;
+      font-weight: 800;
+      font-family: inherit;
+      background:#fff;
+      font-size:.95rem;
+    }
+    .row{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+    .help{
+      font-size:.85rem;
+      color:#555;
+      font-weight:800;
+      line-height:1.35;
+      margin-top:6px;
+    }
+    #msg{
+      display:none;
+      margin: 12px 0 0;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(0,0,0,.1);
+      background: rgba(255,255,255,.85);
+      font-weight:900;
+      line-height:1.35;
+    }
+    .ok{ border-color: rgba(31,122,58,.25); background: rgba(233,255,240,.95); color:#155724; }
+    .no{ border-color: rgba(176,32,48,.25); background: rgba(255,231,231,.92); color:#7a0f1a; }
+
+    img.emoji{ height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.1em; }
+    @media(max-width:700px){ .row{ grid-template-columns:1fr; } }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+        <img class="logo" src="logo_amarboard.png" alt="AmarBoard">
+        <div>
+          <h1>🧾 Registrazione Utente</h1>
+          <div class="help">Crea il tuo account per richiedere prestiti online.</div>
+        </div>
+      </div>
+      <a class="btn btn-neutral" href="index.html">⬅ Torna al catalogo</a>
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label>Username (solo lettere/numeri, min 4)</label>
+        <input id="u" type="text" placeholder="es. mario123">
+      </div>
+      <div class="field">
+        <label>Telefono</label>
+        <input id="tel" type="text" placeholder="es. 3331234567">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Nome e cognome</label>
+      <input id="nome" type="text" placeholder="es. Mario Rossi">
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label>Password (min 6)</label>
+        <input id="p1" type="password">
+      </div>
+      <div class="field">
+        <label>Ripeti password</label>
+        <input id="p2" type="password">
+      </div>
+    </div>
+
+    <button id="btn" class="btn btn-ok" type="button">✅ Crea account</button>
+
+    <div id="msg"></div>
+
+    <div class="help">
+      Nota: dopo la registrazione potrai fare <b>Accedi</b> dal catalogo.
+    </div>
+  </div>
+
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbymY3lNuMU13fv2NSXJBBAkGh0iOMzABjzuWnARGjsY_UHr7ZWEUM6wss9f1A2zbi9dcA/exec";
+
+function showMsg(text, ok=true){
+  const el = document.getElementById("msg");
+  el.className = ok ? "ok" : "no";
+  el.style.display = "block";
+  el.textContent = text;
+  try{ twemoji.parse(document.body, { folder:"svg", ext:".svg" }); }catch(e){}
+}
+
+function sha256Hex(ascii){
+  function rightRotate(value, amount){ return (value>>>amount) | (value<<(32-amount)); }
+  const mathPow = Math.pow, maxWord = mathPow(2,32);
+  let result = '';
+  const words = [];
+  const asciiBitLength = ascii.length*8;
+
+  let hash = sha256Hex.h = sha256Hex.h || [];
+  let k = sha256Hex.k = sha256Hex.k || [];
+  let primeCounter = k.length;
+
+  const isComposite = {};
+  for (let candidate = 2; primeCounter < 64; candidate++) {
+    if (!isComposite[candidate]) {
+      for (let i = 0; i < 313; i += candidate) isComposite[i] = candidate;
+      hash[primeCounter] = (mathPow(candidate, .5)*maxWord)|0;
+      k[primeCounter++] = (mathPow(candidate, 1/3)*maxWord)|0;
+    }
+  }
+
+  ascii += '\x80';
+  while (ascii.length%64 - 56) ascii += '\x00';
+  for (let i = 0; i < ascii.length; i++) {
+    const j = ascii.charCodeAt(i);
+    words[i>>2] |= j << ((3 - i)%4)*8;
+  }
+  words[words.length] = ((asciiBitLength/maxWord)|0);
+  words[words.length] = (asciiBitLength);
+
+  for (let j = 0; j < words.length;) {
+    const w = words.slice(j, j += 16);
+    const oldHash = hash.slice(0);
+
+    for (let i = 0; i < 64; i++) {
+      const w15 = w[i - 15], w2 = w[i - 2];
+      const a = hash[0], e = hash[4];
+      const temp1 = hash[7]
+        + (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25))
+        + ((e&hash[5]) ^ ((~e)&hash[6]))
+        + k[i]
+        + (w[i] = (i < 16) ? w[i] : (
+          w[i - 16]
+          + (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15>>>3))
+          + w[i - 7]
+          + (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2>>>10))
+        )|0);
+
+      const temp2 = (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22))
+        + ((a&hash[1]) ^ (a&hash[2]) ^ (hash[1]&hash[2]));
+
+      hash = [(temp1 + temp2)|0].concat(hash);
+      hash[4] = (hash[4] + temp1)|0;
+      hash.pop();
+    }
+
+    for (let i = 0; i < 8; i++) hash[i] = (hash[i] + oldHash[i])|0;
+  }
+
+  for (let i = 0; i < 8; i++) {
+    for (let j = 3; j + 1; j--) {
+      const b = (hash[i] >> (j * 8)) & 255;
+      result += ((b < 16) ? 0 : '') + b.toString(16);
+    }
+  }
+  return result;
+}
+
+async function register(){
+  const u = String(document.getElementById("u").value||"").trim().toLowerCase();
+  const tel = String(document.getElementById("tel").value||"").trim();
+  const nome = String(document.getElementById("nome").value||"").trim();
+  const p1 = String(document.getElementById("p1").value||"");
+  const p2 = String(document.getElementById("p2").value||"");
+
+  if(!/^[a-z0-9]{4,}$/.test(u)) { showMsg("Username non valido (min 4, solo lettere/numeri).", false); return; }
+  if(!nome) { showMsg("Inserisci nome e cognome.", false); return; }
+  if(p1.length < 6) { showMsg("Password troppo corta (min 6).", false); return; }
+  if(p1 !== p2) { showMsg("Le password non coincidono.", false); return; }
+
+  const passHash = sha256Hex(p1);
+
+  const body = new URLSearchParams();
+  body.set("action", "register");
+  body.set("username", u);
+  body.set("nome", nome);
+  body.set("telefono", tel);
+  body.set("passhash", passHash);
+
+  // POST standard
+  try{
+    const res = await fetch(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+      body: body.toString()
+    });
+    const j = await res.json();
+    if(j && j.ok){
+      showMsg("✅ Registrazione completata! Ora torna al catalogo e fai accesso.", true);
+      return;
+    }
+    showMsg("Errore: " + (j?.error || "registrazione fallita"), false);
+  }catch(e){
+    showMsg("Errore invio (connessione). Riprova.", false);
+  }
+}
+
+document.getElementById("btn").addEventListener("click", register);
+try{ twemoji.parse(document.body, { folder:"svg", ext:".svg" }); }catch(e){}
+</script>
+</body>
+</html>
