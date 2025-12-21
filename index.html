@@ -19,9 +19,7 @@
       --rosso-natale: #b02030;
       --verde-natale: #1f7a3a;
       --oro-soft:    #f3d08a;
-      --bg-chiaro:   #fffaf3;
     }
-
     * { box-sizing: border-box; }
 
     body {
@@ -54,7 +52,6 @@
     .snowflake:nth-child(5)  { left: 60%; animation-duration: 16s; animation-delay: 3s; }
     .snowflake:nth-child(6)  { left: 74%; animation-duration: 10s; animation-delay: 5s; }
     .snowflake:nth-child(7)  { left: 88%; animation-duration: 14s; animation-delay: 1s; }
-
     @keyframes fall {
       0%   { transform: translateY(0); opacity: 0.95; }
       100% { transform: translateY(110vh); opacity: 0; }
@@ -62,24 +59,16 @@
 
     .garland {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 60px;
+      top: 0; left: 0; width: 100%; height: 60px;
       background: radial-gradient(circle at center, rgba(31,122,58,0.7), rgba(0,0,0,0.3));
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      color: #ffe;
-      font-size: 1.4rem;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      color: #ffe; font-size: 1.4rem;
       z-index: 2;
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
       user-select:none;
     }
     .garland span { animation: blink 2.2s linear infinite; }
     .garland span:nth-child(odd) { animation-delay: 0.7s; }
-
     @keyframes blink {
       0%, 100% { opacity: 0.4; transform: translateY(0); }
       50%      { opacity: 1;   transform: translateY(1px); }
@@ -97,7 +86,6 @@
       z-index: 3;
       border: 2px solid rgba(176,32,48,0.35);
     }
-
     #wrapper::before {
       content: "";
       position: absolute;
@@ -107,7 +95,6 @@
       pointer-events: none;
     }
 
-    /* header con logo centrato */
     .header-flex {
       display: grid;
       grid-template-columns: 1fr auto 1fr;
@@ -122,7 +109,6 @@
     .header-right { display:flex; align-items:center; justify-content:flex-end; gap:10px; flex-wrap: wrap; }
 
     .xmas-icon { font-size: 2rem; }
-
     .logo-amar {
       height: 76px;
       width: auto;
@@ -180,21 +166,9 @@
       user-select:none;
     }
     .btn:hover{ filter: brightness(0.98); }
-    .btn-ok{
-      border: 1px solid rgba(31,122,58,.55);
-      background: rgba(233,255,240,.95);
-      color:#155724;
-    }
-    .btn-no{
-      border: 1px solid rgba(176,32,48,.45);
-      background: rgba(255,231,231,.92);
-      color:#7a0f1a;
-    }
-    .btn-neutral{
-      border: 1px solid rgba(0,0,0,.18);
-      background: rgba(255,255,255,.92);
-      color:#333;
-    }
+    .btn-ok{ border: 1px solid rgba(31,122,58,.55); background: rgba(233,255,240,.95); color:#155724; }
+    .btn-no{ border: 1px solid rgba(176,32,48,.45); background: rgba(255,231,231,.92); color:#7a0f1a; }
+    .btn-neutral{ border: 1px solid rgba(0,0,0,.18); background: rgba(255,255,255,.92); color:#333; }
 
     #adminLink{
       display:none;
@@ -283,6 +257,7 @@
     .filters-left { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
     .filter-block { display: flex; flex-direction: column; gap: 4px; }
     .filter-label { color: #444; font-size: 0.8rem; font-weight: 900; }
+
     select, input[type="text"] {
       padding: 6px 8px;
       border-radius: 10px;
@@ -292,6 +267,7 @@
       background: #fff;
       font-weight: 800;
     }
+
     #btnRefresh {
       padding: 8px 12px;
       border-radius: 12px;
@@ -332,7 +308,6 @@
       position: relative;
       z-index: 4;
     }
-
     #errorBox {
       display: none;
       margin: 10px 0 12px;
@@ -371,6 +346,7 @@
     .badge-prestato    { background: #f8d7da; color: #721c24; border: 1px solid #f1b0b7; }
     .badge-req         { background:#efe1ff; border:1px solid #c9a7ff; color:#4a1a7a; }
     .badge-booked      { background:#ffe8c7; border:1px solid #ffc37a; color:#7a3d00; }
+    .badge-preview     { background:#e7f0ff; border:1px solid #9ec5ff; color:#0b3d91; }
 
     a.bgg-link { color: var(--rosso-natale); font-size: 0.85rem; text-decoration: none; font-weight: 900; }
     a.bgg-link:hover { text-decoration: underline; }
@@ -476,6 +452,7 @@
       text-align: center;
       color: #7a0f1a;
       font-weight: 900;
+      display:none;
     }
     #countdownBanner small{
       display:block;
@@ -488,6 +465,7 @@
       font-size: 1.4rem;
       color: #b02030;
     }
+
     #adminBypassBar{
       position: fixed;
       inset: 132px 16px auto 16px;
@@ -498,6 +476,7 @@
       text-align:center;
       user-select:none;
     }
+
     .spoiler-hidden #wrapper{
       filter: blur(10px);
       pointer-events: none;
@@ -534,7 +513,7 @@
 
 <body>
 
-<div id="countdownBanner" style="display:none;">
+<div id="countdownBanner">
   🎁 La pagina si sblocca tra <span id="countdownTime">--:--:--</span>
   <small>Fino a quell’ora il catalogo resta “coperto”.</small>
 </div>
@@ -571,6 +550,8 @@
     <div class="header-right">
       <a id="adminLink" href="admin.html">🛡️ Area Admin</a>
       <a id="registerLink" href="register.html">🧾 Registrati</a>
+
+      <span class="pill" id="previewPill" style="display:none;">👁️ Preview pubblico</span>
 
       <span class="pill" id="userPill" style="display:none;">
         👤 <span id="userName">–</span>
@@ -730,726 +711,4 @@ const LS_USER_TOKEN   = "AB_USER_TOKEN";
 const LS_USER_PROFILE = "AB_USER_PROFILE";
 
 /* PIN bypass countdown */
-const LS_ADMIN_BYPASS = "AB_ADMIN_BYPASS";
-const ADMIN_PIN = "1234"; // <- cambia se vuoi
-
-const AUTO_REFRESH_MS = 30000;
-
-/* countdown default: domani alle 09:00 */
-const REVEAL_AT = (function(){
-  const now = new Date();
-  return new Date(now.getFullYear(), now.getMonth(), now.getDate()+1, 9, 0, 0, 0).getTime();
-})();
-
-/* =========================
-   STATE
-========================= */
-let table = null;
-let currentUser = null;
-let requestedMap = {};
-let countdownTimer = null;
-let appConfig = { requireLoginForRequest: false }; // letto da server
-
-/* =========================
-   Helpers
-========================= */
-function E(id){ return document.getElementById(id); }
-
-function renderEmoji(){
-  try { twemoji.parse(document.body, { folder:"svg", ext:".svg" }); } catch(e){}
-}
-
-function showInfo(msg){
-  const box = E("infoBox");
-  box.style.display = "block";
-  box.textContent = msg;
-}
-function clearInfo(){
-  const box = E("infoBox");
-  box.style.display = "none";
-  box.textContent = "";
-}
-function showError(msg){
-  const box = E("errorBox");
-  box.style.display = "block";
-  box.textContent = msg;
-}
-function clearError(){
-  const box = E("errorBox");
-  box.style.display = "none";
-  box.textContent = "";
-}
-function aggiornaTimestamp(){
-  const now = new Date();
-  E("lastUpdate").textContent = "Ultimo aggiornamento: " +
-    now.toLocaleTimeString("it-IT", { hour:"2-digit", minute:"2-digit", second:"2-digit" });
-}
-
-function escapeHtml(s){
-  return String(s ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#39;");
-}
-function escapeAttr(s){ return escapeHtml(s).replace(/`/g,"&#96;"); }
-
-function isAdminUser(){ return currentUser && String(currentUser.Ruolo||"") === "admin"; }
-function isBypassEnabled(){ return localStorage.getItem(LS_ADMIN_BYPASS) === "1"; }
-function setBypassEnabled(on){ localStorage.setItem(LS_ADMIN_BYPASS, on ? "1" : "0"); }
-
-/* =========================
-   COUNTDOWN + BYPASS
-========================= */
-function startCountdownShield(){
-  const banner = E("countdownBanner");
-  const timeEl = E("countdownTime");
-  const bar = E("adminBypassBar");
-  const badge = E("adminBypassBadge");
-
-  function unlock(){
-    document.body.classList.remove("spoiler-hidden");
-    banner.style.display = "none";
-    if (countdownTimer) clearInterval(countdownTimer);
-  }
-
-  function tick(){
-    bar.style.display = "block";
-
-    if (isAdminUser() || isBypassEnabled()){
-      unlock();
-      badge.style.display = "inline-block";
-      return;
-    }
-    badge.style.display = "none";
-
-    const diff = REVEAL_AT - Date.now();
-    if (diff <= 0){
-      unlock();
-      aggiornaTutto();
-      return;
-    }
-
-    document.body.classList.add("spoiler-hidden");
-    banner.style.display = "block";
-
-    const totalSec = Math.floor(diff/1000);
-    const h = String(Math.floor(totalSec/3600)).padStart(2,"0");
-    const m = String(Math.floor((totalSec%3600)/60)).padStart(2,"0");
-    const s = String(totalSec%60).padStart(2,"0");
-    timeEl.textContent = `${h}:${m}:${s}`;
-  }
-
-  tick();
-  countdownTimer = setInterval(tick, 1000);
-}
-
-/* =========================
-   JSONP helper
-========================= */
-function jsonp(url){
-  return new Promise((resolve,reject)=>{
-    const cb = "cb_" + Math.random().toString(36).slice(2);
-    const s = document.createElement("script");
-    const t = setTimeout(()=>{ cleanup(); reject(new Error("JSONP timeout")); }, 10000);
-
-    function cleanup(){
-      clearTimeout(t);
-      try{ delete window[cb]; }catch(e){ window[cb] = undefined; }
-      if(s && s.parentNode) s.parentNode.removeChild(s);
-    }
-
-    window[cb] = (data)=>{ cleanup(); resolve(data); };
-    s.onerror = ()=>{ cleanup(); reject(new Error("JSONP load error")); };
-
-    s.src = url + (url.includes("?") ? "&" : "?") + "callback=" + cb + "&v=" + Date.now();
-    document.body.appendChild(s);
-  });
-}
-
-/* =========================
-   CSV fetch + parse
-========================= */
-async function fetchTextNoStore(path){
-  const url = path + "?v=" + Date.now();
-  const res = await fetch(url, { cache:"no-store" });
-  if(!res.ok) throw new Error(`Impossibile caricare ${path} (HTTP ${res.status})`);
-  return await res.text();
-}
-function parseCSVText(csvText){
-  const parsed = Papa.parse(csvText, { header:true, skipEmptyLines:true });
-  return parsed.data || [];
-}
-
-/* =========================
-   Config dal server (B)
-========================= */
-async function caricaConfig(){
-  try{
-    const cfg = await jsonp(API_URL + "?action=get_config");
-    if(cfg && cfg.ok && cfg.config){
-      appConfig = cfg.config;
-    }
-  }catch(e){}
-}
-
-/* =========================
-   Badge richiesto/prenotato
-========================= */
-function gameReqBadge(titolo){
-  const t = String(titolo||"").trim();
-  if(!t) return "";
-  const x = requestedMap[t];
-  if(!x) return "";
-  if(Number(x.approved||0) > 0) return ' <span class="badge badge-booked">📌 Prenotato</span>';
-  if(Number(x.open||0) > 0) return ' <span class="badge badge-req">🟣 Richiesto</span>';
-  return "";
-}
-
-async function caricaRequestedMap(){
-  try{
-    const data = await jsonp(API_URL + "?action=requested_map");
-    if(data && data.ok && data.map) requestedMap = data.map;
-    else requestedMap = {};
-  }catch(e){
-    requestedMap = {};
-  }
-}
-
-/* =========================
-   STATS
-========================= */
-async function caricaStats(){
-  try{
-    const text = await fetchTextNoStore(STATS_BASE_URL);
-    const rows = parseCSVText(text);
-    if(!rows.length) return;
-
-    const s = rows[0];
-    E("cntAttivi").textContent = s["PrestitiAttivi"] || "0";
-    E("cntTotali").textContent = s["PrestitiTotali"] || "0";
-
-    const topList = E("topList");
-    topList.innerHTML = "";
-
-    function addTop(titoloKey, countKey){
-      const titolo = s[titoloKey];
-      const cnt = s[countKey];
-      if(titolo && cnt && Number(cnt) > 0){
-        const li = document.createElement("li");
-        li.textContent = `${titolo} (${cnt})`;
-        topList.appendChild(li);
-      }
-    }
-
-    addTop("Top1Titolo","Top1Prestiti");
-    addTop("Top2Titolo","Top2Prestiti");
-    addTop("Top3Titolo","Top3Prestiti");
-    addTop("TopEvento1Titolo","TopEvento1Val");
-    addTop("TopEvento2Titolo","TopEvento2Val");
-    addTop("TopEvento3Titolo","TopEvento3Val");
-  }catch(e){}
-}
-
-/* =========================
-   DataTables safe
-========================= */
-function ensureDataTablesLoaded(){
-  if (!window.jQuery) { showError("Errore: jQuery non caricato."); return false; }
-  if (!jQuery.fn || !jQuery.fn.DataTable) { showError("Errore: DataTables non caricato (CDN)."); return false; }
-  const el = document.getElementById("tblCatalogo");
-  if (!el) { showError("Errore: tabella non trovata."); return false; }
-  return true;
-}
-
-function statoBadge(stato){
-  stato = (stato || "").toLowerCase().trim();
-  if (stato === "disponibile") return '<span class="badge badge-disponibile">🎄 Disponibile</span>';
-  if (stato === "in prestito")  return '<span class="badge badge-prestato">🎁 In prestito</span>';
-  return (stato || "");
-}
-
-/* =========================
-   Richieste solo utenti registrati (B)
-========================= */
-function canRequest(){
-  if(!appConfig.requireLoginForRequest) return true;
-  return !!(localStorage.getItem(LS_USER_TOKEN));
-}
-
-function requestButtonHtml(title, gioc){
-  if(!canRequest()){
-    return `<button class="btn btn-neutral" type="button" disabled title="Devi essere registrato e fare accesso per richiedere.">🔒 Accedi</button>`;
-  }
-  return `<button class="btn btn-ok btnReq" type="button"
-            data-titolo="${escapeAttr(title)}"
-            data-giocatori="${escapeAttr(gioc)}">📝 Richiedi</button>`;
-}
-
-async function caricaCatalogo(){
-  if(!ensureDataTablesLoaded()) return;
-
-  const text = await fetchTextNoStore(CSV_BASE_URL);
-  const raw = parseCSVText(text);
-
-  const data = [];
-  raw.forEach(row=>{
-    if(!row["Titolo"]) return;
-    data.push({
-      Titolo: row["Titolo"] || "",
-      Giocatori: row["NumeroGiocatori"] || "",
-      Durata: row["Durata"] || "",
-      Eta: row["Eta"] || "",
-      Editore: row["Editore"] || "",
-      Disponibili: row["CopieDisponibili"] || "",
-      Stato: row["StatoDisponibilita"] || "",
-      BGG: row["BGG"] || ""
-    });
-  });
-
-  await new Promise(r => setTimeout(r, 0));
-
-  if(!table){
-    try{
-      table = $("#tblCatalogo").DataTable({
-        data: data,
-        destroy: true,
-        retrieve: true,
-        columns: [
-          { data:"Titolo", render:(d)=> `<strong>${escapeHtml(d)}</strong>${gameReqBadge(d)}` },
-          { data:"Giocatori" },
-          { data:"Durata" },
-          { data:"Eta" },
-          { data:"Editore" },
-          { data:"Disponibili", render:(d)=> `<strong>${escapeHtml(d ?? "")}</strong>` },
-          { data:"Stato", render:(d)=> statoBadge(d) },
-          { data:"BGG", orderable:false, render:(d)=>{
-              const safe = String(d||"").trim();
-              if(!safe) return "";
-              if(!/^https?:\/\//i.test(safe)) return "";
-              return `<a class="bgg-link" href="${safe}" target="_blank" rel="noopener noreferrer">Scheda</a>`;
-            }
-          },
-          { data:null, orderable:false, render:(d,t,row)=> requestButtonHtml(String(row.Titolo||""), String(row.Giocatori||"")) }
-        ],
-        paging:false,
-        info:false,
-        lengthChange:false,
-        order:[[0,"asc"]],
-        language:{ url:"https://cdn.datatables.net/plug-ins/1.13.8/i18n/it-IT.json" },
-        createdRow:function(row,rowData){
-          const st = (rowData.Stato||"").toLowerCase().trim();
-          if(st === "disponibile") row.classList.add("disponibile-row");
-          else if(st === "in prestito") row.classList.add("prestato-row");
-        },
-        drawCallback:function(){ renderEmoji(); }
-      });
-
-      E("filtroStato").addEventListener("change", function(){
-        table.column(6).search(this.value, false, false).draw();
-      });
-      E("filtroGiocatori").addEventListener("keyup", function(){
-        table.column(1).search(this.value, false, false).draw();
-      });
-
-      document.addEventListener("click", (e)=>{
-        const btn = e.target.closest(".btnReq");
-        if(!btn) return;
-        openRequestModal(btn.getAttribute("data-titolo"), btn.getAttribute("data-giocatori"));
-      });
-
-    }catch(e){
-      table = null;
-      showError("Errore DataTables: " + (e?.message ?? String(e)));
-    }
-  } else {
-    try{
-      table.clear();
-      table.rows.add(data).draw(false);
-    }catch(e){
-      try{ table.destroy(); }catch(_){}
-      table = null;
-      await caricaCatalogo();
-    }
-  }
-}
-
-/* =========================
-   Aggiorna tutto
-========================= */
-async function aggiornaTutto(){
-  clearError();
-  clearInfo();
-  try{
-    await caricaConfig();
-    if(appConfig.requireLoginForRequest && !localStorage.getItem(LS_USER_TOKEN)){
-      showInfo("🔒 Le richieste sono abilitate solo per utenti registrati: fai accesso o registrati.");
-    }
-    await caricaRequestedMap();
-    await Promise.all([caricaStats(), caricaCatalogo()]);
-    aggiornaTimestamp();
-    renderEmoji();
-  }catch(e){
-    showError("Errore refresh: " + (e?.message ?? String(e)));
-  }
-}
-
-/* =========================
-   MODALI
-========================= */
-function openLogin(){
-  E("loginMsg").style.display = "none";
-  E("loginMsg").textContent = "";
-  E("loginUser").value = "";
-  E("loginPass").value = "";
-  E("loginBackdrop").style.display = "flex";
-  setTimeout(()=> E("loginUser").focus(), 50);
-  renderEmoji();
-}
-function closeLogin(){ E("loginBackdrop").style.display = "none"; }
-
-function openRequestModal(titolo, giocatori){
-  if(!canRequest()){
-    showInfo("🔒 Per richiedere devi essere registrato e fare accesso.");
-    return;
-  }
-
-  E("reqTitolo").value = titolo || "";
-  E("reqGiocatori").value = giocatori || "";
-
-  let prof = null;
-  try{ prof = JSON.parse(localStorage.getItem(LS_USER_PROFILE) || "null"); }catch(e){}
-
-  E("reqNome").value = (prof && prof.Nome) ? prof.Nome : "";
-  E("reqTelefono").value = (prof && prof.Telefono) ? prof.Telefono : "";
-  E("reqNote").value = "";
-
-  const m = E("reqMsg");
-  m.style.display = "none";
-  m.textContent = "";
-  m.className = "msg";
-
-  E("reqBackdrop").style.display = "flex";
-  renderEmoji();
-}
-function closeRequestModal(){ E("reqBackdrop").style.display = "none"; }
-
-/* =========================
-   SHA-256 (pure JS)
-========================= */
-function sha256Hex(ascii){
-  function rightRotate(value, amount){ return (value>>>amount) | (value<<(32-amount)); }
-  const mathPow = Math.pow, maxWord = mathPow(2,32);
-  let result = '';
-  const words = [];
-  const asciiBitLength = ascii.length*8;
-
-  let hash = sha256Hex.h = sha256Hex.h || [];
-  let k = sha256Hex.k = sha256Hex.k || [];
-  let primeCounter = k.length;
-
-  const isComposite = {};
-  for (let candidate = 2; primeCounter < 64; candidate++) {
-    if (!isComposite[candidate]) {
-      for (let i = 0; i < 313; i += candidate) isComposite[i] = candidate;
-      hash[primeCounter] = (mathPow(candidate, .5)*maxWord)|0;
-      k[primeCounter++] = (mathPow(candidate, 1/3)*maxWord)|0;
-    }
-  }
-
-  ascii += '\x80';
-  while (ascii.length%64 - 56) ascii += '\x00';
-  for (let i = 0; i < ascii.length; i++) {
-    const j = ascii.charCodeAt(i);
-    words[i>>2] |= j << ((3 - i)%4)*8;
-  }
-  words[words.length] = ((asciiBitLength/maxWord)|0);
-  words[words.length] = (asciiBitLength);
-
-  for (let j = 0; j < words.length;) {
-    const w = words.slice(j, j += 16);
-    const oldHash = hash.slice(0);
-
-    for (let i = 0; i < 64; i++) {
-      const w15 = w[i - 15], w2 = w[i - 2];
-      const a = hash[0], e = hash[4];
-      const temp1 = hash[7]
-        + (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25))
-        + ((e&hash[5]) ^ ((~e)&hash[6]))
-        + k[i]
-        + (w[i] = (i < 16) ? w[i] : (
-          w[i - 16]
-          + (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15>>>3))
-          + w[i - 7]
-          + (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2>>>10))
-        )|0);
-
-      const temp2 = (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22))
-        + ((a&hash[1]) ^ (a&hash[2]) ^ (hash[1]&hash[2]));
-
-      hash = [(temp1 + temp2)|0].concat(hash);
-      hash[4] = (hash[4] + temp1)|0;
-      hash.pop();
-    }
-
-    for (let i = 0; i < 8; i++) hash[i] = (hash[i] + oldHash[i])|0;
-  }
-
-  for (let i = 0; i < 8; i++) {
-    for (let j = 3; j + 1; j--) {
-      const b = (hash[i] >> (j * 8)) & 255;
-      result += ((b < 16) ? 0 : '') + b.toString(16);
-    }
-  }
-  return result;
-}
-
-/* =========================
-   Login challenge flow
-========================= */
-async function doLogin(){
-  const u = String(E("loginUser").value || "").trim().toLowerCase();
-  const p = String(E("loginPass").value || "");
-
-  if(!u || !p){
-    const m = E("loginMsg");
-    m.style.display = "block";
-    m.textContent = "Inserisci username e password.";
-    return;
-  }
-
-  try{
-    const ch = await jsonp(API_URL + "?action=challenge&username=" + encodeURIComponent(u));
-    if(!ch || !ch.ok || !ch.nonce) throw new Error(ch?.error || "challenge_failed");
-
-    const passHash = sha256Hex(p);
-    const proof = sha256Hex(passHash + ":" + ch.nonce);
-
-    const resp = await jsonp(
-      API_URL + "?action=login_challenge&username=" + encodeURIComponent(u) +
-      "&nonce=" + encodeURIComponent(ch.nonce) +
-      "&proof=" + encodeURIComponent(proof)
-    );
-
-    if(!resp || !resp.ok || !resp.token || !resp.profile){
-      throw new Error(resp?.error || "login_failed");
-    }
-
-    localStorage.setItem(LS_USER_TOKEN, resp.token);
-    localStorage.setItem(LS_USER_PROFILE, JSON.stringify(resp.profile));
-    currentUser = resp.profile;
-
-    refreshUserUI();
-    closeLogin();
-
-    startCountdownShield();
-    await aggiornaTutto();
-  }catch(e){
-    const m = E("loginMsg");
-    m.style.display = "block";
-    m.textContent = "Credenziali non valide o utente disattivato.";
-  }
-}
-
-async function restoreSession(){
-  try{
-    const token = localStorage.getItem(LS_USER_TOKEN) || "";
-    if(!token) return;
-
-    const me = await jsonp(API_URL + "?action=me&token=" + encodeURIComponent(token));
-    if(me && me.ok && me.profile){
-      currentUser = me.profile;
-      localStorage.setItem(LS_USER_PROFILE, JSON.stringify(currentUser));
-      refreshUserUI();
-      return;
-    }
-  }catch(e){}
-
-  localStorage.removeItem(LS_USER_TOKEN);
-  localStorage.removeItem(LS_USER_PROFILE);
-  currentUser = null;
-  refreshUserUI();
-}
-
-function refreshUserUI(){
-  const pill = E("userPill");
-  const btnLogin = E("btnLogin");
-  const btnLogout = E("btnLogout");
-  const adminLink = E("adminLink");
-  const role = E("userRole");
-
-  if(currentUser){
-    E("userName").textContent = currentUser.Nome || currentUser.Username || "Utente";
-    pill.style.display = "inline-flex";
-    btnLogin.style.display = "none";
-    btnLogout.style.display = "inline-flex";
-
-    const a = isAdminUser();
-    adminLink.style.display = a ? "inline-flex" : "none";
-    role.style.display = a ? "inline" : "none";
-  } else {
-    pill.style.display = "none";
-    btnLogin.style.display = "inline-flex";
-    btnLogout.style.display = "none";
-    adminLink.style.display = "none";
-    role.style.display = "none";
-  }
-  renderEmoji();
-}
-
-function doLogout(){
-  localStorage.removeItem(LS_USER_TOKEN);
-  localStorage.removeItem(LS_USER_PROFILE);
-  currentUser = null;
-  refreshUserUI();
-  startCountdownShield();
-  aggiornaTutto();
-}
-
-/* =========================
-   Richiesta prestito (POST)
-========================= */
-async function sendRequest(){
-  const titolo = String(E("reqTitolo").value || "").trim();
-  const gioc = String(E("reqGiocatori").value || "").trim();
-  const nome = String(E("reqNome").value || "").trim();
-  const tel = String(E("reqTelefono").value || "").trim();
-  const note = String(E("reqNote").value || "").trim();
-
-  const msg = E("reqMsg");
-  msg.style.display = "none";
-  msg.textContent = "";
-  msg.className = "msg";
-
-  if(!titolo || !nome){
-    msg.className = "msg msg-no";
-    msg.style.display = "block";
-    msg.textContent = "Compila almeno Titolo e Nome.";
-    return;
-  }
-
-  const token = localStorage.getItem(LS_USER_TOKEN) || "";
-  if(appConfig.requireLoginForRequest && !token){
-    msg.className = "msg msg-no";
-    msg.style.display = "block";
-    msg.textContent = "🔒 Richieste abilitate solo per utenti registrati: fai accesso.";
-    return;
-  }
-
-  E("btnReqSend").disabled = true;
-  E("btnReqSend").style.opacity = "0.7";
-
-  const body = new URLSearchParams();
-  body.set("action", "submit");
-  body.set("Titolo", titolo);
-  body.set("Giocatori", gioc);
-  body.set("Nome", nome);
-  body.set("Telefono", tel);
-  body.set("Note", note);
-  if(token) body.set("token", token);
-
-  try{
-    let sent = false;
-
-    // standard
-    try{
-      const res = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
-        body: body.toString()
-      });
-      const j = await res.json();
-      if(j && j.ok) sent = true;
-    }catch(e1){
-      // fallback no-cors (invio senza leggere response)
-      try{
-        await fetch(API_URL, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
-          body: body.toString()
-        });
-        sent = true;
-      }catch(e2){
-        sent = false;
-      }
-    }
-
-    if(sent){
-      msg.className = "msg msg-ok";
-      msg.style.display = "block";
-      msg.textContent = "✅ Richiesta inviata!";
-      setTimeout(async ()=>{ await aggiornaTutto(); }, 1200);
-      setTimeout(()=> closeRequestModal(), 1600);
-    } else {
-      throw new Error("invio_non_riuscito");
-    }
-  }catch(e){
-    msg.className = "msg msg-no";
-    msg.style.display = "block";
-    msg.textContent = "❌ Errore invio. Controlla connessione e riprova.";
-  }finally{
-    E("btnReqSend").disabled = false;
-    E("btnReqSend").style.opacity = "1";
-  }
-
-  renderEmoji();
-}
-
-/* =========================
-   Boot
-========================= */
-document.addEventListener("DOMContentLoaded", async function(){
-  E("btnLogin").addEventListener("click", openLogin);
-  E("btnLogout").addEventListener("click", doLogout);
-  E("btnLoginCancel").addEventListener("click", closeLogin);
-  E("btnLoginDo").addEventListener("click", doLogin);
-  E("loginBackdrop").addEventListener("click", (e)=>{ if(e.target === E("loginBackdrop")) closeLogin(); });
-  E("loginPass").addEventListener("keydown", (e)=>{ if(e.key==="Enter") doLogin(); });
-
-  E("btnReqCancel").addEventListener("click", closeRequestModal);
-  E("btnReqSend").addEventListener("click", sendRequest);
-  E("reqBackdrop").addEventListener("click", (e)=>{ if(e.target === E("reqBackdrop")) closeRequestModal(); });
-
-  E("btnRefresh").addEventListener("click", async ()=>{
-    if(!isAdminUser() && !isBypassEnabled() && Date.now() < REVEAL_AT) return;
-    await aggiornaTutto();
-  });
-
-  E("btnAdminBypass").addEventListener("click", async ()=>{
-    const pin = prompt("Inserisci PIN admin:");
-    if(pin === null) return;
-    if(String(pin).trim() === ADMIN_PIN){
-      setBypassEnabled(true);
-      E("adminBypassBadge").style.display = "inline-block";
-      document.body.classList.remove("spoiler-hidden");
-      E("countdownBanner").style.display = "none";
-      await aggiornaTutto();
-      renderEmoji();
-    } else {
-      alert("PIN errato.");
-    }
-  });
-
-  await restoreSession();
-  startCountdownShield();
-
-  if(!isAdminUser() && !isBypassEnabled() && Date.now() < REVEAL_AT){
-    renderEmoji();
-    return;
-  }
-
-  await aggiornaTutto();
-
-  setInterval(() => {
-    if(!isAdminUser() && !isBypassEnabled() && Date.now() < REVEAL_AT) return;
-    aggiornaTutto();
-  }, AUTO_REFRESH_MS);
-
-  renderEmoji();
-});
-</script>
-
-</body>
-</html>
+const LS_ADMIN_BYPASS = "AB
