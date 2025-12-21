@@ -15,7 +15,6 @@
 
   <style>
     :root { --rosso:#b02030; --verde:#1f7a3a; --oro:#f3d08a; }
-
     *{ box-sizing:border-box; }
     body{
       font-family: system-ui,-apple-system,"Segoe UI",sans-serif;
@@ -23,7 +22,6 @@
       background: radial-gradient(circle at top, #ffe9e9, #fdf5e6 45%, #e4f5ea 100%);
       min-height:100vh;
     }
-
     .garland{
       position: fixed; top:0; left:0; width:100%; height:60px;
       background: radial-gradient(circle at center, rgba(31,122,58,0.7), rgba(0,0,0,0.3));
@@ -31,7 +29,6 @@
       color:#ffe; font-size:1.2rem; z-index:10;
       box-shadow:0 2px 8px rgba(0,0,0,0.3);
     }
-
     #wrap{
       max-width:1200px;
       margin: 90px auto 40px;
@@ -48,7 +45,6 @@
       border: 2px dashed rgba(243,208,138,0.7);
       pointer-events:none;
     }
-
     h1{
       margin: 6px 0 2px;
       text-align:center;
@@ -64,7 +60,6 @@
       font-weight: 800;
       font-size: 0.9rem;
     }
-
     .topbar{
       display:flex; gap:12px; flex-wrap:wrap;
       align-items:center; justify-content:space-between;
@@ -76,9 +71,7 @@
       position: relative;
       z-index: 1;
     }
-
     .left, .right{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
-
     .pill{
       border-radius: 999px;
       padding: 6px 10px;
@@ -88,7 +81,6 @@
       color:#7a0f1a;
       display:inline-flex; align-items:center; gap:8px;
     }
-
     .btn{
       padding: 8px 12px;
       border-radius: 12px;
@@ -97,17 +89,8 @@
       cursor: pointer;
       font-weight: 900;
     }
-    .btn-ok{
-      border: 1px solid rgba(31,122,58,0.55);
-      background: rgba(233,255,240,0.95);
-      color: #155724;
-    }
-    .btn-warn{
-      border: 1px solid rgba(176,32,48,0.55);
-      background: rgba(255,231,231,0.95);
-      color: #7a0f1a;
-    }
-
+    .btn-ok{ border:1px solid rgba(31,122,58,0.55); background: rgba(233,255,240,0.95); color:#155724; }
+    .btn-warn{ border:1px solid rgba(176,32,48,0.55); background: rgba(255,231,231,0.95); color:#7a0f1a; }
     input[type="text"], select{
       padding: 7px 10px;
       border-radius: 10px;
@@ -115,7 +98,6 @@
       background: #fff;
       font-weight: 800;
     }
-
     #errorBox{
       display:none;
       margin: 10px 0 12px;
@@ -126,13 +108,7 @@
       color:#7a0f1a;
       font-weight: 900;
     }
-
-    /* action buttons in table */
-    .act{
-      display:flex;
-      gap:6px;
-      flex-wrap: wrap;
-    }
+    .act{ display:flex; gap:6px; flex-wrap: wrap; }
     .mini{
       padding: 6px 10px;
       border-radius: 10px;
@@ -146,14 +122,7 @@
     .mini.bad{ border-color: rgba(176,32,48,0.55); background: rgba(255,231,231,0.95); color:#7a0f1a; }
     .mini.neu{ border-color: rgba(243,208,138,0.9); background: rgba(255,250,243,0.95); color:#7a3d00; }
 
-    .badge{
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 0.75rem;
-      font-weight: 900;
-      display:inline-block;
-      white-space: nowrap;
-    }
+    .badge{ padding:4px 10px;border-radius:999px;font-size:.75rem;font-weight:900;display:inline-block;white-space:nowrap }
     .b-nuova{ background:#efe1ff; color:#4a1a7a; border:1px solid #c9a7ff; }
     .b-presa{ background:#e6f3ff; color:#0b3d6b; border:1px solid #a9d0ff; }
     .b-app{ background:#ffe8c7; color:#7a3d00; border:1px solid #ffc37a; }
@@ -161,7 +130,6 @@
     .b-eva{ background:#d4edda; color:#155724; border:1px solid #b1dfbb; }
     .b-del{ background:#eee; color:#555; border:1px solid #ccc; }
 
-    /* PIN modal */
     #pinModal{
       position: fixed; inset:0; z-index: 9999;
       display:flex; align-items:center; justify-content:center;
@@ -199,7 +167,6 @@
       display:none; margin-top:10px; color:#7a0f1a; background: rgba(255,231,231,0.9);
       border: 1px solid rgba(176,32,48,0.4); padding: 8px 10px; border-radius: 12px; font-weight:900;
     }
-
     @media(max-width:768px){
       #wrap{ margin:80px 10px 20px; padding: 14px; }
       .topbar{ flex-direction: column; align-items: stretch; }
@@ -214,12 +181,11 @@
     <span>⭐</span><span>🎄</span><span>✨</span>
   </div>
 
-  <!-- PIN gate -->
   <div id="pinModal">
     <div class="card">
       <h2>Accesso Admin</h2>
-      <p>PIN + chiave tecnica. (La chiave tecnica resta solo in questo file.)</p>
-      <input id="pinInput" type="password" inputmode="numeric" autocomplete="off" placeholder="Inserisci PIN">
+      <p>PIN (2486) per entrare nella dashboard prenotazioni.</p>
+      <input id="pinInput" type="password" inputmode="numeric" autocomplete="off" placeholder="PIN">
       <div class="row">
         <button class="cancel" id="btnPinCancel" type="button">Chiudi</button>
         <button class="ok" id="btnPinOk" type="button">Entra</button>
@@ -272,15 +238,13 @@
       </thead>
       <tbody></tbody>
     </table>
-
   </div>
 
 <script>
-  // ===== CONFIG ====
-  const API_URL   = "https://script.google.com/macros/s/AKfycbymY3lNuMU13fv2NSXJBBAkGh0iOMzABjzuWnARGjsY_UHr7ZWEUM6wss9f1A2zbi9dcA/exec";
-  const ADMIN_KEY = "sachaolivaamarboard101010";
-  const ADMIN_PIN = "011235813";
-  const ADMIN_TTL_HOURS = 1;
+  const API_URL = "https://script.google.com/macros/s/AKfycby-o0FWIL1NVCr_bWznqmkA4yCBnIhQzdyQGOaLDbAD-q_MOfBMjhL1knxVoPWbhHSl/exec";
+  const ADMIN_KEY = "amarboard00102030405060708090";
+  const ADMIN_PIN = "2486";
+  const ADMIN_TTL_HOURS = 10;
   const MANAGED_BY = "AmarBoard";
   const REFRESH_MS = 12000;
 
@@ -300,43 +264,6 @@
     box.textContent = "";
   }
 
-  function isAdmin(){
-    try{
-      const raw = localStorage.getItem("AB_ADMIN_ADMINPAGE");
-      if(!raw) return false;
-      const obj = JSON.parse(raw);
-      return obj && obj.until && Date.now() < obj.until;
-    }catch{ return false; }
-  }
-  function setAdminSession(){
-    localStorage.setItem("AB_ADMIN_ADMINPAGE", JSON.stringify({ until: Date.now() + ADMIN_TTL_HOURS*3600000 }));
-  }
-  function clearAdminSession(){
-    localStorage.removeItem("AB_ADMIN_ADMINPAGE");
-  }
-
-  function openPin(){
-    document.getElementById("pinModal").style.display = "flex";
-    document.getElementById("pinErr").style.display = "none";
-    document.getElementById("pinInput").value = "";
-    setTimeout(()=>document.getElementById("pinInput").focus(),50);
-    renderEmoji();
-  }
-  function closePin(){
-    document.getElementById("pinModal").style.display = "none";
-  }
-  function submitPin(){
-    const v = document.getElementById("pinInput").value;
-    if(v === ADMIN_PIN){
-      setAdminSession();
-      closePin();
-      init();
-    } else {
-      document.getElementById("pinErr").style.display = "block";
-    }
-  }
-
-  // JSONP helper
   function jsonp(url){
     return new Promise((resolve,reject)=>{
       const cb="cb_"+Math.random().toString(36).slice(2);
@@ -376,27 +303,61 @@
     }catch{ return iso; }
   }
 
+  function isAdmin(){
+    try{
+      const raw=localStorage.getItem("AB_ADMIN_ADMINPAGE");
+      if(!raw) return false;
+      const obj=JSON.parse(raw);
+      return obj && obj.until && Date.now() < obj.until;
+    }catch{ return false; }
+  }
+  function setAdminSession(){
+    localStorage.setItem("AB_ADMIN_ADMINPAGE", JSON.stringify({ until: Date.now()+ADMIN_TTL_HOURS*3600000 }));
+  }
+  function clearAdminSession(){
+    localStorage.removeItem("AB_ADMIN_ADMINPAGE");
+  }
+  function submitPin(){
+    const v=document.getElementById("pinInput").value;
+    if(v===ADMIN_PIN){
+      setAdminSession();
+      document.getElementById("pinModal").style.display="none";
+      init();
+    } else {
+      document.getElementById("pinErr").style.display="block";
+    }
+  }
+
+  function countNew(rows){
+    return rows.filter(r => String(r.Stato||"").toUpperCase().trim()==="NUOVA").length;
+  }
+  function sortNewFirst(rows){
+    return rows.slice().sort((a,b)=>{
+      const sa=String(a.Stato||"").toUpperCase().trim();
+      const sb=String(b.Stato||"").toUpperCase().trim();
+      const pa=(sa==="NUOVA")?0:(sa==="PRESA_IN_CARICO")?1:2;
+      const pb=(sb==="NUOVA")?0:(sb==="PRESA_IN_CARICO")?1:2;
+      if(pa!==pb) return pa-pb;
+      return String(b.DataISO||"").localeCompare(String(a.DataISO||""));
+    });
+  }
+
   async function fetchList(){
     const only = document.getElementById("filtroStato").value || "";
     const q = (document.getElementById("q").value || "").trim();
-
     const url = API_URL + "?action=list&key=" + encodeURIComponent(ADMIN_KEY) +
                 "&only=" + encodeURIComponent(only) +
                 "&q=" + encodeURIComponent(q);
-
-    // qui possiamo usare JSONP per evitare CORS
     const data = await jsonp(url);
     if(!data || !data.ok) throw new Error(data?.error || "Errore list");
     return data.rows || [];
   }
 
   async function updateRow(id, stato){
-    // update NON serve JSONP se ti va: ma usiamo JSONP uguale così è “sempre ok”
     const url = API_URL + "?action=update&key=" + encodeURIComponent(ADMIN_KEY) +
                 "&id=" + encodeURIComponent(id) +
                 "&stato=" + encodeURIComponent(stato) +
                 "&by=" + encodeURIComponent(MANAGED_BY);
-
     const data = await jsonp(url);
     if(!data || !data.ok) throw new Error(data?.error || "Errore update");
     return true;
@@ -406,26 +367,9 @@
     const url = API_URL + "?action=archive&key=" + encodeURIComponent(ADMIN_KEY) +
                 "&id=" + encodeURIComponent(id) +
                 "&by=" + encodeURIComponent(MANAGED_BY);
-
     const data = await jsonp(url);
     if(!data || !data.ok) throw new Error(data?.error || "Errore archive");
     return true;
-  }
-
-  function countNew(rows){
-    return rows.filter(r => String(r.Stato||"").toUpperCase().trim() === "NUOVA").length;
-  }
-
-  function sortNewFirst(rows){
-    // NUOVA prima, poi DataISO desc
-    return rows.slice().sort((a,b)=>{
-      const sa = String(a.Stato||"").toUpperCase().trim();
-      const sb = String(b.Stato||"").toUpperCase().trim();
-      const pa = (sa==="NUOVA") ? 0 : (sa==="PRESA_IN_CARICO") ? 1 : 2;
-      const pb = (sb==="NUOVA") ? 0 : (sb==="PRESA_IN_CARICO") ? 1 : 2;
-      if(pa !== pb) return pa - pb;
-      return String(b.DataISO||"").localeCompare(String(a.DataISO||""));
-    });
   }
 
   async function refresh(){
@@ -466,34 +410,24 @@
           paging: false,
           info: false,
           searching: false,
-          order: [] // gestito da sortNewFirst
+          order: []
         });
       } else {
         table.clear();
         table.rows.add(rows).draw(false);
       }
-
       renderEmoji();
     }catch(e){
-      console.error(e);
       showError("Errore refresh: " + (e?.message ?? String(e)));
     }
   }
 
   function init(){
-    if(!isAdmin()){
-      openPin();
-      return;
-    }
-
-    closePin();
     refresh();
-
     if(timer) clearInterval(timer);
     timer = setInterval(refresh, REFRESH_MS);
 
     document.getElementById("btnRefresh").addEventListener("click", refresh);
-
     document.getElementById("btnLogout").addEventListener("click", ()=>{
       clearAdminSession();
       location.reload();
@@ -501,7 +435,6 @@
 
     document.getElementById("filtroStato").addEventListener("change", refresh);
     document.getElementById("q").addEventListener("keyup", ()=>{
-      // piccolo debounce
       if(window.__t) clearTimeout(window.__t);
       window.__t = setTimeout(refresh, 250);
     });
@@ -520,8 +453,8 @@
         if(act === "no")   await updateRow(id, "RIFIUTATA");
         if(act === "done") await updateRow(id, "EVASA");
         if(act === "del"){
-          const conf = confirm("Eliminare la richiesta? (Verrà archiviata: Stato=ELIMINATA)");
-          if(!conf) { t.disabled = false; return; }
+          const conf = confirm("Eliminare la richiesta? (Stato=ELIMINATA, resta nello storico)");
+          if(!conf){ t.disabled=false; return; }
           await archiveRow(id);
         }
         await refresh();
@@ -536,11 +469,17 @@
   }
 
   document.addEventListener("DOMContentLoaded", ()=>{
-    if(isAdmin()) init();
-    else openPin();
+    if(isAdmin()){
+      document.getElementById("pinModal").style.display="none";
+      init();
+    } else {
+      document.getElementById("pinModal").style.display="flex";
+      document.getElementById("pinErr").style.display="none";
+      document.getElementById("pinInput").value="";
+      setTimeout(()=>document.getElementById("pinInput").focus(),50);
+    }
 
     document.getElementById("btnPinOk").addEventListener("click", submitPin);
-    document.getElementById("btnPinCancel").addEventListener("click", ()=>{ /* resta in modal */ });
     document.getElementById("pinInput").addEventListener("keydown",(e)=>{ if(e.key==="Enter") submitPin(); });
     renderEmoji();
   });
