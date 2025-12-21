@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Catalogo Giochi – AmarBoard Natale</title>
 
   <!-- No cache per l'HTML -->
@@ -117,21 +117,29 @@
       pointer-events: none;
     }
 
+    /* ✅ LOGO CENTRATO "COME PRIMA" */
     .header-flex {
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
       align-items: center;
-      justify-content: space-between;
       gap: 12px;
       margin-bottom: 6px;
-      flex-wrap: wrap;
       position: relative;
       z-index: 4;
     }
-
-    .brand-left{
+    .header-left { min-height: 1px; }
+    .header-center {
       display:flex;
       align-items:center;
+      justify-content:center;
       gap:12px;
+    }
+    .header-right {
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:10px;
+      flex-wrap: wrap;
     }
 
     .xmas-icon { font-size: 2rem; }
@@ -142,14 +150,6 @@
       border-radius: 999px;
       box-shadow: 0 0 6px rgba(0,0,0,0.25);
       background: #fff;
-    }
-
-    .userbox{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      flex-wrap: wrap;
-      justify-content:flex-end;
     }
 
     .pill{
@@ -529,6 +529,51 @@
       vertical-align: -0.1em;
     }
 
+    /* ===== COUNTDOWN BANNER + SPOILER SHIELD ===== */
+    #countdownBanner{
+      position: fixed;
+      inset: 70px 16px auto 16px;
+      max-width: 1200px;
+      margin: 0 auto;
+      z-index: 9999;
+      background: rgba(255,250,243,0.98);
+      border: 2px solid rgba(176,32,48,0.35);
+      box-shadow: 0 0 18px rgba(176,32,48,0.25);
+      border-radius: 16px;
+      padding: 14px 16px;
+      text-align: center;
+      color: #7a0f1a;
+      font-weight: 900;
+    }
+    #countdownBanner small{
+      display:block;
+      margin-top:6px;
+      font-weight: 800;
+      color:#444;
+    }
+    #countdownTime{
+      font-variant-numeric: tabular-nums;
+      font-size: 1.4rem;
+      color: #b02030;
+    }
+
+    .spoiler-hidden #wrapper{
+      filter: blur(10px);
+      pointer-events: none;
+      user-select: none;
+    }
+    .spoiler-hidden #wrapper::after{
+      content:"Catalogo in arrivo…";
+      position:absolute;
+      inset: 0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size: 1.4rem;
+      font-weight: 900;
+      color: rgba(122,15,26,0.85);
+    }
+
     @media(max-width: 900px) {
       .stats-bar { grid-template-columns: 1fr; }
       .grid2{ grid-template-columns: 1fr; }
@@ -540,16 +585,22 @@
         padding: 14px;
       }
       .filters { flex-direction: column; align-items: stretch; }
-      .header-flex { flex-direction: column; align-items: stretch; }
-      .userbox{ justify-content:flex-start; }
       .logo-amar { height: 70px; }
       #lastUpdate { text-align:left; }
       .footer-note{ justify-content:flex-start; }
+      .header-flex { grid-template-columns: 1fr; }
+      .header-right { justify-content: center; }
     }
   </style>
 </head>
 
 <body>
+
+<!-- Countdown banner -->
+<div id="countdownBanner" style="display:none;">
+  🎁 La pagina si sblocca tra <span id="countdownTime">--:--:--</span>
+  <small>Fino a quell’ora il catalogo resta “coperto”.</small>
+</div>
 
 <div class="garland">
   <span>✨</span><span>🎄</span><span>⭐</span><span>🕯️</span>
@@ -567,16 +618,17 @@
 <div class="snowflake">❄</div>
 
 <div id="wrapper">
+  <!-- HEADER con logo centrato -->
   <div class="header-flex">
-    <div class="brand-left">
+    <div class="header-left"></div>
+
+    <div class="header-center">
       <span class="xmas-icon">🎄</span>
-      <img class="logo-amar"
-           src="logo_amarboard.png"
-           alt="AmarBoard Romagna">
+      <img class="logo-amar" src="logo_amarboard.png" alt="AmarBoard Romagna">
       <span class="xmas-icon">🎲</span>
     </div>
 
-    <div class="userbox">
+    <div class="header-right">
       <a id="adminLink" href="admin.html">🛡️ Area Admin</a>
 
       <span class="pill" id="userPill" style="display:none;">
@@ -595,7 +647,7 @@
     <span>Speciale Natale:</span> trova il gioco giusto (o fatti suggerire dai nostri Volontari) da intavolare con gli amici sui nostri tavoli.
   </div>
 
-  <!-- BARRA STATISTICHE -->
+  <!-- STATS -->
   <div class="stats-bar">
     <div class="stat-box">
       <div class="stat-label">Giochi attualmente in prestito</div>
@@ -613,7 +665,7 @@
     </div>
   </div>
 
-  <!-- FILTRI + BOTTONE AGGIORNA -->
+  <!-- FILTRI -->
   <div class="filters">
     <div class="filters-left">
       <div class="filter-block">
@@ -637,6 +689,7 @@
   <div id="errorBox"></div>
   <div id="lastUpdate">Ultimo aggiornamento: –</div>
 
+  <!-- ✅ 9 colonne: devono combaciare con DataTables -->
   <table id="tblCatalogo" class="display" style="width:100%">
     <thead>
     <tr>
@@ -743,12 +796,17 @@ const LS_USER_PROFILE = "AB_USER_PROFILE";
 // Auto refresh
 const AUTO_REFRESH_MS = 30000;
 
+// Countdown: per default "domani alle 09:00" (ora locale browser)
+// Se vuoi fissare una data precisa, scrivi l'ISO qui sotto (es. "2026-01-01T09:00:00+01:00"), altrimenti lascia vuoto.
+const REVEAL_AT_ISO = "2026-01-01T09:00:00+01:00";
+
 /* =========================
    STATE
 ========================= */
 let table = null;
 let currentUser = null; // { Username, Nome, Telefono, Ruolo }
 let requestedMap = {};  // titolo -> {open, approved}
+let countdownTimer = null;
 
 /* =========================
    HELPERS UI
@@ -828,8 +886,72 @@ function refreshUserUI(){
     adminLink.style.display = "none";
     role.style.display = "none";
   }
-
   renderEmoji();
+}
+
+function isAdminUser(){
+  return currentUser && String(currentUser.Ruolo||"") === "admin";
+}
+
+/* =========================
+   COUNTDOWN / SPOILER SHIELD
+========================= */
+function computeRevealAt(){
+  if (REVEAL_AT_ISO && String(REVEAL_AT_ISO).trim()){
+    const t = new Date(String(REVEAL_AT_ISO).trim()).getTime();
+    return isNaN(t) ? null : t;
+  }
+  // default: domani alle 09:00 (ora locale browser)
+  const now = new Date();
+  const t = new Date(now.getFullYear(), now.getMonth(), now.getDate()+1, 9, 0, 0, 0).getTime();
+  return t;
+}
+
+const REVEAL_AT = computeRevealAt();
+
+function startCountdownShield(){
+  const banner = $("countdownBanner");
+  const timeEl = $("countdownTime");
+
+  function unlock(){
+    document.body.classList.remove("spoiler-hidden");
+    banner.style.display = "none";
+    if (countdownTimer) clearInterval(countdownTimer);
+  }
+
+  function tick(){
+    // admin bypass sempre
+    if (isAdminUser()){
+      unlock();
+      return;
+    }
+
+    if (!REVEAL_AT){
+      // se REVEAL_AT invalido, non bloccare
+      unlock();
+      return;
+    }
+
+    const diff = REVEAL_AT - Date.now();
+    if (diff <= 0){
+      unlock();
+      // sblocco: carico dati
+      aggiornaTutto();
+      return;
+    }
+
+    document.body.classList.add("spoiler-hidden");
+    banner.style.display = "block";
+
+    const totalSec = Math.floor(diff/1000);
+    const h = String(Math.floor(totalSec/3600)).padStart(2,"0");
+    const m = String(Math.floor((totalSec%3600)/60)).padStart(2,"0");
+    const s = String(totalSec%60).padStart(2,"0");
+    timeEl.textContent = `${h}:${m}:${s}`;
+  }
+
+  tick();
+  countdownTimer = setInterval(tick, 1000);
 }
 
 /* =========================
@@ -869,6 +991,9 @@ function parseCSVText(csvText){
     header: true,
     skipEmptyLines: true
   });
+  if (parsed.errors && parsed.errors.length){
+    console.warn("PapaParse errors:", parsed.errors);
+  }
   return parsed.data || [];
 }
 
@@ -898,7 +1023,7 @@ async function caricaStats(){
       }
     }
 
-    // chiavi compatibili con varie versioni
+    // compatibilità multi-versione
     addTop("Top1Titolo","Top1Prestiti");
     addTop("Top2Titolo","Top2Prestiti");
     addTop("Top3Titolo","Top3Prestiti");
@@ -907,7 +1032,6 @@ async function caricaStats(){
     addTop("TopEvento3Titolo","TopEvento3Val");
 
   }catch(e){
-    // stats opzionali: non bloccare
     console.warn("Stats:", e);
   }
 }
@@ -930,14 +1054,26 @@ async function caricaRequestedMap(){
 }
 
 /* =========================
+   DataTables safety check
+========================= */
+function ensureDataTablesLoaded(){
+  if (!window.jQuery || !jQuery.fn || !jQuery.fn.DataTable){
+    showError("Errore: DataTables non caricato (CDN bloccato o offline). Ricarica la pagina o controlla la connessione.");
+    return false;
+  }
+  return true;
+}
+
+/* =========================
    CATALOGO + DATATABLE
 ========================= */
 async function caricaCatalogo(){
+  if (!ensureDataTablesLoaded()) return;
+
   const text = await fetchTextNoStore(CSV_BASE_URL);
   const raw = parseCSVText(text);
 
   const data = [];
-
   raw.forEach(row=>{
     if(!row["Titolo"]) return;
 
@@ -953,88 +1089,103 @@ async function caricaCatalogo(){
     });
   });
 
+  // Init o refresh
   if(!table){
-    table = $("#tblCatalogo").DataTable({
-      data: data,
-      columns: [
-        {
-          data: "Titolo",
-          render: (d, type, row) => {
-            const title = String(d || "");
-            // aggiungo badge richiesto/prenotato accanto al titolo
-            return `<strong>${escapeHtml(title)}</strong>${gameReqBadge(title)}`;
-          }
-        },
-        { data: "Giocatori" },
-        { data: "Durata" },
-        { data: "Eta" },
-        { data: "Editore" },
-        {
-          data: "Disponibili",
-          render: d => `<strong>${escapeHtml(d ?? "")}</strong>`
-        },
-        {
-          data: "Stato",
-          render: d => statoBadge(d)
-        },
-        {
-          data: "BGG",
-          orderable: false,
-          render: d => {
-            const safe = String(d || "").trim();
-            if(!safe) return "";
-            if(!/^https?:\/\//i.test(safe)) return "";
-            return `<a class="bgg-link" href="${safe}" target="_blank" rel="noopener noreferrer">Scheda</a>`;
-          }
-        },
-        {
-          data: null,
-          orderable: false,
-          render: (d, type, row) => {
-            const title = String(row.Titolo || "");
-            const gioc = String(row.Giocatori || "");
-            return `<button class="btn btn-ok btnReq" type="button"
-                      data-titolo="${escapeAttr(title)}"
-                      data-giocatori="${escapeAttr(gioc)}">📝 Richiedi</button>`;
-          }
-        }
-      ],
-      paging: false,
-      info: false,
-      lengthChange: false,
-      order: [[0, "asc"]],
-      language: {
-        url: "https://cdn.datatables.net/plug-ins/1.13.8/i18n/it-IT.json"
-      },
-      createdRow: function(row, rowData){
-        const stato = (rowData.Stato || "").toLowerCase().trim();
-        if(stato === "disponibile") row.classList.add("disponibile-row");
-        else if(stato === "in prestito") row.classList.add("prestato-row");
-      },
-      drawCallback: function(){
-        // dopo ogni redraw: twemoji
-        renderEmoji();
-      }
-    });
+    // micro-delay per evitare race condition DOM/DT
+    await new Promise(r => setTimeout(r, 0));
 
-    // Filtri
-    $("filtroStato").addEventListener("change", function(){
-      table.column(6).search(this.value, false, false).draw();
-    });
-    $("filtroGiocatori").addEventListener("keyup", function(){
-      table.column(1).search(this.value, false, false).draw();
-    });
+    try{
+      table = $("#tblCatalogo").DataTable({
+        data: data,
+        destroy: true,
+        retrieve: true,
+        columns: [
+          {
+            data: "Titolo",
+            render: (d) => {
+              const title = String(d || "");
+              return `<strong>${escapeHtml(title)}</strong>${gameReqBadge(title)}`;
+            }
+          },
+          { data: "Giocatori" },
+          { data: "Durata" },
+          { data: "Eta" },
+          { data: "Editore" },
+          {
+            data: "Disponibili",
+            render: d => `<strong>${escapeHtml(d ?? "")}</strong>`
+          },
+          {
+            data: "Stato",
+            render: d => statoBadge(d)
+          },
+          {
+            data: "BGG",
+            orderable: false,
+            render: d => {
+              const safe = String(d || "").trim();
+              if(!safe) return "";
+              if(!/^https?:\/\//i.test(safe)) return "";
+              return `<a class="bgg-link" href="${safe}" target="_blank" rel="noopener noreferrer">Scheda</a>`;
+            }
+          },
+          {
+            data: null,
+            orderable: false,
+            render: (d, type, row) => {
+              const title = String(row.Titolo || "");
+              const gioc = String(row.Giocatori || "");
+              return `<button class="btn btn-ok btnReq" type="button"
+                        data-titolo="${escapeAttr(title)}"
+                        data-giocatori="${escapeAttr(gioc)}">📝 Richiedi</button>`;
+            }
+          }
+        ],
+        paging: false,
+        info: false,
+        lengthChange: false,
+        order: [[0, "asc"]],
+        language: {
+          url: "https://cdn.datatables.net/plug-ins/1.13.8/i18n/it-IT.json"
+        },
+        createdRow: function(row, rowData){
+          const stato = (rowData.Stato || "").toLowerCase().trim();
+          if(stato === "disponibile") row.classList.add("disponibile-row");
+          else if(stato === "in prestito") row.classList.add("prestato-row");
+        },
+        drawCallback: function(){ renderEmoji(); }
+      });
 
-    // Delegation per bottoni Richiedi
-    document.addEventListener("click", (e)=>{
-      const btn = e.target.closest(".btnReq");
-      if(!btn) return;
-      openRequestModal(btn.getAttribute("data-titolo"), btn.getAttribute("data-giocatori"));
-    });
+      // Filtri (una sola volta)
+      $("filtroStato").addEventListener("change", function(){
+        table.column(6).search(this.value, false, false).draw();
+      });
+      $("filtroGiocatori").addEventListener("keyup", function(){
+        table.column(1).search(this.value, false, false).draw();
+      });
+
+      // Delegation per bottoni Richiedi
+      document.addEventListener("click", (e)=>{
+        const btn = e.target.closest(".btnReq");
+        if(!btn) return;
+        openRequestModal(btn.getAttribute("data-titolo"), btn.getAttribute("data-giocatori"));
+      });
+
+    }catch(e){
+      console.error(e);
+      showError("Errore DataTables: " + (e?.message ?? String(e)));
+    }
 
   } else {
-    table.clear();
-    table.rows.add(data).draw(false);
+    try{
+      table.clear();
+      table.rows.add(data).draw(false);
+    }catch(e){
+      // se qualcosa si è rotto, riparto pulito
+      console.warn("Reinit DataTables:", e);
+      table = null;
+      await caricaCatalogo();
+    }
   }
 }
 
@@ -1044,13 +1195,10 @@ async function caricaCatalogo(){
 async function aggiornaTutto(){
   clearError();
   try{
-    // prima: richieste per badge (così le metto nel titolo)
     await caricaRequestedMap();
-
-    // poi: stats + catalogo
     await Promise.all([caricaStats(), caricaCatalogo()]);
-
     aggiornaTimestamp();
+    renderEmoji();
   }catch(e){
     console.error(e);
     showError("Errore aggiornamento dati: " + (e?.message ?? String(e)));
@@ -1069,9 +1217,7 @@ function openLogin(){
   setTimeout(()=> $("loginUser").focus(), 50);
   renderEmoji();
 }
-function closeLogin(){
-  $("loginBackdrop").style.display = "none";
-}
+function closeLogin(){ $("loginBackdrop").style.display = "none"; }
 
 async function doLogin(){
   const u = String($("loginUser").value || "").trim().toLowerCase();
@@ -1085,17 +1231,15 @@ async function doLogin(){
   }
 
   try{
-    // 1) challenge
     const ch = await jsonp(API_URL + "?action=challenge&username=" + encodeURIComponent(u));
     if(!ch || !ch.ok || !ch.nonce) throw new Error(ch?.error || "challenge_failed");
 
     const nonce = ch.nonce;
 
-    // 2) proof = sha256Hex( sha256Hex(passwordPlain) + ":" + nonce )
+    // proof = sha256Hex( sha256Hex(passwordPlain) + ":" + nonce )
     const passHash = sha256Hex(p);
     const proof = sha256Hex(passHash + ":" + nonce);
 
-    // 3) login_challenge
     const resp = await jsonp(
       API_URL + "?action=login_challenge&username=" + encodeURIComponent(u) +
       "&nonce=" + encodeURIComponent(nonce) +
@@ -1113,6 +1257,14 @@ async function doLogin(){
     refreshUserUI();
     closeLogin();
 
+    // se sei admin, bypass immediato del countdown
+    startCountdownShield();
+
+    // se admin, carico subito
+    if (isAdminUser()){
+      await aggiornaTutto();
+    }
+
   }catch(e){
     console.warn(e);
     $("loginMsg").className = "msg msg-no";
@@ -1126,7 +1278,6 @@ async function restoreSession(){
     const token = localStorage.getItem(LS_USER_TOKEN) || "";
     if(!token) return;
 
-    // uso /me per validare token
     const me = await jsonp(API_URL + "?action=me&token=" + encodeURIComponent(token));
     if(me && me.ok && me.profile){
       currentUser = me.profile;
@@ -1134,9 +1285,7 @@ async function restoreSession(){
       refreshUserUI();
       return;
     }
-  }catch(e){
-    // token scaduto o errori
-  }
+  }catch(e){}
 
   localStorage.removeItem(LS_USER_TOKEN);
   localStorage.removeItem(LS_USER_PROFILE);
@@ -1149,6 +1298,8 @@ function doLogout(){
   localStorage.removeItem(LS_USER_PROFILE);
   currentUser = null;
   refreshUserUI();
+  // ricalcolo countdown (non admin => torna coperto se ancora prima del reveal)
+  startCountdownShield();
 }
 
 /* =========================
@@ -1158,9 +1309,11 @@ function openRequestModal(titolo, giocatori){
   $("reqTitolo").value = titolo || "";
   $("reqGiocatori").value = giocatori || "";
 
-  const profRaw = localStorage.getItem(LS_USER_PROFILE);
   let prof = null;
-  try{ prof = profRaw ? JSON.parse(profRaw) : null; }catch(e){}
+  try{
+    const raw = localStorage.getItem(LS_USER_PROFILE);
+    prof = raw ? JSON.parse(raw) : null;
+  }catch(e){}
 
   $("reqNome").value = (prof && prof.Nome) ? prof.Nome : "";
   $("reqTelefono").value = (prof && prof.Telefono) ? prof.Telefono : "";
@@ -1171,10 +1324,7 @@ function openRequestModal(titolo, giocatori){
   $("reqBackdrop").style.display = "flex";
   renderEmoji();
 }
-
-function closeRequestModal(){
-  $("reqBackdrop").style.display = "none";
-}
+function closeRequestModal(){ $("reqBackdrop").style.display = "none"; }
 
 async function sendRequest(){
   const titolo = String($("reqTitolo").value || "").trim();
@@ -1195,7 +1345,6 @@ async function sendRequest(){
 
   const token = localStorage.getItem(LS_USER_TOKEN) || "";
 
-  // Body form-urlencoded
   const body = new URLSearchParams();
   body.set("action", "submit");
   body.set("Titolo", titolo);
@@ -1205,25 +1354,20 @@ async function sendRequest(){
   body.set("Note", note);
   if(token) body.set("token", token);
 
-  // Importante: Apps Script spesso blocca la lettura risposta (CORS),
-  // ma la richiesta può arrivare lo stesso. Quindi:
-  // 1) provo fetch normale
-  // 2) se fallisce, riprovo no-cors e considero "ok" se non esplode.
   try{
     let sent = false;
 
+    // Tentativo "normale" (se CORS consente risposta)
     try{
       const res = await fetch(API_URL, {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
         body: body.toString()
       });
-      // se CORS blocca, qui potrebbe andare in catch prima.
-      // se arriva, provo a leggere JSON
       const j = await res.json();
       if(j && j.ok) sent = true;
     }catch(e1){
-      // fallback no-cors: non posso leggere la risposta, ma spesso invia comunque
+      // Fallback "no-cors": spesso invia ma non fa leggere la risposta
       try{
         await fetch(API_URL, {
           method: "POST",
@@ -1240,14 +1384,9 @@ async function sendRequest(){
     if(sent){
       $("reqMsg").className = "msg msg-ok";
       $("reqMsg").style.display = "block";
-      $("reqMsg").textContent = "✅ Richiesta inviata! (Se non vedi subito il badge, attendi qualche secondo e aggiorna.)";
+      $("reqMsg").textContent = "✅ Richiesta inviata! (Se non vedi subito il badge, attendi un attimo e aggiorna.)";
 
-      // refresh badge dopo un attimo
-      setTimeout(async ()=>{
-        await aggiornaTutto();
-      }, 1200);
-
-      // chiudo dopo un po'
+      setTimeout(async ()=>{ await aggiornaTutto(); }, 1200);
       setTimeout(()=> closeRequestModal(), 1600);
     } else {
       throw new Error("invio_non_riuscito");
@@ -1281,10 +1420,8 @@ function escapeAttr(s){
 }
 
 /* =========================
-   SHA-256 (pure JS) – compatibile ovunque
-   (così non dipendi da window.crypto)
+   SHA-256 (pure JS) – no window.crypto
 ========================= */
-// Minimal SHA-256 implementation (pure JS)
 function sha256Hex(ascii){
   function rightRotate(value, amount){ return (value>>>amount) | (value<<(32-amount)); }
   const mathPow = Math.pow, maxWord = mathPow(2,32);
@@ -1367,7 +1504,11 @@ document.addEventListener("DOMContentLoaded", async function(){
   $("loginPass").addEventListener("keydown", (e)=>{ if(e.key==="Enter") doLogin(); });
 
   // Refresh
-  $("btnRefresh").addEventListener("click", aggiornaTutto);
+  $("btnRefresh").addEventListener("click", async ()=>{
+    // non spoilerare se bloccato e non admin
+    if (!isAdminUser() && REVEAL_AT && Date.now() < REVEAL_AT) return;
+    await aggiornaTutto();
+  });
 
   // Modal request
   $("btnReqCancel").addEventListener("click", closeRequestModal);
@@ -1377,12 +1518,23 @@ document.addEventListener("DOMContentLoaded", async function(){
   // Session restore
   await restoreSession();
 
+  // Countdown (con bypass admin)
+  startCountdownShield();
+
+  // Se NON admin e siamo prima del reveal: non carico dati
+  if (!isAdminUser() && REVEAL_AT && Date.now() < REVEAL_AT){
+    renderEmoji();
+    return;
+  }
+
   // Load now
   await aggiornaTutto();
-  renderEmoji();
 
   // Auto refresh
-  setInterval(aggiornaTutto, AUTO_REFRESH_MS);
+  setInterval(() => {
+    if (!isAdminUser() && REVEAL_AT && Date.now() < REVEAL_AT) return;
+    aggiornaTutto();
+  }, AUTO_REFRESH_MS);
 });
 </script>
 
