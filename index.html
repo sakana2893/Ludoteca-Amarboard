@@ -21,11 +21,8 @@
   <!-- PapaParse per leggere CSV -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
-  <!-- Twemoji (emoji compatibili ovunque) -->
+  <!-- Twemoji (emoji compatibili ovunque: niente più "?" al posto delle emoji) -->
   <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
-
-  <!-- CryptoJS fallback per browser vecchi (Win7 ecc.) -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
 
   <style>
     :root {
@@ -88,6 +85,7 @@
       font-size: 1.4rem;
       z-index: 2;
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      user-select:none;
     }
     .garland span { animation: blink 2.2s linear infinite; }
     .garland span:nth-child(odd) { animation-delay: 0.7s; }
@@ -122,20 +120,95 @@
     .header-flex {
       display: flex;
       align-items: center;
-      justify-content: center;
-      gap: 18px;
+      justify-content: space-between;
+      gap: 12px;
       margin-bottom: 6px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 4;
+    }
+
+    .brand-left{
+      display:flex;
+      align-items:center;
+      gap:12px;
     }
 
     .xmas-icon { font-size: 2rem; }
 
     .logo-amar {
-      height: 80px;
+      height: 76px;
       width: auto;
       border-radius: 999px;
       box-shadow: 0 0 6px rgba(0,0,0,0.25);
       background: #fff;
     }
+
+    .userbox{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      flex-wrap: wrap;
+      justify-content:flex-end;
+    }
+
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      font-weight:900;
+      background:rgba(255,250,243,0.95);
+      border:1px solid rgba(243,208,138,0.85);
+      color:#7a0f1a;
+      user-select:none;
+      white-space:nowrap;
+    }
+
+    .btn {
+      padding: 7px 10px;
+      border-radius: 12px;
+      border: 1px solid #ccc;
+      background: #fff;
+      cursor: pointer;
+      font-weight: 900;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      user-select:none;
+    }
+    .btn:hover{ filter: brightness(0.98); }
+
+    .btn-ok{
+      border: 1px solid rgba(31,122,58,.55);
+      background: rgba(233,255,240,.95);
+      color:#155724;
+    }
+    .btn-no{
+      border: 1px solid rgba(176,32,48,.45);
+      background: rgba(255,231,231,.92);
+      color:#7a0f1a;
+    }
+    .btn-neutral{
+      border: 1px solid rgba(0,0,0,.18);
+      background: rgba(255,255,255,.92);
+      color:#333;
+    }
+
+    #adminLink{
+      display:none;
+      font-weight:900;
+      color:var(--rosso-natale);
+      text-decoration:none;
+      background:rgba(255,250,243,0.95);
+      border:1px solid rgba(176,32,48,0.35);
+      padding:6px 10px;
+      border-radius:999px;
+      user-select:none;
+      white-space:nowrap;
+    }
+    #adminLink:hover{ text-decoration: underline; }
 
     h1 {
       text-align: center;
@@ -143,6 +216,8 @@
       font-size: 1.8rem;
       color: var(--rosso-natale);
       text-shadow: 0 1px 0 #fff, 0 0 6px rgba(176,32,48,0.35);
+      position: relative;
+      z-index: 4;
       font-weight: 900;
     }
 
@@ -151,6 +226,8 @@
       font-size: 0.9rem;
       color: #555;
       margin-bottom: 12px;
+      position: relative;
+      z-index: 4;
       font-weight: 800;
     }
     .subtitle span { color: var(--verde-natale); font-weight: 900; }
@@ -160,6 +237,8 @@
       grid-template-columns: repeat(3, minmax(0,1fr));
       gap: 12px;
       margin-bottom: 16px;
+      position: relative;
+      z-index: 4;
     }
 
     .stat-box {
@@ -184,6 +263,7 @@
       font-size: 1.4rem;
       font-weight: 900;
       color: var(--rosso-natale);
+      font-variant-numeric: tabular-nums;
     }
 
     .stat-note {
@@ -211,6 +291,8 @@
       border-radius: 12px;
       background: linear-gradient(90deg, #fffdf7, #f7fff7);
       border: 1px solid rgba(31,122,58,0.18);
+      position: relative;
+      z-index: 4;
     }
 
     .filters-left {
@@ -230,62 +312,58 @@
 
     select, input[type="text"] {
       padding: 6px 8px;
-      border-radius: 6px;
+      border-radius: 10px;
       border: 1px solid #ccc;
       font-size: 0.85rem;
-      min-width: 120px;
+      min-width: 140px;
       background: #fff;
       font-weight: 800;
     }
 
-    .btn {
-      padding: 6px 10px;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      background: #fff;
-      font-size: 0.85rem;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-weight: 900;
-      user-select:none;
-    }
-
     #btnRefresh {
+      padding: 8px 12px;
+      border-radius: 12px;
       border: 1px solid var(--verde-natale);
       background: #e9fff0;
       color: var(--verde-natale);
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 900;
+      user-select:none;
     }
     #btnRefresh:hover { background: #d6ffe5; }
 
-    #btnLogin {
+    #lastUpdate {
+      font-size: 0.78rem;
+      color: #666;
+      font-weight: 800;
+      text-align: right;
+      margin-top: 8px;
+      position: relative;
+      z-index: 4;
+    }
+
+    /* box errori */
+    #errorBox {
+      display: none;
+      margin: 10px 0 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
       border: 1px solid rgba(176,32,48,0.35);
-      background: rgba(255,231,231,0.75);
+      background: rgba(255, 231, 231, 0.85);
       color: #7a0f1a;
-    }
-    #btnLogin:hover { background: rgba(255,231,231,0.95); }
-
-    #btnLogoutUser{
-      display:none;
-      border: 1px solid rgba(0,0,0,0.2);
-      background: rgba(255,255,255,0.85);
-      color: #333;
-    }
-
-    #userPill{
-      display:none;
-      border-radius: 999px;
-      padding: 6px 10px;
-      border: 1px solid rgba(243,208,138,0.9);
-      background: rgba(255,250,243,0.95);
-      color:#7a3d00;
+      font-size: 0.85rem;
+      line-height: 1.35;
       font-weight: 900;
-      align-items:center;
-      gap:8px;
+      position: relative;
+      z-index: 4;
     }
 
-    #tblCatalogo_wrapper { margin-top: 6px; }
+    /* DataTables */
+    #tblCatalogo_wrapper { margin-top: 6px; position: relative; z-index: 4; }
 
     table.dataTable thead th {
       background: linear-gradient(180deg,#f7f7f7,#e3e3e3);
@@ -301,12 +379,13 @@
     }
 
     .badge {
-      padding: 4px 10px;
+      padding: 5px 10px;
       border-radius: 999px;
       font-size: 0.75rem;
       font-weight: 900;
       display: inline-block;
       white-space: nowrap;
+      user-select:none;
     }
     .badge-disponibile {
       background: #d4edda;
@@ -318,12 +397,21 @@
       color: #721c24;
       border: 1px solid #f1b0b7;
     }
-    .badge-richiesto{background:#efe1ff;color:#4a1a7a;border:1px solid #c9a7ff;margin-left:6px}
-    .badge-prenotato{background:#ffe8c7;color:#7a3d00;border:1px solid #ffc37a;margin-left:6px}
+
+    .badge-req{
+      background:#efe1ff;
+      border:1px solid #c9a7ff;
+      color:#4a1a7a;
+    }
+    .badge-booked{
+      background:#ffe8c7;
+      border:1px solid #ffc37a;
+      color:#7a3d00;
+    }
 
     a.bgg-link {
       color: var(--rosso-natale);
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       text-decoration: none;
       font-weight: 900;
     }
@@ -331,333 +419,119 @@
 
     .footer-note {
       margin-top: 10px;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       color: #777;
       text-align: right;
       font-weight: 800;
-    }
-
-    #errorBox {
-      display: none;
-      margin: 10px 0 12px;
-      padding: 10px 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(176,32,48,0.35);
-      background: rgba(255, 231, 231, 0.85);
-      color: #7a0f1a;
-      font-size: 0.85rem;
-      line-height: 1.35;
-      font-weight: 900;
       position: relative;
-      z-index: 5;
+      z-index: 4;
+      display:flex;
+      align-items:center;
+      justify-content:flex-end;
+      gap:10px;
+      flex-wrap: wrap;
     }
 
-    /* ===== COUNTDOWN BANNER + SPOILER SHIELD ===== */
-    #countdownBanner{
+    /* ===== MODALI ===== */
+    .modal-backdrop{
       position: fixed;
-      inset: 70px 16px auto 16px;
-      max-width: 1200px;
-      margin: 0 auto;
-      z-index: 9999;
-      background: rgba(255,250,243,0.98);
-      border: 2px solid rgba(176,32,48,0.35);
-      box-shadow: 0 0 18px rgba(176,32,48,0.25);
-      border-radius: 16px;
-      padding: 14px 16px;
-      text-align: center;
-      color: #7a0f1a;
-      font-weight: 900;
-      display:none;
-    }
-
-    #countdownBanner small{
-      display:block;
-      margin-top:6px;
-      font-weight: 900;
-      color:#444;
-    }
-
-    #countdownTime{
-      font-variant-numeric: tabular-nums;
-      font-size: 1.4rem;
-      color: #b02030;
-    }
-
-    .spoiler-hidden #wrapper{
-      filter: blur(10px);
-      pointer-events: none;
-      user-select: none;
-    }
-
-    .spoiler-hidden #wrapper::after{
-      content:"Catalogo in arrivo…";
-      position:absolute;
       inset: 0;
-      display:flex;
+      z-index: 10050;
+      background: rgba(0,0,0,.55);
+      display:none;
       align-items:center;
       justify-content:center;
-      font-size: 1.4rem;
+      padding:16px;
+    }
+    .modal{
+      width: min(520px, 100%);
+      background: rgba(255,250,243,.98);
+      border:2px solid rgba(176,32,48,0.35);
+      border-radius: 18px;
+      box-shadow: 0 0 24px rgba(0,0,0,.35);
+      padding: 14px 14px 12px;
+      color:#222;
+      position:relative;
+    }
+    .modal h2{
+      margin:0 0 10px;
+      color:#7a0f1a;
+      font-size: 1.15rem;
       font-weight: 900;
-      color: rgba(122,15,26,0.85);
     }
-
-    #countdownActions{
-      margin-top:10px;
+    .modal p{
+      margin:0 0 12px;
+      color:#444;
+      font-size:.9rem;
+      line-height:1.35;
+      font-weight: 800;
+    }
+    .grid2{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:10px;
+    }
+    .field{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      margin-bottom:10px;
+    }
+    .field label{
+      font-size:.82rem;
+      font-weight: 900;
+      color:#333;
+    }
+    .field input, .field textarea{
+      border:1px solid #ccc;
+      border-radius: 12px;
+      padding:10px 10px;
+      font-weight: 800;
+      font-family: inherit;
+      background:#fff;
+      font-size:.95rem;
+    }
+    .field textarea{ min-height: 90px; resize: vertical; }
+    .modal .row{
       display:flex;
       gap:10px;
-      justify-content:center;
-      flex-wrap:wrap
+      justify-content:flex-end;
+      flex-wrap: wrap;
+      margin-top: 8px;
     }
-
-    .btn-mini{
-      padding:8px 12px;
-      border-radius:12px;
-      border:1px solid #ccc;
-      background:#fff;
-      cursor:pointer;
-      font-weight:900
-    }
-
-    .btn-admin{
-      border:1px solid rgba(31,122,58,.55);
-      background:rgba(233,255,240,.95);
-      color:#155724
-    }
-
-    .btn-logout{
-      border:1px solid rgba(176,32,48,.55);
-      background:rgba(255,231,231,.95);
-      color:#7a0f1a;
-      display:none
-    }
-
-    #pinModal{
-      position:fixed;
-      inset:0;
-      z-index:10001;
+    .msg{
       display:none;
-      align-items:center;
-      justify-content:center;
-      background:rgba(0,0,0,.55);
-      padding:16px
-    }
-
-    #pinModal .card{
-      width:min(420px,100%);
-      background:rgba(255,250,243,.98);
-      border:2px solid rgba(176,32,48,.35);
-      border-radius:16px;
-      padding:16px 14px;
-      box-shadow:0 0 24px rgba(0,0,0,.35);
-      color:#222
-    }
-
-    #pinModal h2{margin:0 0 8px;color:#7a0f1a;font-size:1.15rem}
-    #pinModal p{margin:0 0 12px;color:#444;font-size:.9rem;line-height:1.35;font-weight:800}
-    #pinModal input{
-      width:100%;
-      padding:10px 12px;
-      border-radius:12px;
-      border:1px solid #ccc;
-      background:#fff;
-      font-size:1rem;
-      font-weight:900
-    }
-    #pinModal .row{display:flex;gap:10px;margin-top:12px}
-    #pinModal .row button{
-      flex:1;
-      padding:10px 12px;
-      border-radius:12px;
-      border:1px solid #ccc;
-      background:#fff;
-      cursor:pointer;
-      font-weight:900
-    }
-    #pinModal .row .ok{
-      border:1px solid rgba(31,122,58,.55);
-      background:rgba(233,255,240,.95);
-      color:#155724
-    }
-    #pinModal .row .cancel{
-      border:1px solid rgba(0,0,0,.2);
-      background:rgba(255,255,255,.9);
-      color:#333
-    }
-    #pinModal .err{
       margin-top:10px;
-      color:#7a0f1a;
-      background:rgba(255,231,231,.9);
-      border:1px solid rgba(176,32,48,.4);
-      padding:8px 10px;
-      border-radius:12px;
-      display:none;
-      font-weight:900
-    }
-
-    #adminBadge{
-      position:fixed;
-      top:10px;
-      right:10px;
-      z-index:10000;
-      display:none;
-      align-items:center;
-      gap:10px;
-      background:rgba(255,250,243,.95);
-      border:2px solid rgba(243,208,138,.75);
-      border-radius:999px;
-      padding:8px 12px;
-      box-shadow:0 2px 14px rgba(0,0,0,.25);
-      color:#7a0f1a;
-      font-weight:900
-    }
-    #adminBadge .pill{display:inline-flex;align-items:center;gap:8px;letter-spacing:.04em;text-transform:uppercase;font-size:.82rem}
-    #adminBadge button{
-      border-radius:999px;
-      border:1px solid rgba(176,32,48,.45);
-      background:rgba(255,231,231,.9);
-      color:#7a0f1a;
-      padding:6px 10px;
-      cursor:pointer;
-      font-weight:900
-    }
-
-    /* PRENOTA MODAL */
-    #prenotaModal{
-      position:fixed;
-      inset:0;
-      z-index:10003;
-      display:none;
-      align-items:center;
-      justify-content:center;
-      background:rgba(0,0,0,.55);
-      padding:16px
-    }
-
-    #prenotaModal .card{
-      width:min(520px,100%);
-      background:rgba(255,250,243,.98);
-      border:2px solid rgba(176,32,48,.35);
-      border-radius:16px;
-      padding:16px 14px;
-      box-shadow:0 0 24px rgba(0,0,0,.35);
-      color:#222
-    }
-
-    #prenotaModal h2{margin:0 0 6px;color:#7a0f1a;font-size:1.1rem}
-    #prenotaModal .sub{margin:0 0 10px;color:#444;font-size:.9rem;line-height:1.35;font-weight:800}
-    #prenotaModal input,#prenotaModal textarea{
-      width:100%;
       padding:10px 12px;
       border-radius:12px;
-      border:1px solid #ccc;
-      background:#fff;
-      color:#111;
-      font-size:.95rem;
-      margin-top:8px;
-      font-family:inherit;
-      font-weight:800
+      font-weight: 900;
+      border:1px solid rgba(0,0,0,.1);
+      background: rgba(255,255,255,.85);
+      color:#333;
+      line-height:1.35;
     }
-    #prenotaModal textarea{min-height:84px;resize:vertical}
-    #prenotaModal .row{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
-    #prenotaModal .row button{
-      flex:1;
-      padding:10px 12px;
-      border-radius:12px;
-      border:1px solid #ccc;
-      background:#fff;
-      cursor:pointer;
-      font-weight:900;
-      min-width:140px
-    }
-    #prenotaModal .row .ok{
-      border:1px solid rgba(31,122,58,.55);
-      background:rgba(233,255,240,.95);
-      color:#155724
-    }
-    #prenotaModal .row .cancel{
-      border:1px solid rgba(0,0,0,.2);
-      background:rgba(255,255,255,.9);
-      color:#333
-    }
-    #prenotaModal .msg-ok{
-      margin-top:10px;
+    .msg-ok{
+      border-color: rgba(31,122,58,.25);
+      background: rgba(233,255,240,.95);
       color:#155724;
-      background:rgba(233,255,240,.95);
-      border:1px solid rgba(31,122,58,.35);
-      padding:8px 10px;
-      border-radius:12px;
-      display:none;
-      font-weight:900;
-      text-align:center
     }
-    #honeypotWebsite{display:none}
-
-    /* LOGIN MODAL */
-    #loginModal{
-      position:fixed;
-      inset:0;
-      z-index:10004;
-      display:none;
-      align-items:center;
-      justify-content:center;
-      background:rgba(0,0,0,.55);
-      padding:16px
-    }
-    #loginModal .card{
-      width:min(460px,100%);
-      background:rgba(255,250,243,.98);
-      border:2px solid rgba(176,32,48,.35);
-      border-radius:16px;
-      padding:16px 14px;
-      box-shadow:0 0 24px rgba(0,0,0,.35);
-      color:#222
-    }
-    #loginModal h2{margin:0 0 8px;color:#7a0f1a;font-size:1.15rem}
-    #loginModal p{margin:0 0 12px;color:#444;font-size:.9rem;line-height:1.35;font-weight:800}
-    #loginModal input{
-      width:100%;
-      padding:10px 12px;
-      border-radius:12px;
-      border:1px solid #ccc;
-      background:#fff;
-      font-size:1rem;
-      font-weight:900;
-      margin-top:8px
-    }
-    #loginModal .row{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
-    #loginModal .row button{
-      flex:1;
-      padding:10px 12px;
-      border-radius:12px;
-      border:1px solid #ccc;
-      background:#fff;
-      cursor:pointer;
-      font-weight:900;
-      min-width:140px
-    }
-    #loginModal .row .ok{
-      border:1px solid rgba(31,122,58,.55);
-      background:rgba(233,255,240,.95);
-      color:#155724
-    }
-    #loginModal .row .cancel{
-      border:1px solid rgba(0,0,0,.2);
-      background:rgba(255,255,255,.9);
-      color:#333
-    }
-    #loginErr{
-      display:none;
-      margin-top:10px;
+    .msg-no{
+      border-color: rgba(176,32,48,.25);
+      background: rgba(255,231,231,.92);
       color:#7a0f1a;
-      background:rgba(255,231,231,.9);
-      border:1px solid rgba(176,32,48,.4);
-      padding:8px 10px;
-      border-radius:12px;
-      font-weight:900
+    }
+
+    /* twemoji img sizing */
+    img.emoji{
+      height: 1em;
+      width: 1em;
+      margin: 0 .05em 0 .1em;
+      vertical-align: -0.1em;
     }
 
     @media(max-width: 900px) {
       .stats-bar { grid-template-columns: 1fr; }
+      .grid2{ grid-template-columns: 1fr; }
     }
 
     @media(max-width: 768px) {
@@ -665,77 +539,17 @@
         margin: 80px 10px 20px;
         padding: 14px;
       }
-      .filters {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .header-flex { flex-direction: column; }
+      .filters { flex-direction: column; align-items: stretch; }
+      .header-flex { flex-direction: column; align-items: stretch; }
+      .userbox{ justify-content:flex-start; }
       .logo-amar { height: 70px; }
+      #lastUpdate { text-align:left; }
+      .footer-note{ justify-content:flex-start; }
     }
   </style>
 </head>
 
 <body>
-
-<div id="adminBadge">
-  <div class="pill">🛡️ ADMIN MODE</div>
-  <button id="btnLogoutTop" type="button">Logout</button>
-</div>
-
-<div id="pinModal" aria-hidden="true">
-  <div class="card">
-    <h2>Accesso Admin</h2>
-    <p>Inserisci il PIN per bypassare il countdown e controllare la pagina senza spoiler.</p>
-    <input id="pinInput" type="password" inputmode="numeric" autocomplete="off" placeholder="PIN">
-    <div class="row">
-      <button class="cancel" id="btnPinCancel" type="button">Annulla</button>
-      <button class="ok" id="btnPinOk" type="button">Entra</button>
-    </div>
-    <div class="err" id="pinErr">PIN errato.</div>
-  </div>
-</div>
-
-<div id="loginModal" aria-hidden="true">
-  <div class="card">
-    <h2>Accesso utente</h2>
-    <p>Se hai un account AmarBoard, accedi: il modulo “Richiedi” si precompila automaticamente.</p>
-    <input id="loginUser" type="text" placeholder="Username" autocomplete="username">
-    <input id="loginPass" type="password" placeholder="Password" autocomplete="current-password">
-    <div class="row">
-      <button class="cancel" id="btnLoginCancel" type="button">Annulla</button>
-      <button class="ok" id="btnLoginOk" type="button">Entra</button>
-    </div>
-    <div id="loginErr">Credenziali non valide (o utente disattivato).</div>
-  </div>
-</div>
-
-<div id="prenotaModal" aria-hidden="true">
-  <div class="card">
-    <h2 id="prenotaTitle">📌 Richiedi prenotazione</h2>
-    <p class="sub" id="prenotaSubtitle">Compila e invia la richiesta. Ti contattiamo appena possibile.</p>
-
-    <input id="reqNome" type="text" placeholder="Nome e cognome *" autocomplete="name">
-    <input id="reqTel" type="text" placeholder="Telefono (opzionale)" autocomplete="tel">
-    <textarea id="reqNote" placeholder="Note (opzionale)"></textarea>
-    <input id="honeypotWebsite" type="text" placeholder="">
-
-    <div class="row">
-      <button class="cancel" id="btnReqCancel" type="button">Annulla</button>
-      <button class="ok" id="btnReqSend" type="button">Invia</button>
-    </div>
-
-    <div class="msg-ok" id="reqOkMsg">Richiesta inviata ✅</div>
-  </div>
-</div>
-
-<div id="countdownBanner">
-  🎁 La pagina della nostra Ludoteca si sbloccherà tra <span id="countdownTime">--:--:--</span>
-  <small>Stiamo "intavolando" la nostra pagina, fino a quell’ora la pagina resta “coperta”.</small>
-  <div id="countdownActions">
-    <button class="btn-mini btn-admin" id="btnOpenPin" type="button">🔑 Admin</button>
-    <button class="btn-mini btn-logout" id="btnLogoutBanner" type="button">🚪 Logout</button>
-  </div>
-</div>
 
 <div class="garland">
   <span>✨</span><span>🎄</span><span>⭐</span><span>🕯️</span>
@@ -754,11 +568,25 @@
 
 <div id="wrapper">
   <div class="header-flex">
-    <span class="xmas-icon">🎄</span>
-    <img class="logo-amar"
-         src="https://raw.githubusercontent.com/sakana2893/Ludoteca-Amarboard/main/logo_amarboard.png"
-         alt="AmarBoard Romagna">
-    <span class="xmas-icon">🎲</span>
+    <div class="brand-left">
+      <span class="xmas-icon">🎄</span>
+      <img class="logo-amar"
+           src="logo_amarboard.png"
+           alt="AmarBoard Romagna">
+      <span class="xmas-icon">🎲</span>
+    </div>
+
+    <div class="userbox">
+      <a id="adminLink" href="admin.html">🛡️ Area Admin</a>
+
+      <span class="pill" id="userPill" style="display:none;">
+        👤 <span id="userName">–</span>
+        <span id="userRole" style="display:none; opacity:.85;">(admin)</span>
+      </span>
+
+      <button class="btn btn-ok" id="btnLogin" type="button">🔑 Accedi</button>
+      <button class="btn btn-no" id="btnLogout" type="button" style="display:none;">🚪 Logout</button>
+    </div>
   </div>
 
   <h1>Catalogo Giochi – AmarBoard</h1>
@@ -767,6 +595,7 @@
     <span>Speciale Natale:</span> trova il gioco giusto (o fatti suggerire dai nostri Volontari) da intavolare con gli amici sui nostri tavoli.
   </div>
 
+  <!-- BARRA STATISTICHE -->
   <div class="stats-bar">
     <div class="stat-box">
       <div class="stat-label">Giochi attualmente in prestito</div>
@@ -784,6 +613,7 @@
     </div>
   </div>
 
+  <!-- FILTRI + BOTTONE AGGIORNA -->
   <div class="filters">
     <div class="filters-left">
       <div class="filter-block">
@@ -801,15 +631,11 @@
       </div>
     </div>
 
-    <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
-      <button class="btn" id="btnRefresh" type="button">🔄 Aggiorna dati</button>
-      <button class="btn" id="btnLogin" type="button">🔐 Accedi</button>
-      <button class="btn" id="btnLogoutUser" type="button">🚪 Esci</button>
-      <span id="userPill">👤 <span id="userName">—</span></span>
-    </div>
+    <button id="btnRefresh" type="button">🔄 Aggiorna dati</button>
   </div>
 
   <div id="errorBox"></div>
+  <div id="lastUpdate">Ultimo aggiornamento: –</div>
 
   <table id="tblCatalogo" class="display" style="width:100%">
     <thead>
@@ -829,560 +655,735 @@
   </table>
 
   <div class="footer-note">
-    🎅 Catalogo generato dalla ludoteca AmarBoard – versione natalizia
+    <span>🎅 Catalogo generato dalla ludoteca AmarBoard – versione natalizia</span>
+  </div>
+</div>
+
+<!-- ===== MODAL LOGIN ===== -->
+<div class="modal-backdrop" id="loginBackdrop">
+  <div class="modal">
+    <h2>🔑 Accesso Utente</h2>
+    <p>Inserisci username e password. Se sei admin, comparirà anche il link “Area Admin”.</p>
+
+    <div class="grid2">
+      <div class="field">
+        <label for="loginUser">Username</label>
+        <input id="loginUser" type="text" autocomplete="username">
+      </div>
+      <div class="field">
+        <label for="loginPass">Password</label>
+        <input id="loginPass" type="password" autocomplete="current-password">
+      </div>
+    </div>
+
+    <div class="row">
+      <button class="btn btn-neutral" id="btnLoginCancel" type="button">Annulla</button>
+      <button class="btn btn-ok" id="btnLoginDo" type="button">Entra</button>
+    </div>
+
+    <div class="msg msg-no" id="loginMsg"></div>
+  </div>
+</div>
+
+<!-- ===== MODAL RICHIEDI ===== -->
+<div class="modal-backdrop" id="reqBackdrop">
+  <div class="modal">
+    <h2>📝 Richiedi Prestito</h2>
+    <p>Compila i dati. Se sei loggato, nome e telefono verranno precompilati.</p>
+
+    <div class="field">
+      <label>Titolo</label>
+      <input id="reqTitolo" type="text" readonly>
+    </div>
+
+    <div class="grid2">
+      <div class="field">
+        <label>Giocatori</label>
+        <input id="reqGiocatori" type="text" readonly>
+      </div>
+      <div class="field">
+        <label>Telefono</label>
+        <input id="reqTelefono" type="text" placeholder="es. 3331234567">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Nome</label>
+      <input id="reqNome" type="text" placeholder="Nome e cognome">
+    </div>
+
+    <div class="field">
+      <label>Note (opzionale)</label>
+      <textarea id="reqNote" placeholder="es. Arrivo alle 18:30, lo prendo per 2 giorni..."></textarea>
+    </div>
+
+    <div class="row">
+      <button class="btn btn-neutral" id="btnReqCancel" type="button">Annulla</button>
+      <button class="btn btn-ok" id="btnReqSend" type="button">📩 Invia richiesta</button>
+    </div>
+
+    <div class="msg" id="reqMsg"></div>
   </div>
 </div>
 
 <script>
-  /* ===== CONFIG ===== */
-  const CSV_BASE_URL   = "catalogo_ludoteca.csv";
-  const STATS_BASE_URL = "stats_ludoteca.csv";
+/* =========================
+   CONFIG
+========================= */
+const API_URL = "https://script.google.com/macros/s/AKfycbymY3lNuMU13fv2NSXJBBAkGh0iOMzABjzuWnARGjsY_UHr7ZWEUM6wss9f1A2zbi9dcA/exec";
 
-  const API_URL = "https://script.google.com/macros/s/AKfycbymY3lNuMU13fv2NSXJBBAkGh0iOMzABjzuWnARGjsY_UHr7ZWEUM6wss9f1A2zbi9dcA/exec";
+// CSV locali (stessa cartella dell'HTML)
+const CSV_BASE_URL   = "catalogo_ludoteca.csv";
+const STATS_BASE_URL = "stats_ludoteca.csv";
 
-  const ADMIN_PIN = "2486";
-  const ADMIN_TTL_HOURS = 8;
+// localStorage keys (utente)
+const LS_USER_TOKEN   = "AB_USER_TOKEN";
+const LS_USER_PROFILE = "AB_USER_PROFILE";
 
-  // Countdown (modifica se vuoi)
-  const REVEAL_AT = new Date("2026-01-01T09:00:00+01:00").getTime();
+// Auto refresh
+const AUTO_REFRESH_MS = 30000;
 
-  const LS_ADMIN = "AB_ADMIN";
-  const LS_USER_TOKEN = "AB_USER_TOKEN";
-  const REQ_COOLDOWN_MS = 12000;
+/* =========================
+   STATE
+========================= */
+let table = null;
+let currentUser = null; // { Username, Nome, Telefono, Ruolo }
+let requestedMap = {};  // titolo -> {open, approved}
 
-  let table = null;
-  let countdownTimer = null;
+/* =========================
+   HELPERS UI
+========================= */
+function $(id){ return document.getElementById(id); }
 
-  let reqCtx = { titolo:"", giocatori:"" };
-  let richiesteMap = {}; // {Titolo:{open,approved}}
-  let userProfile = null; // {Nome,Telefono,Username}
+function showError(msg){
+  const box = $("errorBox");
+  box.style.display = "block";
+  box.textContent = msg;
+}
+function clearError(){
+  const box = $("errorBox");
+  box.style.display = "none";
+  box.textContent = "";
+}
 
-  function renderEmoji(){
-    try { twemoji.parse(document.body, { folder:"svg", ext:".svg" }); } catch(e) {}
+function aggiornaTimestamp() {
+  const now = new Date();
+  $("lastUpdate").textContent = "Ultimo aggiornamento: " +
+    now.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+}
+
+function renderEmoji(){
+  try{
+    twemoji.parse(document.body, { folder:"svg", ext:".svg" });
+  }catch(e){}
+}
+
+function statoBadge(stato) {
+  stato = (stato || "").toLowerCase().trim();
+  if (stato === "disponibile") {
+    return '<span class="badge badge-disponibile">🎄 Disponibile</span>';
+  }
+  if (stato === "in prestito") {
+    return '<span class="badge badge-prestato">🎁 In prestito</span>';
+  }
+  return (stato || "");
+}
+
+function gameReqBadge(titolo){
+  const t = String(titolo||"").trim();
+  if(!t) return "";
+  const x = requestedMap[t];
+  if(!x) return "";
+
+  // priorità: approvata => prenotato
+  if(Number(x.approved||0) > 0){
+    return ' <span class="badge badge-booked">📌 Prenotato</span>';
+  }
+  if(Number(x.open||0) > 0){
+    return ' <span class="badge badge-req">🟣 Richiesto</span>';
+  }
+  return "";
+}
+
+function refreshUserUI(){
+  const pill = $("userPill");
+  const btnLogin = $("btnLogin");
+  const btnLogout = $("btnLogout");
+  const adminLink = $("adminLink");
+  const role = $("userRole");
+
+  if(currentUser){
+    $("userName").textContent = currentUser.Nome || currentUser.Username || "Utente";
+    pill.style.display = "inline-flex";
+    btnLogin.style.display = "none";
+    btnLogout.style.display = "inline-flex";
+
+    const isAdmin = String(currentUser.Ruolo||"") === "admin";
+    adminLink.style.display = isAdmin ? "inline-flex" : "none";
+    role.style.display = isAdmin ? "inline" : "none";
+  } else {
+    pill.style.display = "none";
+    btnLogin.style.display = "inline-flex";
+    btnLogout.style.display = "none";
+    adminLink.style.display = "none";
+    role.style.display = "none";
   }
 
-  function showError(msg){
-    const box=document.getElementById("errorBox");
-    box.style.display="block";
-    box.textContent=msg;
-  }
-  function clearError(){
-    const box=document.getElementById("errorBox");
-    box.style.display="none";
-    box.textContent="";
-  }
+  renderEmoji();
+}
 
-  /* ===== JSONP ===== */
-  function jsonp(url){
-    return new Promise((resolve,reject)=>{
-      const cb="cb_"+Math.random().toString(36).slice(2);
-      const s=document.createElement("script");
-      const timeout=setTimeout(()=>{cleanup(); reject(new Error("JSONP timeout"));},7000);
+/* =========================
+   JSONP helper (GET) per evitare CORS
+========================= */
+function jsonp(url){
+  return new Promise((resolve,reject)=>{
+    const cb = "cb_" + Math.random().toString(36).slice(2);
+    const s = document.createElement("script");
+    const t = setTimeout(()=>{ cleanup(); reject(new Error("JSONP timeout")); }, 9000);
 
-      function cleanup(){
-        clearTimeout(timeout);
-        try{ delete window[cb]; }catch(e){ window[cb]=undefined; }
-        if(s && s.parentNode) s.parentNode.removeChild(s);
+    function cleanup(){
+      clearTimeout(t);
+      try{ delete window[cb]; }catch(e){ window[cb] = undefined; }
+      if(s && s.parentNode) s.parentNode.removeChild(s);
+    }
+
+    window[cb] = (data)=>{ cleanup(); resolve(data); };
+    s.onerror = ()=>{ cleanup(); reject(new Error("JSONP load error")); };
+
+    s.src = url + (url.includes("?") ? "&" : "?") + "callback=" + cb + "&v=" + Date.now();
+    document.body.appendChild(s);
+  });
+}
+
+/* =========================
+   CSV fetch (no-store) + parse
+========================= */
+async function fetchTextNoStore(path){
+  const url = path + "?v=" + Date.now();
+  const res = await fetch(url, { cache:"no-store" });
+  if(!res.ok) throw new Error(`Impossibile caricare ${path} (HTTP ${res.status})`);
+  return await res.text();
+}
+function parseCSVText(csvText){
+  const parsed = Papa.parse(csvText, {
+    header: true,
+    skipEmptyLines: true
+  });
+  return parsed.data || [];
+}
+
+/* =========================
+   STATS
+========================= */
+async function caricaStats(){
+  try{
+    const text = await fetchTextNoStore(STATS_BASE_URL);
+    const rows = parseCSVText(text);
+    if(!rows.length) return;
+
+    const s = rows[0];
+    $("cntAttivi").textContent = s["PrestitiAttivi"] || "0";
+    $("cntTotali").textContent = s["PrestitiTotali"] || "0";
+
+    const topList = $("topList");
+    topList.innerHTML = "";
+
+    function addTop(titoloKey, countKey){
+      const titolo = s[titoloKey];
+      const cnt = s[countKey];
+      if(titolo && cnt && Number(cnt) > 0){
+        const li = document.createElement("li");
+        li.textContent = `${titolo} (${cnt})`;
+        topList.appendChild(li);
       }
+    }
 
-      window[cb]=(data)=>{ cleanup(); resolve(data); };
-      s.onerror=()=>{ cleanup(); reject(new Error("JSONP load error")); };
+    // chiavi compatibili con varie versioni
+    addTop("Top1Titolo","Top1Prestiti");
+    addTop("Top2Titolo","Top2Prestiti");
+    addTop("Top3Titolo","Top3Prestiti");
+    addTop("TopEvento1Titolo","TopEvento1Val");
+    addTop("TopEvento2Titolo","TopEvento2Val");
+    addTop("TopEvento3Titolo","TopEvento3Val");
 
-      s.src = url + (url.includes("?")?"&":"?") + "callback=" + cb + "&v=" + Date.now();
-      document.body.appendChild(s);
+  }catch(e){
+    // stats opzionali: non bloccare
+    console.warn("Stats:", e);
+  }
+}
+
+/* =========================
+   BADGE richiesto/prenotato (dal backend)
+========================= */
+async function caricaRequestedMap(){
+  try{
+    const data = await jsonp(API_URL + "?action=requested_map");
+    if(data && data.ok && data.map){
+      requestedMap = data.map;
+    } else {
+      requestedMap = {};
+    }
+  }catch(e){
+    console.warn("requested_map:", e);
+    requestedMap = {};
+  }
+}
+
+/* =========================
+   CATALOGO + DATATABLE
+========================= */
+async function caricaCatalogo(){
+  const text = await fetchTextNoStore(CSV_BASE_URL);
+  const raw = parseCSVText(text);
+
+  const data = [];
+
+  raw.forEach(row=>{
+    if(!row["Titolo"]) return;
+
+    data.push({
+      Titolo: row["Titolo"] || "",
+      Giocatori: row["NumeroGiocatori"] || "",
+      Durata: row["Durata"] || "",
+      Eta: row["Eta"] || "",
+      Editore: row["Editore"] || "",
+      Disponibili: row["CopieDisponibili"] || "",
+      Stato: row["StatoDisponibilita"] || "",
+      BGG: row["BGG"] || ""
     });
-  }
+  });
 
-  /* ===== SHA256 (WebCrypto se c'è, CryptoJS se browser vecchio) ===== */
-  async function sha256Hex(str){
-    try{
-      if (window.crypto && window.crypto.subtle && window.TextEncoder) {
-        const enc = new TextEncoder();
-        const buf = await crypto.subtle.digest("SHA-256", enc.encode(str));
-        return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2,"0")).join("");
-      }
-    }catch(e){
-      // fallback sotto
-    }
-
-    if (window.CryptoJS) {
-      return CryptoJS.SHA256(String(str)).toString(CryptoJS.enc.Hex);
-    }
-
-    throw new Error("SHA256 non disponibile: manca WebCrypto e CryptoJS.");
-  }
-
-  /* ===== USER LOGIN (challenge) ===== */
-  function setUserUI(){
-    const token = (localStorage.getItem(LS_USER_TOKEN)||"").trim();
-    const logged = !!(token && userProfile && userProfile.Nome);
-
-    document.getElementById("btnLogin").style.display = logged ? "none" : "inline-flex";
-    document.getElementById("btnLogoutUser").style.display = logged ? "inline-flex" : "none";
-    document.getElementById("userPill").style.display = logged ? "inline-flex" : "none";
-    document.getElementById("userName").textContent = logged ? (userProfile.Nome || userProfile.Username || "Utente") : "—";
-    renderEmoji();
-  }
-
-  async function loadMe(){
-    const token = (localStorage.getItem(LS_USER_TOKEN)||"").trim();
-    if(!token){ userProfile=null; setUserUI(); return; }
-
-    try{
-      const data = await jsonp(API_URL + "?action=me&token=" + encodeURIComponent(token));
-      if(data && data.ok && data.profile){
-        userProfile = data.profile;
-      } else {
-        userProfile = null;
-        localStorage.removeItem(LS_USER_TOKEN);
-      }
-    }catch(e){
-      // se momentaneamente down non slogghiamo
-    }
-    setUserUI();
-  }
-
-  function openLoginModal(){
-    const m=document.getElementById("loginModal");
-    document.getElementById("loginErr").style.display="none";
-    document.getElementById("loginUser").value="";
-    document.getElementById("loginPass").value="";
-    m.style.display="flex"; m.setAttribute("aria-hidden","false");
-    setTimeout(()=>document.getElementById("loginUser").focus(),50);
-    renderEmoji();
-  }
-  function closeLoginModal(){
-    const m=document.getElementById("loginModal");
-    m.style.display="none"; m.setAttribute("aria-hidden","true");
-  }
-
-  async function doLogin(){
-    const username=(document.getElementById("loginUser").value||"").trim();
-    const password=(document.getElementById("loginPass").value||"");
-    if(username.length<2 || password.length<2) return;
-
-    document.getElementById("loginErr").style.display="none";
-
-    try{
-      const ch = await jsonp(API_URL + "?action=challenge&username=" + encodeURIComponent(username));
-      if(!ch || !ch.ok || !ch.nonce) throw new Error(ch?.error || "Challenge error");
-
-      const passHash = await sha256Hex(password);
-      const proof = await sha256Hex(passHash + ":" + ch.nonce);
-
-      const data = await jsonp(
-        API_URL + "?action=login_challenge&username=" + encodeURIComponent(username) +
-        "&nonce=" + encodeURIComponent(ch.nonce) +
-        "&proof=" + encodeURIComponent(proof)
-      );
-
-      if(data && data.ok && data.token && data.profile){
-        localStorage.setItem(LS_USER_TOKEN, data.token);
-        userProfile = data.profile;
-        closeLoginModal();
-        setUserUI();
-      } else {
-        document.getElementById("loginErr").style.display="block";
-      }
-    }catch(e){
-      document.getElementById("loginErr").style.display="block";
-    }
-    renderEmoji();
-  }
-
-  function doLogoutUser(){
-    localStorage.removeItem(LS_USER_TOKEN);
-    userProfile=null;
-    setUserUI();
-  }
-
-  /* ===== ADMIN SESSION (solo bypass countdown) ===== */
-  function isAdmin(){
-    try{
-      const raw=localStorage.getItem(LS_ADMIN);
-      if(!raw) return false;
-      const obj=JSON.parse(raw);
-      return obj && obj.until && Date.now() < obj.until;
-    }catch{ return false; }
-  }
-  function setAdminSession(){ localStorage.setItem(LS_ADMIN, JSON.stringify({ until: Date.now()+ADMIN_TTL_HOURS*3600000 })); }
-  function clearAdminSession(){ localStorage.removeItem(LS_ADMIN); }
-
-  function refreshAdminUI(){
-    const admin=isAdmin();
-    document.getElementById("adminBadge").style.display = admin ? "flex" : "none";
-    document.getElementById("btnLogoutBanner").style.display = admin ? "inline-flex" : "none";
-    renderEmoji();
-  }
-
-  function openPinModal(){
-    const m=document.getElementById("pinModal");
-    document.getElementById("pinErr").style.display="none";
-    document.getElementById("pinInput").value="";
-    m.style.display="flex"; m.setAttribute("aria-hidden","false");
-    setTimeout(()=>document.getElementById("pinInput").focus(),50);
-    renderEmoji();
-  }
-  function closePinModal(){
-    const m=document.getElementById("pinModal");
-    m.style.display="none"; m.setAttribute("aria-hidden","true");
-  }
-  function submitPin(){
-    const v=document.getElementById("pinInput").value;
-    if(v===ADMIN_PIN){
-      setAdminSession();
-      refreshAdminUI();
-      closePinModal();
-      unlockAndLoad();
-    } else {
-      document.getElementById("pinErr").style.display="block";
-    }
-  }
-  function doLogoutAdmin(){
-    clearAdminSession();
-    refreshAdminUI();
-    location.reload();
-  }
-
-  function unlockAndLoad(){
-    document.body.classList.remove("spoiler-hidden");
-    document.getElementById("countdownBanner").style.display="none";
-    if(countdownTimer) clearInterval(countdownTimer);
-    countdownTimer=null;
-    aggiornaTutto();
-  }
-
-  function startCountdownShield(){
-    const banner=document.getElementById("countdownBanner");
-    const timeEl=document.getElementById("countdownTime");
-
-    function tick(){
-      refreshAdminUI();
-      if(isAdmin()){ unlockAndLoad(); return; }
-
-      const diff = REVEAL_AT - Date.now();
-      if(diff<=0){ unlockAndLoad(); return; }
-
-      document.body.classList.add("spoiler-hidden");
-      banner.style.display="block";
-
-      const totalSec=Math.floor(diff/1000);
-      const h=String(Math.floor(totalSec/3600)).padStart(2,"0");
-      const m=String(Math.floor((totalSec%3600)/60)).padStart(2,"0");
-      const s=String(totalSec%60).padStart(2,"0");
-      timeEl.textContent=`${h}:${m}:${s}`;
-      renderEmoji();
-    }
-
-    tick();
-    countdownTimer=setInterval(tick,1000);
-  }
-
-  /* ===== UI helpers ===== */
-  function statoBadge(stato) {
-    stato = (stato || "").toLowerCase().trim();
-    if (stato === "disponibile") return '<span class="badge badge-disponibile">🎄 Disponibile</span>';
-    if (stato === "in prestito") return '<span class="badge badge-prestato">🎁 In prestito</span>';
-    return stato || "";
-  }
-
-  function badgeStatoPrenotazioniHtml(titolo){
-    const info = richiesteMap[titolo];
-    if(!info) return "";
-    const open = Number(info.open||0);
-    const approved = Number(info.approved||0);
-
-    let html="";
-    if(approved>0) html += ` <span class="badge badge-prenotato">🟠 Prenotato${approved>1?` (${approved})`:""}</span>`;
-    if(open>0) html += ` <span class="badge badge-richiesto">🟣 Richiesto${open>1?` (${open})`:""}</span>`;
-    return html;
-  }
-
-  /* ===== CSV fetch no-store ===== */
-  async function fetchTextNoStore(path) {
-    const url = path + "?v=" + Date.now();
-    const res = await fetch(url, { cache: "no-store" });
-    if (!res.ok) throw new Error(`Impossibile caricare ${path} (HTTP ${res.status})`);
-    return await res.text();
-  }
-  function parseCSVText(csvText) {
-    const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
-    return parsed.data || [];
-  }
-
-  async function caricaRichiesteMap(){
-    try{
-      const data = await jsonp(API_URL + "?action=requested_map");
-      if(data && data.ok && data.map) richiesteMap = data.map;
-    }catch(e){}
-  }
-
-  async function caricaStats() {
-    try{
-      const text = await fetchTextNoStore(STATS_BASE_URL);
-      const rows = parseCSVText(text);
-      if (!rows.length) return;
-
-      const s = rows[0];
-      document.getElementById("cntAttivi").textContent = s["PrestitiAttivi"] || "0";
-      document.getElementById("cntTotali").textContent = s["PrestitiTotali"] || "0";
-
-      const topList = document.getElementById("topList");
-      topList.innerHTML = "";
-
-      function addTop(tk, ck) {
-        const titolo = s[tk];
-        const cnt = s[ck];
-        if (titolo && cnt && Number(cnt) > 0) {
-          const li = document.createElement("li");
-          li.textContent = titolo + " (" + cnt + ")";
-          topList.appendChild(li);
+  if(!table){
+    table = $("#tblCatalogo").DataTable({
+      data: data,
+      columns: [
+        {
+          data: "Titolo",
+          render: (d, type, row) => {
+            const title = String(d || "");
+            // aggiungo badge richiesto/prenotato accanto al titolo
+            return `<strong>${escapeHtml(title)}</strong>${gameReqBadge(title)}`;
+          }
+        },
+        { data: "Giocatori" },
+        { data: "Durata" },
+        { data: "Eta" },
+        { data: "Editore" },
+        {
+          data: "Disponibili",
+          render: d => `<strong>${escapeHtml(d ?? "")}</strong>`
+        },
+        {
+          data: "Stato",
+          render: d => statoBadge(d)
+        },
+        {
+          data: "BGG",
+          orderable: false,
+          render: d => {
+            const safe = String(d || "").trim();
+            if(!safe) return "";
+            if(!/^https?:\/\//i.test(safe)) return "";
+            return `<a class="bgg-link" href="${safe}" target="_blank" rel="noopener noreferrer">Scheda</a>`;
+          }
+        },
+        {
+          data: null,
+          orderable: false,
+          render: (d, type, row) => {
+            const title = String(row.Titolo || "");
+            const gioc = String(row.Giocatori || "");
+            return `<button class="btn btn-ok btnReq" type="button"
+                      data-titolo="${escapeAttr(title)}"
+                      data-giocatori="${escapeAttr(gioc)}">📝 Richiedi</button>`;
+          }
         }
+      ],
+      paging: false,
+      info: false,
+      lengthChange: false,
+      order: [[0, "asc"]],
+      language: {
+        url: "https://cdn.datatables.net/plug-ins/1.13.8/i18n/it-IT.json"
+      },
+      createdRow: function(row, rowData){
+        const stato = (rowData.Stato || "").toLowerCase().trim();
+        if(stato === "disponibile") row.classList.add("disponibile-row");
+        else if(stato === "in prestito") row.classList.add("prestato-row");
+      },
+      drawCallback: function(){
+        // dopo ogni redraw: twemoji
+        renderEmoji();
       }
+    });
 
-      addTop("Top1Titolo", "Top1Prestiti");
-      addTop("Top2Titolo", "Top2Prestiti");
-      addTop("Top3Titolo", "Top3Prestiti");
-      renderEmoji();
-    }catch(e){}
+    // Filtri
+    $("filtroStato").addEventListener("change", function(){
+      table.column(6).search(this.value, false, false).draw();
+    });
+    $("filtroGiocatori").addEventListener("keyup", function(){
+      table.column(1).search(this.value, false, false).draw();
+    });
+
+    // Delegation per bottoni Richiedi
+    document.addEventListener("click", (e)=>{
+      const btn = e.target.closest(".btnReq");
+      if(!btn) return;
+      openRequestModal(btn.getAttribute("data-titolo"), btn.getAttribute("data-giocatori"));
+    });
+
+  } else {
+    table.clear();
+    table.rows.add(data).draw(false);
+  }
+}
+
+/* =========================
+   Aggiorna tutto
+========================= */
+async function aggiornaTutto(){
+  clearError();
+  try{
+    // prima: richieste per badge (così le metto nel titolo)
+    await caricaRequestedMap();
+
+    // poi: stats + catalogo
+    await Promise.all([caricaStats(), caricaCatalogo()]);
+
+    aggiornaTimestamp();
+  }catch(e){
+    console.error(e);
+    showError("Errore aggiornamento dati: " + (e?.message ?? String(e)));
+  }
+}
+
+/* =========================
+   MODAL: Login
+========================= */
+function openLogin(){
+  $("loginMsg").style.display = "none";
+  $("loginMsg").textContent = "";
+  $("loginUser").value = "";
+  $("loginPass").value = "";
+  $("loginBackdrop").style.display = "flex";
+  setTimeout(()=> $("loginUser").focus(), 50);
+  renderEmoji();
+}
+function closeLogin(){
+  $("loginBackdrop").style.display = "none";
+}
+
+async function doLogin(){
+  const u = String($("loginUser").value || "").trim().toLowerCase();
+  const p = String($("loginPass").value || "");
+
+  if(!u || !p){
+    $("loginMsg").className = "msg msg-no";
+    $("loginMsg").style.display = "block";
+    $("loginMsg").textContent = "Inserisci username e password.";
+    return;
   }
 
-  /* ===== PRENOTA MODAL ===== */
-  function openPrenotaModal(titolo, giocatori){
-    reqCtx.titolo=titolo||"";
-    reqCtx.giocatori=giocatori||"";
+  try{
+    // 1) challenge
+    const ch = await jsonp(API_URL + "?action=challenge&username=" + encodeURIComponent(u));
+    if(!ch || !ch.ok || !ch.nonce) throw new Error(ch?.error || "challenge_failed");
 
-    document.getElementById("prenotaTitle").textContent="📌 Richiedi: " + (reqCtx.titolo||"");
-    document.getElementById("prenotaSubtitle").textContent=reqCtx.giocatori ? ("Giocatori: " + reqCtx.giocatori) : "Compila e invia la richiesta.";
+    const nonce = ch.nonce;
 
-    document.getElementById("reqOkMsg").style.display="none";
-    document.getElementById("reqNote").value="";
-    document.getElementById("honeypotWebsite").value="";
+    // 2) proof = sha256Hex( sha256Hex(passwordPlain) + ":" + nonce )
+    const passHash = sha256Hex(p);
+    const proof = sha256Hex(passHash + ":" + nonce);
 
-    // Precompila se loggato
-    if(userProfile && userProfile.Nome){
-      document.getElementById("reqNome").value = userProfile.Nome;
-      document.getElementById("reqTel").value  = userProfile.Telefono || "";
-      document.getElementById("reqNome").readOnly = true;
-      document.getElementById("reqTel").readOnly = true;
-    } else {
-      document.getElementById("reqNome").value="";
-      document.getElementById("reqTel").value="";
-      document.getElementById("reqNome").readOnly = false;
-      document.getElementById("reqTel").readOnly = false;
+    // 3) login_challenge
+    const resp = await jsonp(
+      API_URL + "?action=login_challenge&username=" + encodeURIComponent(u) +
+      "&nonce=" + encodeURIComponent(nonce) +
+      "&proof=" + encodeURIComponent(proof)
+    );
+
+    if(!resp || !resp.ok || !resp.token || !resp.profile){
+      throw new Error(resp?.error || "login_failed");
     }
 
-    const m=document.getElementById("prenotaModal");
-    m.style.display="flex"; m.setAttribute("aria-hidden","false");
-    setTimeout(()=>document.getElementById("reqNome").focus(),50);
-    renderEmoji();
+    localStorage.setItem(LS_USER_TOKEN, resp.token);
+    localStorage.setItem(LS_USER_PROFILE, JSON.stringify(resp.profile));
+
+    currentUser = resp.profile;
+    refreshUserUI();
+    closeLogin();
+
+  }catch(e){
+    console.warn(e);
+    $("loginMsg").className = "msg msg-no";
+    $("loginMsg").style.display = "block";
+    $("loginMsg").textContent = "Credenziali non valide o utente disattivato.";
   }
+}
 
-  function closePrenotaModal(){
-    const m=document.getElementById("prenotaModal");
-    m.style.display="none"; m.setAttribute("aria-hidden","true");
-  }
+async function restoreSession(){
+  try{
+    const token = localStorage.getItem(LS_USER_TOKEN) || "";
+    if(!token) return;
 
-  function sendPrenota(){
-    const nome=(document.getElementById("reqNome").value||"").trim();
-    if(nome.length<2) return;
-
-    const honey=(document.getElementById("honeypotWebsite").value||"").trim();
-    if(honey){
-      document.getElementById("reqOkMsg").style.display="block";
-      setTimeout(closePrenotaModal,900);
+    // uso /me per validare token
+    const me = await jsonp(API_URL + "?action=me&token=" + encodeURIComponent(token));
+    if(me && me.ok && me.profile){
+      currentUser = me.profile;
+      localStorage.setItem(LS_USER_PROFILE, JSON.stringify(currentUser));
+      refreshUserUI();
       return;
     }
+  }catch(e){
+    // token scaduto o errori
+  }
 
-    const last=Number(localStorage.getItem("AB_LAST_REQ")||"0");
-    if(Date.now()-last<REQ_COOLDOWN_MS) return;
+  localStorage.removeItem(LS_USER_TOKEN);
+  localStorage.removeItem(LS_USER_PROFILE);
+  currentUser = null;
+  refreshUserUI();
+}
 
-    const token=(localStorage.getItem(LS_USER_TOKEN)||"").trim();
+function doLogout(){
+  localStorage.removeItem(LS_USER_TOKEN);
+  localStorage.removeItem(LS_USER_PROFILE);
+  currentUser = null;
+  refreshUserUI();
+}
 
-    const payload = new URLSearchParams({
-      action:"submit",
-      Titolo:reqCtx.titolo,
-      Giocatori:reqCtx.giocatori,
-      Nome:nome,
-      Telefono:(document.getElementById("reqTel").value||"").trim(),
-      Note:(document.getElementById("reqNote").value||"").trim(),
-      token: token,
-      Source:"index.html",
-      _: String(Date.now())
-    }).toString();
+/* =========================
+   MODAL: Richiedi
+========================= */
+function openRequestModal(titolo, giocatori){
+  $("reqTitolo").value = titolo || "";
+  $("reqGiocatori").value = giocatori || "";
 
-    // invio "fire and forget" (no-cors non permette leggere risposta, ma inserisce nel foglio)
-    let sent=false;
+  const profRaw = localStorage.getItem(LS_USER_PROFILE);
+  let prof = null;
+  try{ prof = profRaw ? JSON.parse(profRaw) : null; }catch(e){}
+
+  $("reqNome").value = (prof && prof.Nome) ? prof.Nome : "";
+  $("reqTelefono").value = (prof && prof.Telefono) ? prof.Telefono : "";
+  $("reqNote").value = "";
+
+  $("reqMsg").style.display = "none";
+  $("reqMsg").textContent = "";
+  $("reqBackdrop").style.display = "flex";
+  renderEmoji();
+}
+
+function closeRequestModal(){
+  $("reqBackdrop").style.display = "none";
+}
+
+async function sendRequest(){
+  const titolo = String($("reqTitolo").value || "").trim();
+  const gioc = String($("reqGiocatori").value || "").trim();
+  const nome = String($("reqNome").value || "").trim();
+  const tel = String($("reqTelefono").value || "").trim();
+  const note = String($("reqNote").value || "").trim();
+
+  if(!titolo || !nome){
+    $("reqMsg").className = "msg msg-no";
+    $("reqMsg").style.display = "block";
+    $("reqMsg").textContent = "Compila almeno Titolo e Nome.";
+    return;
+  }
+
+  $("btnReqSend").disabled = true;
+  $("btnReqSend").style.opacity = "0.7";
+
+  const token = localStorage.getItem(LS_USER_TOKEN) || "";
+
+  // Body form-urlencoded
+  const body = new URLSearchParams();
+  body.set("action", "submit");
+  body.set("Titolo", titolo);
+  body.set("Giocatori", gioc);
+  body.set("Nome", nome);
+  body.set("Telefono", tel);
+  body.set("Note", note);
+  if(token) body.set("token", token);
+
+  // Importante: Apps Script spesso blocca la lettura risposta (CORS),
+  // ma la richiesta può arrivare lo stesso. Quindi:
+  // 1) provo fetch normale
+  // 2) se fallisce, riprovo no-cors e considero "ok" se non esplode.
+  try{
+    let sent = false;
+
     try{
-      if(navigator.sendBeacon){
-        const blob=new Blob([payload],{type:"application/x-www-form-urlencoded;charset=UTF-8"});
-        sent=navigator.sendBeacon(API_URL,blob);
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+        body: body.toString()
+      });
+      // se CORS blocca, qui potrebbe andare in catch prima.
+      // se arriva, provo a leggere JSON
+      const j = await res.json();
+      if(j && j.ok) sent = true;
+    }catch(e1){
+      // fallback no-cors: non posso leggere la risposta, ma spesso invia comunque
+      try{
+        await fetch(API_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+          body: body.toString()
+        });
+        sent = true;
+      }catch(e2){
+        sent = false;
       }
-    }catch(e){}
-
-    if(!sent){
-      fetch(API_URL,{
-        method:"POST",
-        mode:"no-cors",
-        headers:{"Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"},
-        body:payload
-      }).catch(()=>{});
     }
 
-    localStorage.setItem("AB_LAST_REQ",String(Date.now()));
-    document.getElementById("reqOkMsg").style.display="block";
-    renderEmoji();
-    setTimeout(()=>{ closePrenotaModal(); },900);
-  }
+    if(sent){
+      $("reqMsg").className = "msg msg-ok";
+      $("reqMsg").style.display = "block";
+      $("reqMsg").textContent = "✅ Richiesta inviata! (Se non vedi subito il badge, attendi qualche secondo e aggiorna.)";
 
-  async function caricaCatalogo() {
-    const text = await fetchTextNoStore(CSV_BASE_URL);
-    const raw = parseCSVText(text);
+      // refresh badge dopo un attimo
+      setTimeout(async ()=>{
+        await aggiornaTutto();
+      }, 1200);
 
-    const data = [];
-    raw.forEach(row => {
-      if (!row["Titolo"]) return;
-      data.push({
-        Titolo: row["Titolo"] || "",
-        Giocatori: row["NumeroGiocatori"] || "",
-        Durata: row["Durata"] || "",
-        Eta: row["Eta"] || "",
-        Editore: row["Editore"] || "",
-        Disponibili: row["CopieDisponibili"] || "",
-        Stato: row["StatoDisponibilita"] || "",
-        BGG: row["BGG"] || ""
-      });
-    });
-
-    if (!table) {
-      table = $("#tblCatalogo").DataTable({
-        data: data,
-        columns: [
-          {
-            data: "Titolo",
-            render: (d, type) => type === "display" ? (d + badgeStatoPrenotazioniHtml(d)) : d
-          },
-          { data: "Giocatori" },
-          { data: "Durata" },
-          { data: "Eta" },
-          { data: "Editore" },
-          { data: "Disponibili", render: d => `<strong>${d ?? ""}</strong>` },
-          { data: "Stato", render: d => statoBadge(d) },
-          {
-            data: "BGG",
-            orderable: false,
-            render: d => {
-              if (!d) return "";
-              const safe = String(d).trim();
-              if (!/^https?:\/\//i.test(safe)) return "";
-              return `<a class="bgg-link" href="${safe}" target="_blank" rel="noopener noreferrer">Scheda</a>`;
-            }
-          },
-          {
-            data: null,
-            orderable: false,
-            render: r => {
-              const t = String(r.Titolo||"").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
-              const g = String(r.Giocatori||"").replace(/"/g,"&quot;").replace(/'/g,"&#39;");
-              const info = richiesteMap[r.Titolo];
-              const approved = info ? Number(info.approved||0) : 0;
-              const disabled = approved > 0;
-
-              return `<button type="button"
-                        class="btn-mini btn-admin jsRichiedi"
-                        data-t="${t}" data-g="${g}"
-                        ${disabled ? "disabled style='opacity:.55;cursor:not-allowed;'" : ""}>
-                        ${disabled ? "🟠 Prenotato" : "📌 Richiedi"}
-                      </button>`;
-            }
-          }
-        ],
-        paging: false,
-        info: false,
-        lengthChange: false,
-        order: [[0, "asc"]],
-        language: { url: "https://cdn.datatables.net/plug-ins/1.13.8/i18n/it-IT.json" },
-        rowCallback: function (row, rowData) {
-          row.classList.remove("disponibile-row", "prestato-row");
-          const stato = (rowData.Stato || "").toLowerCase().trim();
-          if (stato === "disponibile") row.classList.add("disponibile-row");
-          else if (stato === "in prestito") row.classList.add("prestato-row");
-        },
-        drawCallback: () => renderEmoji()
-      });
-
-      document.getElementById("filtroStato").addEventListener("change", function () {
-        table.column(6).search(this.value, false, false).draw();
-      });
-      document.getElementById("filtroGiocatori").addEventListener("keyup", function () {
-        table.column(1).search(this.value, false, false).draw();
-      });
-
-      document.body.addEventListener("click", (ev) => {
-        const t = ev.target;
-        if (t && t.classList && t.classList.contains("jsRichiedi") && !t.disabled) {
-          openPrenotaModal(t.getAttribute("data-t") || "", t.getAttribute("data-g") || "");
-        }
-      });
-
+      // chiudo dopo un po'
+      setTimeout(()=> closeRequestModal(), 1600);
     } else {
-      table.clear();
-      table.rows.add(data).draw(false);
+      throw new Error("invio_non_riuscito");
     }
 
-    renderEmoji();
+  }catch(e){
+    $("reqMsg").className = "msg msg-no";
+    $("reqMsg").style.display = "block";
+    $("reqMsg").textContent = "❌ Errore invio. Controlla connessione e riprova.";
+  }finally{
+    $("btnReqSend").disabled = false;
+    $("btnReqSend").style.opacity = "1";
   }
 
-  async function aggiornaTutto() {
-    clearError();
-    try {
-      await Promise.all([loadMe(), caricaRichiesteMap()]);
-      await Promise.all([caricaStats(), caricaCatalogo()]);
-      renderEmoji();
-    } catch (e) {
-      console.error(e);
-      showError("Errore aggiornamento dati: " + (e?.message ?? String(e)));
+  renderEmoji();
+}
+
+/* =========================
+   ESCAPE helpers
+========================= */
+function escapeHtml(s){
+  return String(s ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#39;");
+}
+function escapeAttr(s){
+  return escapeHtml(s).replace(/`/g,"&#96;");
+}
+
+/* =========================
+   SHA-256 (pure JS) – compatibile ovunque
+   (così non dipendi da window.crypto)
+========================= */
+// Minimal SHA-256 implementation (pure JS)
+function sha256Hex(ascii){
+  function rightRotate(value, amount){ return (value>>>amount) | (value<<(32-amount)); }
+  const mathPow = Math.pow, maxWord = mathPow(2,32);
+  let result = '';
+
+  const words = [];
+  const asciiBitLength = ascii.length*8;
+
+  let hash = sha256Hex.h = sha256Hex.h || [];
+  let k = sha256Hex.k = sha256Hex.k || [];
+  let primeCounter = k.length;
+
+  const isComposite = {};
+  for (let candidate = 2; primeCounter < 64; candidate++) {
+    if (!isComposite[candidate]) {
+      for (let i = 0; i < 313; i += candidate) isComposite[i] = candidate;
+      hash[primeCounter] = (mathPow(candidate, .5)*maxWord)|0;
+      k[primeCounter++] = (mathPow(candidate, 1/3)*maxWord)|0;
     }
   }
 
-  document.addEventListener("DOMContentLoaded", function () {
-    startCountdownShield();
+  ascii += '\x80';
+  while (ascii.length%64 - 56) ascii += '\x00';
+  for (let i = 0; i < ascii.length; i++) {
+    const j = ascii.charCodeAt(i);
+    words[i>>2] |= j << ((3 - i)%4)*8;
+  }
+  words[words.length] = ((asciiBitLength/maxWord)|0);
+  words[words.length] = (asciiBitLength);
 
-    // Admin pin
-    document.getElementById("btnOpenPin").addEventListener("click", openPinModal);
-    document.getElementById("btnPinCancel").addEventListener("click", closePinModal);
-    document.getElementById("btnPinOk").addEventListener("click", submitPin);
-    document.getElementById("pinInput").addEventListener("keydown", (e)=>{ if(e.key==="Enter") submitPin(); });
+  for (let j = 0; j < words.length;) {
+    const w = words.slice(j, j += 16);
+    const oldHash = hash.slice(0);
 
-    document.getElementById("btnLogoutTop").addEventListener("click", doLogoutAdmin);
-    document.getElementById("btnLogoutBanner").addEventListener("click", doLogoutAdmin);
+    for (let i = 0; i < 64; i++) {
+      const w15 = w[i - 15], w2 = w[i - 2];
 
-    // Prenota
-    document.getElementById("btnReqCancel").addEventListener("click", closePrenotaModal);
-    document.getElementById("btnReqSend").addEventListener("click", sendPrenota);
+      const a = hash[0], e = hash[4];
+      const temp1 = hash[7]
+        + (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25))
+        + ((e&hash[5]) ^ ((~e)&hash[6]))
+        + k[i]
+        + (w[i] = (i < 16) ? w[i] : (
+          w[i - 16]
+          + (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15>>>3))
+          + w[i - 7]
+          + (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2>>>10))
+        )|0);
 
-    // Login
-    document.getElementById("btnLogin").addEventListener("click", openLoginModal);
-    document.getElementById("btnLogoutUser").addEventListener("click", doLogoutUser);
-    document.getElementById("btnLoginCancel").addEventListener("click", closeLoginModal);
-    document.getElementById("btnLoginOk").addEventListener("click", doLogin);
-    document.getElementById("loginPass").addEventListener("keydown",(e)=>{ if(e.key==="Enter") doLogin(); });
+      const temp2 = (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22))
+        + ((a&hash[1]) ^ (a&hash[2]) ^ (hash[1]&hash[2]));
 
-    // Refresh
-    document.getElementById("btnRefresh").addEventListener("click", function () {
-      if (!isAdmin() && Date.now() < REVEAL_AT) return;
-      aggiornaTutto();
-    });
+      hash = [(temp1 + temp2)|0].concat(hash);
+      hash[4] = (hash[4] + temp1)|0;
+      hash.pop();
+    }
 
-    setInterval(() => {
-      if (!isAdmin() && Date.now() < REVEAL_AT) return;
-      aggiornaTutto();
-    }, 30000);
+    for (let i = 0; i < 8; i++) hash[i] = (hash[i] + oldHash[i])|0;
+  }
 
-    refreshAdminUI();
-    loadMe().then(setUserUI);
-    renderEmoji();
-  });
+  for (let i = 0; i < 8; i++) {
+    for (let j = 3; j + 1; j--) {
+      const b = (hash[i] >> (j * 8)) & 255;
+      result += ((b < 16) ? 0 : '') + b.toString(16);
+    }
+  }
+  return result;
+}
+
+/* =========================
+   EVENTS + BOOT
+========================= */
+document.addEventListener("DOMContentLoaded", async function(){
+  // Buttons user
+  $("btnLogin").addEventListener("click", openLogin);
+  $("btnLogout").addEventListener("click", doLogout);
+  $("btnLoginCancel").addEventListener("click", closeLogin);
+  $("btnLoginDo").addEventListener("click", doLogin);
+  $("loginBackdrop").addEventListener("click", (e)=>{ if(e.target === $("loginBackdrop")) closeLogin(); });
+  $("loginPass").addEventListener("keydown", (e)=>{ if(e.key==="Enter") doLogin(); });
+
+  // Refresh
+  $("btnRefresh").addEventListener("click", aggiornaTutto);
+
+  // Modal request
+  $("btnReqCancel").addEventListener("click", closeRequestModal);
+  $("btnReqSend").addEventListener("click", sendRequest);
+  $("reqBackdrop").addEventListener("click", (e)=>{ if(e.target === $("reqBackdrop")) closeRequestModal(); });
+
+  // Session restore
+  await restoreSession();
+
+  // Load now
+  await aggiornaTutto();
+  renderEmoji();
+
+  // Auto refresh
+  setInterval(aggiornaTutto, AUTO_REFRESH_MS);
+});
 </script>
 
 </body>
