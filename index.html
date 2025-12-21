@@ -21,7 +21,7 @@
   <!-- PapaParse per leggere CSV -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
-  <!-- Twemoji (emoji compatibili ovunque: niente più "?" al posto delle emoji) -->
+  <!-- Twemoji (emoji compatibili ovunque) -->
   <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
 
   <style>
@@ -44,6 +44,7 @@
       position: relative;
     }
 
+    /* neve */
     .snowflake {
       position: fixed;
       top: -10px;
@@ -107,7 +108,6 @@
       z-index: 3;
       border: 2px solid rgba(176,32,48,0.35);
     }
-
     #wrapper::before {
       content: "";
       position: absolute;
@@ -117,7 +117,7 @@
       pointer-events: none;
     }
 
-    /* ✅ LOGO CENTRATO "COME PRIMA" */
+    /* ✅ header con logo centrato */
     .header-flex {
       display: grid;
       grid-template-columns: 1fr auto 1fr;
@@ -152,6 +152,28 @@
       background: #fff;
     }
 
+    h1 {
+      text-align: center;
+      margin: 6px 0;
+      font-size: 1.8rem;
+      color: var(--rosso-natale);
+      text-shadow: 0 1px 0 #fff, 0 0 6px rgba(176,32,48,0.35);
+      position: relative;
+      z-index: 4;
+      font-weight: 900;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 0.9rem;
+      color: #555;
+      margin-bottom: 12px;
+      position: relative;
+      z-index: 4;
+      font-weight: 800;
+    }
+    .subtitle span { color: var(--verde-natale); font-weight: 900; }
+
     .pill{
       display:inline-flex;
       align-items:center;
@@ -179,7 +201,6 @@
       user-select:none;
     }
     .btn:hover{ filter: brightness(0.98); }
-
     .btn-ok{
       border: 1px solid rgba(31,122,58,.55);
       background: rgba(233,255,240,.95);
@@ -210,28 +231,6 @@
     }
     #adminLink:hover{ text-decoration: underline; }
 
-    h1 {
-      text-align: center;
-      margin: 6px 0;
-      font-size: 1.8rem;
-      color: var(--rosso-natale);
-      text-shadow: 0 1px 0 #fff, 0 0 6px rgba(176,32,48,0.35);
-      position: relative;
-      z-index: 4;
-      font-weight: 900;
-    }
-
-    .subtitle {
-      text-align: center;
-      font-size: 0.9rem;
-      color: #555;
-      margin-bottom: 12px;
-      position: relative;
-      z-index: 4;
-      font-weight: 800;
-    }
-    .subtitle span { color: var(--verde-natale); font-weight: 900; }
-
     .stats-bar {
       display: grid;
       grid-template-columns: repeat(3, minmax(0,1fr));
@@ -240,7 +239,6 @@
       position: relative;
       z-index: 4;
     }
-
     .stat-box {
       background: linear-gradient(135deg,#fff,#fffdf7);
       border-radius: 12px;
@@ -249,7 +247,6 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.06);
       font-size: 0.85rem;
     }
-
     .stat-label {
       text-transform: uppercase;
       color: #666;
@@ -258,21 +255,18 @@
       margin-bottom: 4px;
       font-weight: 900;
     }
-
     .stat-value {
       font-size: 1.4rem;
       font-weight: 900;
       color: var(--rosso-natale);
       font-variant-numeric: tabular-nums;
     }
-
     .stat-note {
       font-size: 0.75rem;
       color: #777;
       margin-top: 3px;
       font-weight: 800;
     }
-
     .stat-top ol {
       margin: 0;
       padding-left: 18px;
@@ -294,22 +288,14 @@
       position: relative;
       z-index: 4;
     }
-
     .filters-left {
       display: flex;
       flex-wrap: wrap;
       gap: 14px;
       align-items: center;
     }
-
     .filter-block { display: flex; flex-direction: column; gap: 4px; }
-
-    .filter-label {
-      color: #444;
-      font-size: 0.8rem;
-      font-weight: 900;
-    }
-
+    .filter-label { color: #444; font-size: 0.8rem; font-weight: 900; }
     select, input[type="text"] {
       padding: 6px 8px;
       border-radius: 10px;
@@ -319,7 +305,6 @@
       background: #fff;
       font-weight: 800;
     }
-
     #btnRefresh {
       padding: 8px 12px;
       border-radius: 12px;
@@ -346,7 +331,6 @@
       z-index: 4;
     }
 
-    /* box errori */
     #errorBox {
       display: none;
       margin: 10px 0 12px;
@@ -364,19 +348,14 @@
 
     /* DataTables */
     #tblCatalogo_wrapper { margin-top: 6px; position: relative; z-index: 4; }
-
     table.dataTable thead th {
       background: linear-gradient(180deg,#f7f7f7,#e3e3e3);
       border-bottom: 2px solid var(--rosso-natale);
       font-weight: 900;
     }
     table.dataTable tbody tr:nth-child(even) { background-color: #fffaf5; }
-    table.dataTable tbody tr.disponibile-row {
-      background: linear-gradient(90deg, #f7fff7, #ffffff);
-    }
-    table.dataTable tbody tr.prestato-row {
-      background: linear-gradient(90deg, #fff7f7, #ffffff);
-    }
+    table.dataTable tbody tr.disponibile-row { background: linear-gradient(90deg, #f7fff7, #ffffff); }
+    table.dataTable tbody tr.prestato-row    { background: linear-gradient(90deg, #fff7f7, #ffffff); }
 
     .badge {
       padding: 5px 10px;
@@ -387,34 +366,12 @@
       white-space: nowrap;
       user-select:none;
     }
-    .badge-disponibile {
-      background: #d4edda;
-      color: #155724;
-      border: 1px solid #b1dfbb;
-    }
-    .badge-prestato {
-      background: #f8d7da;
-      color: #721c24;
-      border: 1px solid #f1b0b7;
-    }
+    .badge-disponibile { background: #d4edda; color: #155724; border: 1px solid #b1dfbb; }
+    .badge-prestato    { background: #f8d7da; color: #721c24; border: 1px solid #f1b0b7; }
+    .badge-req         { background:#efe1ff; border:1px solid #c9a7ff; color:#4a1a7a; }
+    .badge-booked      { background:#ffe8c7; border:1px solid #ffc37a; color:#7a3d00; }
 
-    .badge-req{
-      background:#efe1ff;
-      border:1px solid #c9a7ff;
-      color:#4a1a7a;
-    }
-    .badge-booked{
-      background:#ffe8c7;
-      border:1px solid #ffc37a;
-      color:#7a3d00;
-    }
-
-    a.bgg-link {
-      color: var(--rosso-natale);
-      font-size: 0.85rem;
-      text-decoration: none;
-      font-weight: 900;
-    }
+    a.bgg-link { color: var(--rosso-natale); font-size: 0.85rem; text-decoration: none; font-weight: 900; }
     a.bgg-link:hover { text-decoration: underline; }
 
     .footer-note {
@@ -466,22 +423,9 @@
       line-height:1.35;
       font-weight: 800;
     }
-    .grid2{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:10px;
-    }
-    .field{
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      margin-bottom:10px;
-    }
-    .field label{
-      font-size:.82rem;
-      font-weight: 900;
-      color:#333;
-    }
+    .grid2{ display:grid; grid-template-columns: 1fr 1fr; gap:10px; }
+    .field{ display:flex; flex-direction:column; gap:6px; margin-bottom:10px; }
+    .field label{ font-size:.82rem; font-weight: 900; color:#333; }
     .field input, .field textarea{
       border:1px solid #ccc;
       border-radius: 12px;
@@ -510,26 +454,13 @@
       color:#333;
       line-height:1.35;
     }
-    .msg-ok{
-      border-color: rgba(31,122,58,.25);
-      background: rgba(233,255,240,.95);
-      color:#155724;
-    }
-    .msg-no{
-      border-color: rgba(176,32,48,.25);
-      background: rgba(255,231,231,.92);
-      color:#7a0f1a;
-    }
+    .msg-ok{ border-color: rgba(31,122,58,.25); background: rgba(233,255,240,.95); color:#155724; }
+    .msg-no{ border-color: rgba(176,32,48,.25); background: rgba(255,231,231,.92); color:#7a0f1a; }
 
-    /* twemoji img sizing */
-    img.emoji{
-      height: 1em;
-      width: 1em;
-      margin: 0 .05em 0 .1em;
-      vertical-align: -0.1em;
-    }
+    /* twemoji sizing */
+    img.emoji{ height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.1em; }
 
-    /* ===== COUNTDOWN BANNER + SPOILER SHIELD ===== */
+    /* ===== COUNTDOWN + SPOILER ===== */
     #countdownBanner{
       position: fixed;
       inset: 70px 16px auto 16px;
@@ -557,6 +488,18 @@
       color: #b02030;
     }
 
+    /* barra bypass sotto al banner */
+    #adminBypassBar{
+      position: fixed;
+      inset: 132px 16px auto 16px;
+      max-width: 1200px;
+      margin: 0 auto;
+      z-index: 9999;
+      display:none;
+      text-align:center;
+      user-select:none;
+    }
+
     .spoiler-hidden #wrapper{
       filter: blur(10px);
       pointer-events: none;
@@ -578,18 +521,15 @@
       .stats-bar { grid-template-columns: 1fr; }
       .grid2{ grid-template-columns: 1fr; }
     }
-
     @media(max-width: 768px) {
-      #wrapper {
-        margin: 80px 10px 20px;
-        padding: 14px;
-      }
+      #wrapper { margin: 80px 10px 20px; padding: 14px; }
       .filters { flex-direction: column; align-items: stretch; }
       .logo-amar { height: 70px; }
       #lastUpdate { text-align:left; }
       .footer-note{ justify-content:flex-start; }
       .header-flex { grid-template-columns: 1fr; }
       .header-right { justify-content: center; }
+      #adminBypassBar{ inset: 170px 16px auto 16px; }
     }
   </style>
 </head>
@@ -602,13 +542,19 @@
   <small>Fino a quell’ora il catalogo resta “coperto”.</small>
 </div>
 
+<!-- PIN bypass -->
+<div id="adminBypassBar">
+  <button id="btnAdminBypass" class="btn btn-neutral" type="button">🔓 Bypass (PIN)</button>
+  <span id="adminBypassBadge" class="badge badge-booked" style="display:none;">🛡️ Admin ON</span>
+</div>
+
 <div class="garland">
   <span>✨</span><span>🎄</span><span>⭐</span><span>🕯️</span>
   <span>🎲 AmarBoard Romagna 🎲</span>
   <span>⭐</span><span>🎄</span><span>✨</span>
 </div>
 
-<!-- Fiocchi di neve -->
+<!-- Neve -->
 <div class="snowflake">❄</div>
 <div class="snowflake">✻</div>
 <div class="snowflake">❅</div>
@@ -618,7 +564,6 @@
 <div class="snowflake">❄</div>
 
 <div id="wrapper">
-  <!-- HEADER con logo centrato -->
   <div class="header-flex">
     <div class="header-left"></div>
 
@@ -647,7 +592,6 @@
     <span>Speciale Natale:</span> trova il gioco giusto (o fatti suggerire dai nostri Volontari) da intavolare con gli amici sui nostri tavoli.
   </div>
 
-  <!-- STATS -->
   <div class="stats-bar">
     <div class="stat-box">
       <div class="stat-label">Giochi attualmente in prestito</div>
@@ -665,7 +609,6 @@
     </div>
   </div>
 
-  <!-- FILTRI -->
   <div class="filters">
     <div class="filters-left">
       <div class="filter-block">
@@ -689,7 +632,6 @@
   <div id="errorBox"></div>
   <div id="lastUpdate">Ultimo aggiornamento: –</div>
 
-  <!-- ✅ 9 colonne: devono combaciare con DataTables -->
   <table id="tblCatalogo" class="display" style="width:100%">
     <thead>
     <tr>
@@ -716,7 +658,7 @@
 <div class="modal-backdrop" id="loginBackdrop">
   <div class="modal">
     <h2>🔑 Accesso Utente</h2>
-    <p>Inserisci username e password. Se sei admin, comparirà anche il link “Area Admin”.</p>
+    <p>Inserisci username e password.</p>
 
     <div class="grid2">
       <div class="field">
@@ -785,100 +727,88 @@
 ========================= */
 const API_URL = "https://script.google.com/macros/s/AKfycbymY3lNuMU13fv2NSXJBBAkGh0iOMzABjzuWnARGjsY_UHr7ZWEUM6wss9f1A2zbi9dcA/exec";
 
-// CSV locali (stessa cartella dell'HTML)
 const CSV_BASE_URL   = "catalogo_ludoteca.csv";
 const STATS_BASE_URL = "stats_ludoteca.csv";
 
-// localStorage keys (utente)
 const LS_USER_TOKEN   = "AB_USER_TOKEN";
 const LS_USER_PROFILE = "AB_USER_PROFILE";
 
-// Auto refresh
+/* ✅ BYPASS PIN (come prima) */
+const LS_ADMIN_BYPASS = "AB_ADMIN_BYPASS";
+const ADMIN_PIN = "1234"; // <-- CAMBIA QUI col tuo PIN vero
+
 const AUTO_REFRESH_MS = 30000;
 
-// Countdown: per default "domani alle 09:00" (ora locale browser)
-// Se vuoi fissare una data precisa, scrivi l'ISO qui sotto (es. "2026-01-01T09:00:00+01:00"), altrimenti lascia vuoto.
-const REVEAL_AT_ISO = "2024-01-01T09:00:00+01:00";
+/* countdown: default "domani alle 09:00" */
+const REVEAL_AT = (function(){
+  const now = new Date();
+  return new Date(now.getFullYear(), now.getMonth(), now.getDate()+1, 9, 0, 0, 0).getTime();
+})();
 
 /* =========================
    STATE
 ========================= */
 let table = null;
-let currentUser = null; // { Username, Nome, Telefono, Ruolo }
-let requestedMap = {};  // titolo -> {open, approved}
+let currentUser = null;
+let requestedMap = {};
 let countdownTimer = null;
 
 /* =========================
-   HELPERS UI
+   Helpers base
 ========================= */
-function $(id){ return document.getElementById(id); }
+function E(id){ return document.getElementById(id); }
+
+function renderEmoji(){
+  try { twemoji.parse(document.body, { folder:"svg", ext:".svg" }); } catch(e){}
+}
 
 function showError(msg){
-  const box = $("errorBox");
+  const box = E("errorBox");
   box.style.display = "block";
   box.textContent = msg;
 }
 function clearError(){
-  const box = $("errorBox");
+  const box = E("errorBox");
   box.style.display = "none";
   box.textContent = "";
 }
 
-function aggiornaTimestamp() {
+function aggiornaTimestamp(){
   const now = new Date();
-  $("lastUpdate").textContent = "Ultimo aggiornamento: " +
-    now.toLocaleTimeString("it-IT", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+  E("lastUpdate").textContent = "Ultimo aggiornamento: " +
+    now.toLocaleTimeString("it-IT", { hour:"2-digit", minute:"2-digit", second:"2-digit" });
 }
 
-function renderEmoji(){
-  try{
-    twemoji.parse(document.body, { folder:"svg", ext:".svg" });
-  }catch(e){}
+function escapeHtml(s){
+  return String(s ?? "")
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#39;");
 }
+function escapeAttr(s){ return escapeHtml(s).replace(/`/g,"&#96;"); }
 
-function statoBadge(stato) {
-  stato = (stato || "").toLowerCase().trim();
-  if (stato === "disponibile") {
-    return '<span class="badge badge-disponibile">🎄 Disponibile</span>';
-  }
-  if (stato === "in prestito") {
-    return '<span class="badge badge-prestato">🎁 In prestito</span>';
-  }
-  return (stato || "");
-}
-
-function gameReqBadge(titolo){
-  const t = String(titolo||"").trim();
-  if(!t) return "";
-  const x = requestedMap[t];
-  if(!x) return "";
-
-  // priorità: approvata => prenotato
-  if(Number(x.approved||0) > 0){
-    return ' <span class="badge badge-booked">📌 Prenotato</span>';
-  }
-  if(Number(x.open||0) > 0){
-    return ' <span class="badge badge-req">🟣 Richiesto</span>';
-  }
-  return "";
-}
+function isAdminUser(){ return currentUser && String(currentUser.Ruolo||"") === "admin"; }
+function isBypassEnabled(){ return localStorage.getItem(LS_ADMIN_BYPASS) === "1"; }
+function setBypassEnabled(on){ localStorage.setItem(LS_ADMIN_BYPASS, on ? "1" : "0"); }
 
 function refreshUserUI(){
-  const pill = $("userPill");
-  const btnLogin = $("btnLogin");
-  const btnLogout = $("btnLogout");
-  const adminLink = $("adminLink");
-  const role = $("userRole");
+  const pill = E("userPill");
+  const btnLogin = E("btnLogin");
+  const btnLogout = E("btnLogout");
+  const adminLink = E("adminLink");
+  const role = E("userRole");
 
   if(currentUser){
-    $("userName").textContent = currentUser.Nome || currentUser.Username || "Utente";
+    E("userName").textContent = currentUser.Nome || currentUser.Username || "Utente";
     pill.style.display = "inline-flex";
     btnLogin.style.display = "none";
     btnLogout.style.display = "inline-flex";
 
-    const isAdmin = String(currentUser.Ruolo||"") === "admin";
-    adminLink.style.display = isAdmin ? "inline-flex" : "none";
-    role.style.display = isAdmin ? "inline" : "none";
+    const a = isAdminUser();
+    adminLink.style.display = a ? "inline-flex" : "none";
+    role.style.display = a ? "inline" : "none";
   } else {
     pill.style.display = "none";
     btnLogin.style.display = "inline-flex";
@@ -889,29 +819,14 @@ function refreshUserUI(){
   renderEmoji();
 }
 
-function isAdminUser(){
-  return currentUser && String(currentUser.Ruolo||"") === "admin";
-}
-
 /* =========================
-   COUNTDOWN / SPOILER SHIELD
+   Countdown + bypass PIN
 ========================= */
-function computeRevealAt(){
-  if (REVEAL_AT_ISO && String(REVEAL_AT_ISO).trim()){
-    const t = new Date(String(REVEAL_AT_ISO).trim()).getTime();
-    return isNaN(t) ? null : t;
-  }
-  // default: domani alle 09:00 (ora locale browser)
-  const now = new Date();
-  const t = new Date(now.getFullYear(), now.getMonth(), now.getDate()+1, 9, 0, 0, 0).getTime();
-  return t;
-}
-
-const REVEAL_AT = computeRevealAt();
-
 function startCountdownShield(){
-  const banner = $("countdownBanner");
-  const timeEl = $("countdownTime");
+  const banner = E("countdownBanner");
+  const timeEl = E("countdownTime");
+  const bar = E("adminBypassBar");
+  const badge = E("adminBypassBadge");
 
   function unlock(){
     document.body.classList.remove("spoiler-hidden");
@@ -920,22 +835,20 @@ function startCountdownShield(){
   }
 
   function tick(){
-    // admin bypass sempre
-    if (isAdminUser()){
+    // ✅ bypass: admin loggato O PIN attivo
+    if (isAdminUser() || isBypassEnabled()){
       unlock();
+      bar.style.display = "block";
+      badge.style.display = "inline-block";
       return;
     }
 
-    if (!REVEAL_AT){
-      // se REVEAL_AT invalido, non bloccare
-      unlock();
-      return;
-    }
+    bar.style.display = "block";
+    badge.style.display = "none";
 
     const diff = REVEAL_AT - Date.now();
     if (diff <= 0){
       unlock();
-      // sblocco: carico dati
       aggiornaTutto();
       return;
     }
@@ -955,13 +868,13 @@ function startCountdownShield(){
 }
 
 /* =========================
-   JSONP helper (GET) per evitare CORS
+   JSONP helper (GET)
 ========================= */
 function jsonp(url){
   return new Promise((resolve,reject)=>{
     const cb = "cb_" + Math.random().toString(36).slice(2);
     const s = document.createElement("script");
-    const t = setTimeout(()=>{ cleanup(); reject(new Error("JSONP timeout")); }, 9000);
+    const t = setTimeout(()=>{ cleanup(); reject(new Error("JSONP timeout")); }, 10000);
 
     function cleanup(){
       clearTimeout(t);
@@ -978,7 +891,7 @@ function jsonp(url){
 }
 
 /* =========================
-   CSV fetch (no-store) + parse
+   CSV fetch + parse
 ========================= */
 async function fetchTextNoStore(path){
   const url = path + "?v=" + Date.now();
@@ -987,14 +900,31 @@ async function fetchTextNoStore(path){
   return await res.text();
 }
 function parseCSVText(csvText){
-  const parsed = Papa.parse(csvText, {
-    header: true,
-    skipEmptyLines: true
-  });
-  if (parsed.errors && parsed.errors.length){
-    console.warn("PapaParse errors:", parsed.errors);
-  }
+  const parsed = Papa.parse(csvText, { header:true, skipEmptyLines:true });
   return parsed.data || [];
+}
+
+/* =========================
+   Badge richiesto/prenotato
+========================= */
+function gameReqBadge(titolo){
+  const t = String(titolo||"").trim();
+  if(!t) return "";
+  const x = requestedMap[t];
+  if(!x) return "";
+  if(Number(x.approved||0) > 0) return ' <span class="badge badge-booked">📌 Prenotato</span>';
+  if(Number(x.open||0) > 0) return ' <span class="badge badge-req">🟣 Richiesto</span>';
+  return "";
+}
+
+async function caricaRequestedMap(){
+  try{
+    const data = await jsonp(API_URL + "?action=requested_map");
+    if(data && data.ok && data.map) requestedMap = data.map;
+    else requestedMap = {};
+  }catch(e){
+    requestedMap = {};
+  }
 }
 
 /* =========================
@@ -1007,10 +937,10 @@ async function caricaStats(){
     if(!rows.length) return;
 
     const s = rows[0];
-    $("cntAttivi").textContent = s["PrestitiAttivi"] || "0";
-    $("cntTotali").textContent = s["PrestitiTotali"] || "0";
+    E("cntAttivi").textContent = s["PrestitiAttivi"] || "0";
+    E("cntTotali").textContent = s["PrestitiTotali"] || "0";
 
-    const topList = $("topList");
+    const topList = E("topList");
     topList.innerHTML = "";
 
     function addTop(titoloKey, countKey){
@@ -1023,7 +953,6 @@ async function caricaStats(){
       }
     }
 
-    // compatibilità multi-versione
     addTop("Top1Titolo","Top1Prestiti");
     addTop("Top2Titolo","Top2Prestiti");
     addTop("Top3Titolo","Top3Prestiti");
@@ -1031,44 +960,29 @@ async function caricaStats(){
     addTop("TopEvento2Titolo","TopEvento2Val");
     addTop("TopEvento3Titolo","TopEvento3Val");
 
-  }catch(e){
-    console.warn("Stats:", e);
-  }
+  }catch(e){}
 }
 
 /* =========================
-   BADGE richiesto/prenotato (dal backend)
-========================= */
-async function caricaRequestedMap(){
-  try{
-    const data = await jsonp(API_URL + "?action=requested_map");
-    if(data && data.ok && data.map){
-      requestedMap = data.map;
-    } else {
-      requestedMap = {};
-    }
-  }catch(e){
-    console.warn("requested_map:", e);
-    requestedMap = {};
-  }
-}
-
-/* =========================
-   DataTables safety check
+   DataTables safe
 ========================= */
 function ensureDataTablesLoaded(){
-  if (!window.jQuery || !jQuery.fn || !jQuery.fn.DataTable){
-    showError("Errore: DataTables non caricato (CDN bloccato o offline). Ricarica la pagina o controlla la connessione.");
-    return false;
-  }
+  if (!window.jQuery) { showError("Errore: jQuery non caricato."); return false; }
+  if (!jQuery.fn || !jQuery.fn.DataTable) { showError("Errore: DataTables non caricato (CDN)."); return false; }
+  const el = document.getElementById("tblCatalogo");
+  if (!el) { showError("Errore: tabella non trovata."); return false; }
   return true;
 }
 
-/* =========================
-   CATALOGO + DATATABLE
-========================= */
+function statoBadge(stato){
+  stato = (stato || "").toLowerCase().trim();
+  if (stato === "disponibile") return '<span class="badge badge-disponibile">🎄 Disponibile</span>';
+  if (stato === "in prestito")  return '<span class="badge badge-prestato">🎁 In prestito</span>';
+  return (stato || "");
+}
+
 async function caricaCatalogo(){
-  if (!ensureDataTablesLoaded()) return;
+  if(!ensureDataTablesLoaded()) return;
 
   const text = await fetchTextNoStore(CSV_BASE_URL);
   const raw = parseCSVText(text);
@@ -1076,7 +990,6 @@ async function caricaCatalogo(){
   const data = [];
   raw.forEach(row=>{
     if(!row["Titolo"]) return;
-
     data.push({
       Titolo: row["Titolo"] || "",
       Giocatori: row["NumeroGiocatori"] || "",
@@ -1089,82 +1002,61 @@ async function caricaCatalogo(){
     });
   });
 
-  // Init o refresh
-  if(!table){
-    // micro-delay per evitare race condition DOM/DT
-    await new Promise(r => setTimeout(r, 0));
+  // micro-delay: evita "Cannot read properties of null (reading 'DataTable')"
+  await new Promise(r => setTimeout(r, 0));
 
+  if(!table){
     try{
       table = $("#tblCatalogo").DataTable({
         data: data,
         destroy: true,
         retrieve: true,
         columns: [
-          {
-            data: "Titolo",
-            render: (d) => {
-              const title = String(d || "");
-              return `<strong>${escapeHtml(title)}</strong>${gameReqBadge(title)}`;
-            }
-          },
-          { data: "Giocatori" },
-          { data: "Durata" },
-          { data: "Eta" },
-          { data: "Editore" },
-          {
-            data: "Disponibili",
-            render: d => `<strong>${escapeHtml(d ?? "")}</strong>`
-          },
-          {
-            data: "Stato",
-            render: d => statoBadge(d)
-          },
-          {
-            data: "BGG",
-            orderable: false,
-            render: d => {
-              const safe = String(d || "").trim();
+          { data:"Titolo", render:(d)=> `<strong>${escapeHtml(d)}</strong>${gameReqBadge(d)}` },
+          { data:"Giocatori" },
+          { data:"Durata" },
+          { data:"Eta" },
+          { data:"Editore" },
+          { data:"Disponibili", render:(d)=> `<strong>${escapeHtml(d ?? "")}</strong>` },
+          { data:"Stato", render:(d)=> statoBadge(d) },
+          { data:"BGG", orderable:false, render:(d)=>{
+              const safe = String(d||"").trim();
               if(!safe) return "";
               if(!/^https?:\/\//i.test(safe)) return "";
               return `<a class="bgg-link" href="${safe}" target="_blank" rel="noopener noreferrer">Scheda</a>`;
             }
           },
-          {
-            data: null,
-            orderable: false,
-            render: (d, type, row) => {
-              const title = String(row.Titolo || "");
-              const gioc = String(row.Giocatori || "");
+          { data:null, orderable:false, render:(d,t,row)=>{
+              const title = String(row.Titolo||"");
+              const gioc  = String(row.Giocatori||"");
               return `<button class="btn btn-ok btnReq" type="button"
                         data-titolo="${escapeAttr(title)}"
                         data-giocatori="${escapeAttr(gioc)}">📝 Richiedi</button>`;
             }
           }
         ],
-        paging: false,
-        info: false,
-        lengthChange: false,
-        order: [[0, "asc"]],
-        language: {
-          url: "https://cdn.datatables.net/plug-ins/1.13.8/i18n/it-IT.json"
+        paging:false,
+        info:false,
+        lengthChange:false,
+        order:[[0,"asc"]],
+        language:{ url:"https://cdn.datatables.net/plug-ins/1.13.8/i18n/it-IT.json" },
+        createdRow:function(row,rowData){
+          const st = (rowData.Stato||"").toLowerCase().trim();
+          if(st === "disponibile") row.classList.add("disponibile-row");
+          else if(st === "in prestito") row.classList.add("prestato-row");
         },
-        createdRow: function(row, rowData){
-          const stato = (rowData.Stato || "").toLowerCase().trim();
-          if(stato === "disponibile") row.classList.add("disponibile-row");
-          else if(stato === "in prestito") row.classList.add("prestato-row");
-        },
-        drawCallback: function(){ renderEmoji(); }
+        drawCallback:function(){ renderEmoji(); }
       });
 
-      // Filtri (una sola volta)
-      $("filtroStato").addEventListener("change", function(){
+      // filtri
+      E("filtroStato").addEventListener("change", function(){
         table.column(6).search(this.value, false, false).draw();
       });
-      $("filtroGiocatori").addEventListener("keyup", function(){
+      E("filtroGiocatori").addEventListener("keyup", function(){
         table.column(1).search(this.value, false, false).draw();
       });
 
-      // Delegation per bottoni Richiedi
+      // delegation per Richiedi
       document.addEventListener("click", (e)=>{
         const btn = e.target.closest(".btnReq");
         if(!btn) return;
@@ -1172,17 +1064,16 @@ async function caricaCatalogo(){
       });
 
     }catch(e){
-      console.error(e);
+      table = null;
       showError("Errore DataTables: " + (e?.message ?? String(e)));
     }
-
   } else {
     try{
       table.clear();
       table.rows.add(data).draw(false);
     }catch(e){
-      // se qualcosa si è rotto, riparto pulito
-      console.warn("Reinit DataTables:", e);
+      // se si rompe, riparto
+      try{ table.destroy(); }catch(_){}
       table = null;
       await caricaCatalogo();
     }
@@ -1200,233 +1091,54 @@ async function aggiornaTutto(){
     aggiornaTimestamp();
     renderEmoji();
   }catch(e){
-    console.error(e);
-    showError("Errore aggiornamento dati: " + (e?.message ?? String(e)));
+    showError("Errore refresh: " + (e?.message ?? String(e)));
   }
 }
 
 /* =========================
-   MODAL: Login
+   Modali
 ========================= */
 function openLogin(){
-  $("loginMsg").style.display = "none";
-  $("loginMsg").textContent = "";
-  $("loginUser").value = "";
-  $("loginPass").value = "";
-  $("loginBackdrop").style.display = "flex";
-  setTimeout(()=> $("loginUser").focus(), 50);
+  E("loginMsg").style.display = "none";
+  E("loginMsg").textContent = "";
+  E("loginUser").value = "";
+  E("loginPass").value = "";
+  E("loginBackdrop").style.display = "flex";
+  setTimeout(()=> E("loginUser").focus(), 50);
   renderEmoji();
 }
-function closeLogin(){ $("loginBackdrop").style.display = "none"; }
+function closeLogin(){ E("loginBackdrop").style.display = "none"; }
 
-async function doLogin(){
-  const u = String($("loginUser").value || "").trim().toLowerCase();
-  const p = String($("loginPass").value || "");
-
-  if(!u || !p){
-    $("loginMsg").className = "msg msg-no";
-    $("loginMsg").style.display = "block";
-    $("loginMsg").textContent = "Inserisci username e password.";
-    return;
-  }
-
-  try{
-    const ch = await jsonp(API_URL + "?action=challenge&username=" + encodeURIComponent(u));
-    if(!ch || !ch.ok || !ch.nonce) throw new Error(ch?.error || "challenge_failed");
-
-    const nonce = ch.nonce;
-
-    // proof = sha256Hex( sha256Hex(passwordPlain) + ":" + nonce )
-    const passHash = sha256Hex(p);
-    const proof = sha256Hex(passHash + ":" + nonce);
-
-    const resp = await jsonp(
-      API_URL + "?action=login_challenge&username=" + encodeURIComponent(u) +
-      "&nonce=" + encodeURIComponent(nonce) +
-      "&proof=" + encodeURIComponent(proof)
-    );
-
-    if(!resp || !resp.ok || !resp.token || !resp.profile){
-      throw new Error(resp?.error || "login_failed");
-    }
-
-    localStorage.setItem(LS_USER_TOKEN, resp.token);
-    localStorage.setItem(LS_USER_PROFILE, JSON.stringify(resp.profile));
-
-    currentUser = resp.profile;
-    refreshUserUI();
-    closeLogin();
-
-    // se sei admin, bypass immediato del countdown
-    startCountdownShield();
-
-    // se admin, carico subito
-    if (isAdminUser()){
-      await aggiornaTutto();
-    }
-
-  }catch(e){
-    console.warn(e);
-    $("loginMsg").className = "msg msg-no";
-    $("loginMsg").style.display = "block";
-    $("loginMsg").textContent = "Credenziali non valide o utente disattivato.";
-  }
-}
-
-async function restoreSession(){
-  try{
-    const token = localStorage.getItem(LS_USER_TOKEN) || "";
-    if(!token) return;
-
-    const me = await jsonp(API_URL + "?action=me&token=" + encodeURIComponent(token));
-    if(me && me.ok && me.profile){
-      currentUser = me.profile;
-      localStorage.setItem(LS_USER_PROFILE, JSON.stringify(currentUser));
-      refreshUserUI();
-      return;
-    }
-  }catch(e){}
-
-  localStorage.removeItem(LS_USER_TOKEN);
-  localStorage.removeItem(LS_USER_PROFILE);
-  currentUser = null;
-  refreshUserUI();
-}
-
-function doLogout(){
-  localStorage.removeItem(LS_USER_TOKEN);
-  localStorage.removeItem(LS_USER_PROFILE);
-  currentUser = null;
-  refreshUserUI();
-  // ricalcolo countdown (non admin => torna coperto se ancora prima del reveal)
-  startCountdownShield();
-}
-
-/* =========================
-   MODAL: Richiedi
-========================= */
 function openRequestModal(titolo, giocatori){
-  $("reqTitolo").value = titolo || "";
-  $("reqGiocatori").value = giocatori || "";
+  E("reqTitolo").value = titolo || "";
+  E("reqGiocatori").value = giocatori || "";
 
   let prof = null;
   try{
-    const raw = localStorage.getItem(LS_USER_PROFILE);
-    prof = raw ? JSON.parse(raw) : null;
+    prof = JSON.parse(localStorage.getItem(LS_USER_PROFILE) || "null");
   }catch(e){}
 
-  $("reqNome").value = (prof && prof.Nome) ? prof.Nome : "";
-  $("reqTelefono").value = (prof && prof.Telefono) ? prof.Telefono : "";
-  $("reqNote").value = "";
+  E("reqNome").value = (prof && prof.Nome) ? prof.Nome : "";
+  E("reqTelefono").value = (prof && prof.Telefono) ? prof.Telefono : "";
+  E("reqNote").value = "";
 
-  $("reqMsg").style.display = "none";
-  $("reqMsg").textContent = "";
-  $("reqBackdrop").style.display = "flex";
+  const m = E("reqMsg");
+  m.style.display = "none";
+  m.textContent = "";
+  m.className = "msg";
+
+  E("reqBackdrop").style.display = "flex";
   renderEmoji();
 }
-function closeRequestModal(){ $("reqBackdrop").style.display = "none"; }
-
-async function sendRequest(){
-  const titolo = String($("reqTitolo").value || "").trim();
-  const gioc = String($("reqGiocatori").value || "").trim();
-  const nome = String($("reqNome").value || "").trim();
-  const tel = String($("reqTelefono").value || "").trim();
-  const note = String($("reqNote").value || "").trim();
-
-  if(!titolo || !nome){
-    $("reqMsg").className = "msg msg-no";
-    $("reqMsg").style.display = "block";
-    $("reqMsg").textContent = "Compila almeno Titolo e Nome.";
-    return;
-  }
-
-  $("btnReqSend").disabled = true;
-  $("btnReqSend").style.opacity = "0.7";
-
-  const token = localStorage.getItem(LS_USER_TOKEN) || "";
-
-  const body = new URLSearchParams();
-  body.set("action", "submit");
-  body.set("Titolo", titolo);
-  body.set("Giocatori", gioc);
-  body.set("Nome", nome);
-  body.set("Telefono", tel);
-  body.set("Note", note);
-  if(token) body.set("token", token);
-
-  try{
-    let sent = false;
-
-    // Tentativo "normale" (se CORS consente risposta)
-    try{
-      const res = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
-        body: body.toString()
-      });
-      const j = await res.json();
-      if(j && j.ok) sent = true;
-    }catch(e1){
-      // Fallback "no-cors": spesso invia ma non fa leggere la risposta
-      try{
-        await fetch(API_URL, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
-          body: body.toString()
-        });
-        sent = true;
-      }catch(e2){
-        sent = false;
-      }
-    }
-
-    if(sent){
-      $("reqMsg").className = "msg msg-ok";
-      $("reqMsg").style.display = "block";
-      $("reqMsg").textContent = "✅ Richiesta inviata! (Se non vedi subito il badge, attendi un attimo e aggiorna.)";
-
-      setTimeout(async ()=>{ await aggiornaTutto(); }, 1200);
-      setTimeout(()=> closeRequestModal(), 1600);
-    } else {
-      throw new Error("invio_non_riuscito");
-    }
-
-  }catch(e){
-    $("reqMsg").className = "msg msg-no";
-    $("reqMsg").style.display = "block";
-    $("reqMsg").textContent = "❌ Errore invio. Controlla connessione e riprova.";
-  }finally{
-    $("btnReqSend").disabled = false;
-    $("btnReqSend").style.opacity = "1";
-  }
-
-  renderEmoji();
-}
+function closeRequestModal(){ E("reqBackdrop").style.display = "none"; }
 
 /* =========================
-   ESCAPE helpers
-========================= */
-function escapeHtml(s){
-  return String(s ?? "")
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#39;");
-}
-function escapeAttr(s){
-  return escapeHtml(s).replace(/`/g,"&#96;");
-}
-
-/* =========================
-   SHA-256 (pure JS) – no window.crypto
+   SHA-256 (pure JS)
 ========================= */
 function sha256Hex(ascii){
   function rightRotate(value, amount){ return (value>>>amount) | (value<<(32-amount)); }
   const mathPow = Math.pow, maxWord = mathPow(2,32);
   let result = '';
-
   const words = [];
   const asciiBitLength = ascii.length*8;
 
@@ -1458,7 +1170,6 @@ function sha256Hex(ascii){
 
     for (let i = 0; i < 64; i++) {
       const w15 = w[i - 15], w2 = w[i - 2];
-
       const a = hash[0], e = hash[4];
       const temp1 = hash[7]
         + (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25))
@@ -1492,49 +1203,232 @@ function sha256Hex(ascii){
 }
 
 /* =========================
-   EVENTS + BOOT
+   Login challenge flow (JSONP)
+========================= */
+async function doLogin(){
+  const u = String(E("loginUser").value || "").trim().toLowerCase();
+  const p = String(E("loginPass").value || "");
+
+  if(!u || !p){
+    const m = E("loginMsg");
+    m.style.display = "block";
+    m.textContent = "Inserisci username e password.";
+    return;
+  }
+
+  try{
+    const ch = await jsonp(API_URL + "?action=challenge&username=" + encodeURIComponent(u));
+    if(!ch || !ch.ok || !ch.nonce) throw new Error(ch?.error || "challenge_failed");
+
+    const passHash = sha256Hex(p);
+    const proof = sha256Hex(passHash + ":" + ch.nonce);
+
+    const resp = await jsonp(
+      API_URL + "?action=login_challenge&username=" + encodeURIComponent(u) +
+      "&nonce=" + encodeURIComponent(ch.nonce) +
+      "&proof=" + encodeURIComponent(proof)
+    );
+
+    if(!resp || !resp.ok || !resp.token || !resp.profile){
+      throw new Error(resp?.error || "login_failed");
+    }
+
+    localStorage.setItem(LS_USER_TOKEN, resp.token);
+    localStorage.setItem(LS_USER_PROFILE, JSON.stringify(resp.profile));
+    currentUser = resp.profile;
+
+    refreshUserUI();
+    closeLogin();
+
+    // se admin, bypass countdown subito
+    startCountdownShield();
+
+    if(isAdminUser()){
+      await aggiornaTutto();
+    }
+
+  }catch(e){
+    const m = E("loginMsg");
+    m.style.display = "block";
+    m.textContent = "Credenziali non valide o utente disattivato.";
+  }
+}
+
+async function restoreSession(){
+  try{
+    const token = localStorage.getItem(LS_USER_TOKEN) || "";
+    if(!token) return;
+
+    const me = await jsonp(API_URL + "?action=me&token=" + encodeURIComponent(token));
+    if(me && me.ok && me.profile){
+      currentUser = me.profile;
+      localStorage.setItem(LS_USER_PROFILE, JSON.stringify(currentUser));
+      refreshUserUI();
+      return;
+    }
+  }catch(e){}
+
+  localStorage.removeItem(LS_USER_TOKEN);
+  localStorage.removeItem(LS_USER_PROFILE);
+  currentUser = null;
+  refreshUserUI();
+}
+
+function doLogout(){
+  localStorage.removeItem(LS_USER_TOKEN);
+  localStorage.removeItem(LS_USER_PROFILE);
+  currentUser = null;
+
+  // (opzionale) se vuoi che il PIN bypass resti anche dopo logout, commenta la riga sotto
+  // setBypassEnabled(false);
+
+  refreshUserUI();
+  startCountdownShield();
+}
+
+/* =========================
+   Richiesta prestito (POST)
+========================= */
+async function sendRequest(){
+  const titolo = String(E("reqTitolo").value || "").trim();
+  const gioc = String(E("reqGiocatori").value || "").trim();
+  const nome = String(E("reqNome").value || "").trim();
+  const tel = String(E("reqTelefono").value || "").trim();
+  const note = String(E("reqNote").value || "").trim();
+
+  const msg = E("reqMsg");
+  msg.style.display = "none";
+  msg.textContent = "";
+  msg.className = "msg";
+
+  if(!titolo || !nome){
+    msg.className = "msg msg-no";
+    msg.style.display = "block";
+    msg.textContent = "Compila almeno Titolo e Nome.";
+    return;
+  }
+
+  E("btnReqSend").disabled = true;
+  E("btnReqSend").style.opacity = "0.7";
+
+  const token = localStorage.getItem(LS_USER_TOKEN) || "";
+
+  const body = new URLSearchParams();
+  body.set("action", "submit");
+  body.set("Titolo", titolo);
+  body.set("Giocatori", gioc);
+  body.set("Nome", nome);
+  body.set("Telefono", tel);
+  body.set("Note", note);
+  if(token) body.set("token", token);
+
+  try{
+    let sent = false;
+
+    // tentativo standard
+    try{
+      const res = await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+        body: body.toString()
+      });
+      const j = await res.json();
+      if(j && j.ok) sent = true;
+    }catch(e1){
+      // fallback no-cors (invio senza poter leggere response)
+      try{
+        await fetch(API_URL, {
+          method: "POST",
+          mode: "no-cors",
+          headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+          body: body.toString()
+        });
+        sent = true;
+      }catch(e2){
+        sent = false;
+      }
+    }
+
+    if(sent){
+      msg.className = "msg msg-ok";
+      msg.style.display = "block";
+      msg.textContent = "✅ Richiesta inviata!";
+      setTimeout(async ()=>{ await aggiornaTutto(); }, 1200);
+      setTimeout(()=> closeRequestModal(), 1600);
+    } else {
+      throw new Error("invio_non_riuscito");
+    }
+  }catch(e){
+    msg.className = "msg msg-no";
+    msg.style.display = "block";
+    msg.textContent = "❌ Errore invio. Controlla connessione e riprova.";
+  }finally{
+    E("btnReqSend").disabled = false;
+    E("btnReqSend").style.opacity = "1";
+  }
+
+  renderEmoji();
+}
+
+/* =========================
+   Boot
 ========================= */
 document.addEventListener("DOMContentLoaded", async function(){
-  // Buttons user
-  $("btnLogin").addEventListener("click", openLogin);
-  $("btnLogout").addEventListener("click", doLogout);
-  $("btnLoginCancel").addEventListener("click", closeLogin);
-  $("btnLoginDo").addEventListener("click", doLogin);
-  $("loginBackdrop").addEventListener("click", (e)=>{ if(e.target === $("loginBackdrop")) closeLogin(); });
-  $("loginPass").addEventListener("keydown", (e)=>{ if(e.key==="Enter") doLogin(); });
+  // login modal
+  E("btnLogin").addEventListener("click", openLogin);
+  E("btnLogout").addEventListener("click", doLogout);
+  E("btnLoginCancel").addEventListener("click", closeLogin);
+  E("btnLoginDo").addEventListener("click", doLogin);
+  E("loginBackdrop").addEventListener("click", (e)=>{ if(e.target === E("loginBackdrop")) closeLogin(); });
+  E("loginPass").addEventListener("keydown", (e)=>{ if(e.key==="Enter") doLogin(); });
 
-  // Refresh
-  $("btnRefresh").addEventListener("click", async ()=>{
-    // non spoilerare se bloccato e non admin
-    if (!isAdminUser() && REVEAL_AT && Date.now() < REVEAL_AT) return;
+  // richiesta modal
+  E("btnReqCancel").addEventListener("click", closeRequestModal);
+  E("btnReqSend").addEventListener("click", sendRequest);
+  E("reqBackdrop").addEventListener("click", (e)=>{ if(e.target === E("reqBackdrop")) closeRequestModal(); });
+
+  // refresh
+  E("btnRefresh").addEventListener("click", async ()=>{
+    if(!isAdminUser() && !isBypassEnabled() && Date.now() < REVEAL_AT) return;
     await aggiornaTutto();
   });
 
-  // Modal request
-  $("btnReqCancel").addEventListener("click", closeRequestModal);
-  $("btnReqSend").addEventListener("click", sendRequest);
-  $("reqBackdrop").addEventListener("click", (e)=>{ if(e.target === $("reqBackdrop")) closeRequestModal(); });
+  // bypass PIN
+  E("btnAdminBypass").addEventListener("click", async ()=>{
+    const pin = prompt("Inserisci PIN admin:");
+    if(pin === null) return;
+    if(String(pin).trim() === ADMIN_PIN){
+      setBypassEnabled(true);
+      E("adminBypassBadge").style.display = "inline-block";
+      document.body.classList.remove("spoiler-hidden");
+      E("countdownBanner").style.display = "none";
+      await aggiornaTutto();
+      renderEmoji();
+    } else {
+      alert("PIN errato.");
+    }
+  });
 
-  // Session restore
+  // session
   await restoreSession();
 
-  // Countdown (con bypass admin)
+  // countdown
   startCountdownShield();
 
-  // Se NON admin e siamo prima del reveal: non carico dati
-  if (!isAdminUser() && REVEAL_AT && Date.now() < REVEAL_AT){
+  // se bloccato e non bypass/admin: stop
+  if(!isAdminUser() && !isBypassEnabled() && Date.now() < REVEAL_AT){
     renderEmoji();
     return;
   }
 
-  // Load now
   await aggiornaTutto();
 
-  // Auto refresh
   setInterval(() => {
-    if (!isAdminUser() && REVEAL_AT && Date.now() < REVEAL_AT) return;
+    if(!isAdminUser() && !isBypassEnabled() && Date.now() < REVEAL_AT) return;
     aggiornaTutto();
   }, AUTO_REFRESH_MS);
+
+  renderEmoji();
 });
 </script>
 
