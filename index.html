@@ -4,16 +4,28 @@
   <meta charset="UTF-8">
   <title>Catalogo Giochi – AmarBoard Natale</title>
 
+  <!-- No cache per l'HTML -->
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
+  <!-- DataTables CSS -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
+
+  <!-- jQuery -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+  <!-- DataTables JS -->
   <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+
+  <!-- PapaParse -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
 
+  <!-- Twemoji (emoji sempre ok) -->
   <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+
+  <!-- CryptoJS fallback per Win7 / browser vecchi -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js"></script>
 
   <style>
     :root {
@@ -156,6 +168,8 @@
       border: 1px solid rgba(176,32,48,0.2);
       box-shadow: 0 2px 6px rgba(0,0,0,0.06);
       font-size: 0.85rem;
+      position: relative;
+      z-index: 1;
     }
 
     .stat-label {
@@ -198,6 +212,8 @@
       border-radius: 12px;
       background: linear-gradient(90deg, #fffdf7, #f7fff7);
       border: 1px solid rgba(31,122,58,0.18);
+      position: relative;
+      z-index: 1;
     }
 
     .filters-left {
@@ -225,49 +241,36 @@
       font-weight: 800;
     }
 
-    #btnRefresh {
+    #btnRefresh, #btnLogin, #btnLogoutUser {
       padding: 6px 10px;
       border-radius: 8px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 900;
+    }
+
+    #btnRefresh{
       border: 1px solid var(--verde-natale);
       background: #e9fff0;
       color: var(--verde-natale);
-      font-size: 0.85rem;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-weight: 900;
     }
     #btnRefresh:hover { background: #d6ffe5; }
 
-    /* LOGIN BUTTONS (stile coerente) */
-    #btnLogin {
-      padding: 6px 10px;
-      border-radius: 8px;
+    #btnLogin{
       border: 1px solid rgba(176,32,48,0.35);
       background: rgba(255,231,231,0.75);
       color: #7a0f1a;
-      font-size: 0.85rem;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      font-weight: 900;
     }
-    #btnLogin:hover { background: rgba(255,231,231,0.95); }
+    #btnLogin:hover{ background: rgba(255,231,231,0.95); }
 
     #btnLogoutUser{
-      padding: 6px 10px;
-      border-radius: 8px;
       border: 1px solid rgba(0,0,0,0.2);
       background: rgba(255,255,255,0.85);
       color: #333;
-      font-size: 0.85rem;
-      cursor: pointer;
       display: none;
-      align-items: center;
-      gap: 6px;
-      font-weight: 900;
     }
 
     #userPill{
@@ -282,7 +285,7 @@
       gap:8px;
     }
 
-    #tblCatalogo_wrapper { margin-top: 6px; }
+    #tblCatalogo_wrapper { margin-top: 6px; position: relative; z-index: 1; }
 
     table.dataTable thead th {
       background: linear-gradient(180deg,#f7f7f7,#e3e3e3);
@@ -315,6 +318,7 @@
       color: #721c24;
       border: 1px solid #f1b0b7;
     }
+
     .badge-richiesto{background:#efe1ff;color:#4a1a7a;border:1px solid #c9a7ff;margin-left:6px}
     .badge-prenotato{background:#ffe8c7;color:#7a3d00;border:1px solid #ffc37a;margin-left:6px}
 
@@ -334,6 +338,7 @@
       font-weight: 800;
     }
 
+    /* box errori (solo se serve) */
     #errorBox {
       display: none;
       margin: 10px 0 12px;
@@ -345,6 +350,8 @@
       font-size: 0.85rem;
       line-height: 1.35;
       font-weight: 900;
+      position: relative;
+      z-index: 1;
     }
 
     /* ===== COUNTDOWN BANNER + SPOILER SHIELD ===== */
@@ -396,7 +403,6 @@
       color: rgba(122,15,26,0.85);
     }
 
-    /* ADMIN PIN UI */
     #countdownActions{margin-top:10px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
     .btn-mini{
       padding:8px 12px;border-radius:12px;border:1px solid #ccc;background:#fff;cursor:pointer;font-weight:900
@@ -404,82 +410,42 @@
     .btn-admin{border:1px solid rgba(31,122,58,.55);background:rgba(233,255,240,.95);color:#155724}
     .btn-logout{border:1px solid rgba(176,32,48,.55);background:rgba(255,231,231,.95);color:#7a0f1a;display:none}
 
-    #pinModal{
+    #pinModal, #loginModal, #prenotaModal{
       position:fixed;inset:0;z-index:10001;display:none;align-items:center;justify-content:center;
       background:rgba(0,0,0,.55);padding:16px
     }
-    #pinModal .card{
-      width:min(420px,100%);background:rgba(255,250,243,.98);border:2px solid rgba(176,32,48,.35);
-      border-radius:16px;padding:16px 14px;box-shadow:0 0 24px rgba(0,0,0,.35);color:#222
-    }
-    #pinModal h2{margin:0 0 8px;color:#7a0f1a;font-size:1.15rem}
-    #pinModal p{margin:0 0 12px;color:#444;font-size:.9rem;line-height:1.35;font-weight:800}
-    #pinModal input{
-      width:100%;padding:10px 12px;border-radius:12px;border:1px solid #ccc;background:#fff;font-size:1rem;font-weight:900
-    }
-    #pinModal .row{display:flex;gap:10px;margin-top:12px}
-    #pinModal .row button{
-      flex:1;padding:10px 12px;border-radius:12px;border:1px solid #ccc;background:#fff;cursor:pointer;font-weight:900
-    }
-    #pinModal .row .ok{border:1px solid rgba(31,122,58,.55);background:rgba(233,255,240,.95);color:#155724}
-    #pinModal .row .cancel{border:1px solid rgba(0,0,0,.2);background:rgba(255,255,255,.9);color:#333}
-    #pinModal .err{
-      margin-top:10px;color:#7a0f1a;background:rgba(255,231,231,.9);border:1px solid rgba(176,32,48,.4);
-      padding:8px 10px;border-radius:12px;display:none;font-weight:900
-    }
-
-    /* PRENOTA MODAL */
-    #prenotaModal{
-      position:fixed;inset:0;z-index:10003;display:none;align-items:center;justify-content:center;
-      background:rgba(0,0,0,.55);padding:16px
-    }
-    #prenotaModal .card{
+    #pinModal .card, #loginModal .card, #prenotaModal .card{
       width:min(520px,100%);background:rgba(255,250,243,.98);border:2px solid rgba(176,32,48,.35);
       border-radius:16px;padding:16px 14px;box-shadow:0 0 24px rgba(0,0,0,.35);color:#222
     }
-    #prenotaModal h2{margin:0 0 6px;color:#7a0f1a;font-size:1.1rem}
-    #prenotaModal .sub{margin:0 0 10px;color:#444;font-size:.9rem;line-height:1.35;font-weight:800}
-    #prenotaModal input,#prenotaModal textarea{
-      width:100%;padding:10px 12px;border-radius:12px;border:1px solid #ccc;background:#fff;color:#111;
-      font-size:.95rem;margin-top:8px;font-family:inherit;font-weight:800
+    #pinModal h2, #loginModal h2, #prenotaModal h2{margin:0 0 8px;color:#7a0f1a;font-size:1.15rem}
+    #pinModal p, #loginModal p, #prenotaModal .sub{margin:0 0 12px;color:#444;font-size:.9rem;line-height:1.35;font-weight:800}
+
+    #pinModal input, #loginModal input, #prenotaModal input, #prenotaModal textarea{
+      width:100%;padding:10px 12px;border-radius:12px;border:1px solid #ccc;background:#fff;font-size:1rem;font-weight:900;margin-top:8px;
+      font-family: inherit;
     }
-    #prenotaModal textarea{min-height:84px;resize:vertical}
-    #prenotaModal .row{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
-    #prenotaModal .row button{
+    #prenotaModal textarea{min-height:84px;resize:vertical;font-weight:800}
+    #pinModal .row, #loginModal .row, #prenotaModal .row{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
+    #pinModal .row button, #loginModal .row button, #prenotaModal .row button{
       flex:1;padding:10px 12px;border-radius:12px;border:1px solid #ccc;background:#fff;cursor:pointer;font-weight:900;min-width:140px
     }
-    #prenotaModal .row .ok{border:1px solid rgba(31,122,58,.55);background:rgba(233,255,240,.95);color:#155724}
-    #prenotaModal .row .cancel{border:1px solid rgba(0,0,0,.2);background:rgba(255,255,255,.9);color:#333}
-    #prenotaModal .msg-ok{
+    #pinModal .row .ok, #loginModal .row .ok, #prenotaModal .row .ok{
+      border:1px solid rgba(31,122,58,.55);background:rgba(233,255,240,.95);color:#155724
+    }
+    #pinModal .row .cancel, #loginModal .row .cancel, #prenotaModal .row .cancel{
+      border:1px solid rgba(0,0,0,.2);background:rgba(255,255,255,.9);color:#333
+    }
+
+    .msg-err{
+      margin-top:10px;color:#7a0f1a;background:rgba(255,231,231,.9);border:1px solid rgba(176,32,48,.4);
+      padding:8px 10px;border-radius:12px;display:none;font-weight:900
+    }
+    .msg-ok{
       margin-top:10px;color:#155724;background:rgba(233,255,240,.95);border:1px solid rgba(31,122,58,.35);
       padding:8px 10px;border-radius:12px;display:none;font-weight:900;text-align:center
     }
     #honeypotWebsite{display:none}
-
-    /* LOGIN MODAL */
-    #loginModal{
-      position:fixed;inset:0;z-index:10004;display:none;align-items:center;justify-content:center;
-      background:rgba(0,0,0,.55);padding:16px
-    }
-    #loginModal .card{
-      width:min(460px,100%);background:rgba(255,250,243,.98);border:2px solid rgba(176,32,48,.35);
-      border-radius:16px;padding:16px 14px;box-shadow:0 0 24px rgba(0,0,0,.35);color:#222
-    }
-    #loginModal h2{margin:0 0 8px;color:#7a0f1a;font-size:1.15rem}
-    #loginModal p{margin:0 0 12px;color:#444;font-size:.9rem;line-height:1.35;font-weight:800}
-    #loginModal input{
-      width:100%;padding:10px 12px;border-radius:12px;border:1px solid #ccc;background:#fff;font-size:1rem;font-weight:900;margin-top:8px
-    }
-    #loginModal .row{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap}
-    #loginModal .row button{
-      flex:1;padding:10px 12px;border-radius:12px;border:1px solid #ccc;background:#fff;cursor:pointer;font-weight:900;min-width:140px
-    }
-    #loginModal .row .ok{border:1px solid rgba(31,122,58,.55);background:rgba(233,255,240,.95);color:#155724}
-    #loginModal .row .cancel{border:1px solid rgba(0,0,0,.2);background:rgba(255,255,255,.9);color:#333}
-    #loginErr{
-      display:none;margin-top:10px;color:#7a0f1a;background:rgba(255,231,231,.9);border:1px solid rgba(176,32,48,.4);
-      padding:8px 10px;border-radius:12px;font-weight:900
-    }
 
     #adminBadge{
       position:fixed;top:10px;right:10px;z-index:10000;display:none;align-items:center;gap:10px;
@@ -490,6 +456,24 @@
     #adminBadge button{
       border-radius:999px;border:1px solid rgba(176,32,48,.45);background:rgba(255,231,231,.9);
       color:#7a0f1a;padding:6px 10px;cursor:pointer;font-weight:900
+    }
+
+    .btnRichiedi{
+      padding: 7px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(31,122,58,.55);
+      background: rgba(233,255,240,.95);
+      color: #155724;
+      cursor: pointer;
+      font-weight: 900;
+      white-space: nowrap;
+    }
+    .btnRichiedi:disabled{
+      opacity: .55;
+      cursor: not-allowed;
+      border-color: rgba(0,0,0,.2);
+      background: rgba(255,255,255,.75);
+      color: #333;
     }
 
     @media(max-width: 900px) { .stats-bar { grid-template-columns: 1fr; } }
@@ -509,6 +493,32 @@
   <button id="btnLogoutTop" type="button">Logout</button>
 </div>
 
+<!-- Countdown -->
+<div id="countdownBanner">
+  🎁 La pagina della nostra Ludoteca si sbloccherà tra <span id="countdownTime">--:--:--</span>
+  <small>Stiamo "intavolando" la nostra pagina, fino a quell’ora la pagina resta “coperta”.</small>
+  <div id="countdownActions">
+    <button class="btn-mini btn-admin" id="btnOpenPin" type="button">🔑 Admin</button>
+    <button class="btn-mini btn-logout" id="btnLogoutBanner" type="button">🚪 Logout</button>
+  </div>
+</div>
+
+<div class="garland">
+  <span>✨</span><span>🎄</span><span>⭐</span><span>🕯️</span>
+  <span>🎲 AmarBoard Romagna 🎲</span>
+  <span>⭐</span><span>🎄</span><span>✨</span>
+</div>
+
+<!-- Neve -->
+<div class="snowflake">❄</div>
+<div class="snowflake">✻</div>
+<div class="snowflake">❅</div>
+<div class="snowflake">❆</div>
+<div class="snowflake">❄</div>
+<div class="snowflake">✵</div>
+<div class="snowflake">❄</div>
+
+<!-- PIN modal -->
 <div id="pinModal" aria-hidden="true">
   <div class="card">
     <h2>Accesso Admin</h2>
@@ -518,10 +528,11 @@
       <button class="cancel" id="btnPinCancel" type="button">Annulla</button>
       <button class="ok" id="btnPinOk" type="button">Entra</button>
     </div>
-    <div class="err" id="pinErr">PIN errato.</div>
+    <div class="msg-err" id="pinErr">PIN errato.</div>
   </div>
 </div>
 
+<!-- Login modal -->
 <div id="loginModal" aria-hidden="true">
   <div class="card">
     <h2>Accesso utente</h2>
@@ -532,10 +543,11 @@
       <button class="cancel" id="btnLoginCancel" type="button">Annulla</button>
       <button class="ok" id="btnLoginOk" type="button">Entra</button>
     </div>
-    <div id="loginErr">Credenziali non valide (o utente disattivato).</div>
+    <div class="msg-err" id="loginErr">Credenziali non valide (o utente disattivato).</div>
   </div>
 </div>
 
+<!-- Prenota modal -->
 <div id="prenotaModal" aria-hidden="true">
   <div class="card">
     <h2 id="prenotaTitle">📌 Richiedi prenotazione</h2>
@@ -554,29 +566,6 @@
     <div class="msg-ok" id="reqOkMsg">Richiesta inviata ✅</div>
   </div>
 </div>
-
-<div id="countdownBanner">
-  🎁 La pagina della nostra Ludoteca si sbloccherà tra <span id="countdownTime">--:--:--</span>
-  <small>Stiamo "intavolando" la nostra pagina, fino a quell’ora la pagina resta “coperta”.</small>
-  <div id="countdownActions">
-    <button class="btn-mini btn-admin" id="btnOpenPin" type="button">🔑 Admin</button>
-    <button class="btn-mini btn-logout" id="btnLogoutBanner" type="button">🚪 Logout</button>
-  </div>
-</div>
-
-<div class="garland">
-  <span>✨</span><span>🎄</span><span>⭐</span><span>🕯️</span>
-  <span>🎲 AmarBoard Romagna 🎲</span>
-  <span>⭐</span><span>🎄</span><span>✨</span>
-</div>
-
-<div class="snowflake">❄</div>
-<div class="snowflake">✻</div>
-<div class="snowflake">❅</div>
-<div class="snowflake">❆</div>
-<div class="snowflake">❄</div>
-<div class="snowflake">✵</div>
-<div class="snowflake">❄</div>
 
 <div id="wrapper">
   <div class="header-flex">
@@ -660,7 +649,9 @@
 </div>
 
 <script>
-  /* ===== CONFIG ===== */
+  /* ========================
+     CONFIG (CAMBIA QUI)
+  ======================== */
   const CSV_BASE_URL   = "catalogo_ludoteca.csv";
   const STATS_BASE_URL = "stats_ludoteca.csv";
 
@@ -669,9 +660,12 @@
   const ADMIN_PIN = "2486";
   const ADMIN_TTL_HOURS = 8;
 
-  // Countdown (modifica quando vuoi)
+  // Se non vuoi countdown, metti una data nel passato (es: 2020...)
   const REVEAL_AT = new Date("2026-01-01T09:00:00+01:00").getTime();
 
+  /* ========================
+     STATE
+  ======================== */
   const LS_ADMIN = "AB_ADMIN";
   const LS_USER_TOKEN = "AB_USER_TOKEN";
   const REQ_COOLDOWN_MS = 12000;
@@ -696,12 +690,12 @@
     box.textContent="";
   }
 
-  /* ===== JSONP ===== */
+  /* ===== JSONP helper ===== */
   function jsonp(url){
     return new Promise((resolve,reject)=>{
       const cb="cb_"+Math.random().toString(36).slice(2);
       const s=document.createElement("script");
-      const timeout=setTimeout(()=>{cleanup(); reject(new Error("JSONP timeout"));},7000);
+      const timeout=setTimeout(()=>{cleanup(); reject(new Error("JSONP timeout"));},8000);
 
       function cleanup(){
         clearTimeout(timeout);
@@ -716,13 +710,24 @@
     });
   }
 
-  /* ===== USER LOGIN (challenge) ===== */
+  /* ===== SHA256 (WebCrypto oppure CryptoJS fallback) ===== */
   async function sha256Hex(str){
-    const enc = new TextEncoder();
-    const buf = await crypto.subtle.digest("SHA-256", enc.encode(str));
-    return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,"0")).join("");
+    try{
+      if (window.crypto && window.crypto.subtle && window.TextEncoder) {
+        const enc = new TextEncoder();
+        const buf = await crypto.subtle.digest("SHA-256", enc.encode(str));
+        return Array.prototype.map.call(new Uint8Array(buf), b => b.toString(16).padStart(2,"0")).join("");
+      }
+    }catch(e){}
+
+    if (window.CryptoJS) {
+      return CryptoJS.SHA256(String(str)).toString(CryptoJS.enc.Hex);
+    }
+
+    throw new Error("SHA256 non disponibile (manca WebCrypto e CryptoJS).");
   }
 
+  /* ===== USER LOGIN (challenge) ===== */
   function setUserUI(){
     const token = (localStorage.getItem(LS_USER_TOKEN)||"").trim();
     const logged = !!(token && userProfile && userProfile.Nome);
@@ -747,7 +752,7 @@
         localStorage.removeItem(LS_USER_TOKEN);
       }
     }catch(e){
-      // se momentaneamente down non slogghiamo
+      // se API down, non slogghiamo
     }
     setUserUI();
   }
@@ -806,7 +811,7 @@
     setUserUI();
   }
 
-  /* ===== ADMIN SESSION (solo bypass countdown) ===== */
+  /* ===== ADMIN session (solo bypass countdown) ===== */
   function isAdmin(){
     try{
       const raw=localStorage.getItem(LS_ADMIN);
@@ -957,7 +962,7 @@
     }catch(e){}
   }
 
-  /* ===== PRENOTA MODAL ===== */
+  /* ===== Prenota ===== */
   function openPrenotaModal(titolo, giocatori){
     reqCtx.titolo=titolo||"";
     reqCtx.giocatori=giocatori||"";
@@ -1021,6 +1026,7 @@
       _: String(Date.now())
     }).toString();
 
+    // Invio “silenzioso”: non mostriamo errori al visitatore, perché GAS risponde CORS-free
     let sent=false;
     try{
       if(navigator.sendBeacon){
@@ -1044,6 +1050,7 @@
     setTimeout(()=>{ closePrenotaModal(); },900);
   }
 
+  /* ===== Catalogo ===== */
   async function caricaCatalogo() {
     const text = await fetchTextNoStore(CSV_BASE_URL);
     const raw = parseCSVText(text);
@@ -1098,9 +1105,9 @@
               const disabled = approved > 0;
 
               return `<button type="button"
-                        class="btn-mini btn-admin jsRichiedi"
+                        class="btnRichiedi jsRichiedi"
                         data-t="${t}" data-g="${g}"
-                        ${disabled ? "disabled style='opacity:.55;cursor:not-allowed;'" : ""}>
+                        ${disabled ? "disabled" : ""}>
                         ${disabled ? "🟠 Prenotato" : "📌 Richiedi"}
                       </button>`;
             }
@@ -1154,10 +1161,11 @@
     }
   }
 
+  /* ===== DOM ===== */
   document.addEventListener("DOMContentLoaded", function () {
     startCountdownShield();
 
-    // Admin pin
+    // Admin
     document.getElementById("btnOpenPin").addEventListener("click", openPinModal);
     document.getElementById("btnPinCancel").addEventListener("click", closePinModal);
     document.getElementById("btnPinOk").addEventListener("click", submitPin);
