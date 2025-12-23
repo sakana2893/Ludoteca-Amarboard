@@ -1159,15 +1159,18 @@ async function doLogin(){
 
   if(!u || !p){ E("loginMsg").textContent = "Inserisci username e password."; return; }
 
-  const ch = await jsonp(API_URL + "?action=challenge&username=" + encodeURIComponent(u));
-  if(!ch || !ch.ok){ E("loginMsg").textContent = "Utente non trovato o inattivo."; return; }
-
   const passHash = sha256hex(p);
-  const proof = sha256hex(passHash + ":" + ch.nonce);
 
-  const r = await jsonp(API_URL + "?action=login_challenge&username=" + encodeURIComponent(u) + "&nonce=" + encodeURIComponent(ch.nonce) + "&proof=" + encodeURIComponent(proof));
+  const r = await jsonp(
+    API_URL
+    + "?action=login"
+    + "&username=" + encodeURIComponent(u)
+    + "&passhash=" + encodeURIComponent(passHash)
+  );
+
   if(!r || !r.ok){
-    E("loginMsg").textContent = "Credenziali non valide o utente disattivato.";
+    // MOSTRA l’errore reale (così se c’è qualcosa di strano lo vediamo subito)
+    E("loginMsg").textContent = "Login fallito: " + (r?.error || "sconosciuto");
     return;
   }
 
@@ -1179,6 +1182,7 @@ async function doLogin(){
   showInfo("Accesso effettuato.");
   await aggiornaTutto(true);
 }
+
 
 async function doRegister(){
   const u = (E("regUser").value||"").trim().toLowerCase();
