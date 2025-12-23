@@ -2,10 +2,9 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>Catalogo Giochi – AmarBoard Natale</title>
 
-  <!-- No cache per l'HTML -->
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
@@ -13,10 +12,10 @@
   <!-- DataTables CSS -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
 
-  <!-- jQuery (DEVE essere prima di DataTables) -->
+  <!-- jQuery (PRIMA) -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-  <!-- DataTables JS -->
+  <!-- DataTables JS (DOPO jQuery) -->
   <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
 
   <!-- PapaParse -->
@@ -29,11 +28,10 @@
       --oro-soft:    #f3d08a;
       --bg-chiaro:   #fffaf3;
     }
-
     * { box-sizing: border-box; }
 
     body {
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Color Emoji", "Apple Color Emoji", sans-serif;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
       margin: 0;
       padding: 0;
       background: radial-gradient(circle at top, #ffe9e9, #fdf5e6 45%, #e4f5ea 100%);
@@ -80,11 +78,9 @@
       justify-content: center;
       gap: 10px;
       color: #ffe;
-      font-size: 1.15rem;
+      font-size: 1.4rem;
       z-index: 2;
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-      padding: 0 10px;
-      text-align: center;
     }
     .garland span { animation: blink 2.2s linear infinite; }
     .garland span:nth-child(odd) { animation-delay: 0.7s; }
@@ -106,7 +102,6 @@
       z-index: 3;
       border: 2px solid rgba(176,32,48,0.35);
     }
-
     #wrapper::before {
       content: "";
       position: absolute;
@@ -122,8 +117,8 @@
       justify-content: center;
       gap: 18px;
       margin-bottom: 6px;
-      position: relative;
     }
+    .xmas-icon { font-size: 2rem; }
 
     .logo-amar {
       height: 80px;
@@ -132,35 +127,6 @@
       box-shadow: 0 0 6px rgba(0,0,0,0.25);
       background: #fff;
     }
-
-    .top-actions{
-      position:absolute;
-      right:0;
-      top:50%;
-      transform: translateY(-50%);
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
-      justify-content:flex-end;
-    }
-    .btn-top{
-      padding: 6px 10px;
-      border-radius: 10px;
-      border: 1px solid rgba(31,122,58,0.35);
-      background: #f7fff7;
-      color: #1f7a3a;
-      font-weight: 700;
-      cursor: pointer;
-      font-size: 0.85rem;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-      white-space:nowrap;
-    }
-    .btn-top.red{
-      border-color: rgba(176,32,48,0.35);
-      background:#fff7f7;
-      color:#b02030;
-    }
-    .btn-top:hover{ filter: brightness(0.98); }
 
     h1 {
       text-align: center;
@@ -172,12 +138,52 @@
 
     .subtitle {
       text-align: center;
-      font-size: 0.95rem;
+      font-size: 0.9rem;
       color: #555;
       margin-bottom: 12px;
-      line-height: 1.35;
     }
-    .subtitle span { color: var(--verde-natale); font-weight: 800; }
+    .subtitle span { color: var(--verde-natale); font-weight: 600; }
+
+    .topbar {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: linear-gradient(90deg, #fffdf7, #f7fff7);
+      border: 1px solid rgba(31,122,58,0.18);
+    }
+
+    .topbar-left{
+      display:flex;
+      align-items:center;
+      flex-wrap: wrap;
+      gap: 8px;
+      color:#333;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .btn {
+      padding: 7px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(0,0,0,0.12);
+      background: #fff;
+      cursor: pointer;
+      font-weight: 700;
+      color: #333;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+      white-space: nowrap;
+    }
+    .btn:hover { filter: brightness(0.98); }
+    .btn-green { border-color: rgba(31,122,58,0.35); background:#e9fff0; color: var(--verde-natale); }
+    .btn-red { border-color: rgba(176,32,48,0.35); background:#fff0f0; color: var(--rosso-natale); }
+    .btn-gray { border-color: rgba(0,0,0,0.12); background:#f6f6f6; color:#444; }
 
     .stats-bar {
       display: grid;
@@ -194,7 +200,6 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.06);
       font-size: 0.85rem;
     }
-
     .stat-label {
       text-transform: uppercase;
       color: #666;
@@ -202,23 +207,20 @@
       letter-spacing: 0.05em;
       margin-bottom: 4px;
     }
-
     .stat-value {
       font-size: 1.4rem;
       font-weight: 800;
       color: var(--rosso-natale);
     }
-
     .stat-note {
       font-size: 0.75rem;
       color: #777;
       margin-top: 3px;
     }
-
     .stat-top ol {
       margin: 0;
       padding-left: 18px;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
     }
 
     .filters {
@@ -244,39 +246,15 @@
     .filter-block { display: flex; flex-direction: column; gap: 4px; }
     .filter-label { color: #444; font-size: 0.8rem; }
 
-    select, input[type="text"] {
-      padding: 6px 9px;
+    select, input[type="text"], input[type="password"], textarea {
+      padding: 6px 8px;
       border-radius: 8px;
       border: 1px solid #ccc;
       font-size: 0.9rem;
       min-width: 140px;
       background: #fff;
     }
-
-    #btnRefresh {
-      padding: 8px 12px;
-      border-radius: 10px;
-      border: 1px solid var(--verde-natale);
-      background: #e9fff0;
-      color: var(--verde-natale);
-      font-weight: 800;
-      font-size: 0.9rem;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-      white-space:nowrap;
-    }
-    #btnRefresh:hover { background: #d6ffe5; }
-
-    #lastUpdate{
-      margin-top:6px;
-      font-size:0.78rem;
-      color:#666;
-      text-align:right;
-      width:100%;
-    }
+    textarea { min-width: 220px; resize: vertical; }
 
     #tblCatalogo_wrapper { margin-top: 6px; }
 
@@ -285,42 +263,22 @@
       border-bottom: 2px solid var(--rosso-natale);
     }
     table.dataTable tbody tr:nth-child(even) { background-color: #fffaf5; }
-    table.dataTable tbody tr.disponibile-row {
-      background: linear-gradient(90deg, #f7fff7, #ffffff);
-    }
-    table.dataTable tbody tr.prestato-row {
-      background: linear-gradient(90deg, #fff7f7, #ffffff);
-    }
+    table.dataTable tbody tr.disponibile-row { background: linear-gradient(90deg, #f7fff7, #ffffff); }
+    table.dataTable tbody tr.prestato-row { background: linear-gradient(90deg, #fff7f7, #ffffff); }
 
     .badge {
       padding: 4px 10px;
       border-radius: 999px;
       font-size: 0.75rem;
-      font-weight: 900;
+      font-weight: 800;
       display: inline-block;
       white-space: nowrap;
-      line-height:1.2;
+      border: 1px solid rgba(0,0,0,0.08);
     }
-    .badge-disponibile {
-      background: #d4edda;
-      color: #155724;
-      border: 1px solid #b1dfbb;
-    }
-    .badge-prestato {
-      background: #f8d7da;
-      color: #721c24;
-      border: 1px solid #f1b0b7;
-    }
-    .badge-rich {
-      background:#fff3cd;
-      color:#856404;
-      border:1px solid #ffeeba;
-    }
-    .badge-pren {
-      background:#d1ecf1;
-      color:#0c5460;
-      border:1px solid #bee5eb;
-    }
+    .badge-disponibile { background:#d4edda; color:#155724; border-color:#b1dfbb; }
+    .badge-prestato    { background:#f8d7da; color:#721c24; border-color:#f1b0b7; }
+    .badge-rich        { background:#fff3cd; color:#856404; border-color:#ffeeba; }
+    .badge-pren        { background:#cce5ff; color:#004085; border-color:#b8daff; }
 
     a.bgg-link {
       color: var(--rosso-natale);
@@ -330,34 +288,16 @@
     }
     a.bgg-link:hover { text-decoration: underline; }
 
-    .btn-req{
-      padding: 7px 10px;
-      border-radius: 10px;
-      border: 1px solid rgba(176,32,48,0.35);
-      background: #fff7f7;
-      color: #b02030;
-      font-weight: 900;
-      cursor: pointer;
-      font-size: 0.85rem;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-      white-space:nowrap;
-    }
-    .btn-req:hover{ filter: brightness(0.98); }
-    .btn-req[disabled]{
-      opacity: 0.55;
-      cursor: not-allowed;
-      filter:none;
-    }
-
     .footer-note {
       margin-top: 10px;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: #777;
       text-align: right;
     }
 
-    #errorBox, #infoBox{
-      display:none;
+    /* Error box */
+    #errorBox {
+      display: none;
       margin: 10px 0 12px;
       padding: 10px 12px;
       border-radius: 12px;
@@ -366,15 +306,9 @@
       color: #7a0f1a;
       font-size: 0.9rem;
       line-height: 1.35;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-    }
-    #infoBox{
-      border-color: rgba(31,122,58,0.28);
-      background: rgba(233, 255, 240, 0.85);
-      color:#145c2a;
     }
 
-    /* ===== COUNTDOWN BANNER + SPOILER SHIELD ===== */
+    /* COUNTDOWN */
     #countdownBanner{
       position: fixed;
       inset: 70px 16px auto 16px;
@@ -388,8 +322,7 @@
       padding: 14px 16px;
       text-align: center;
       color: #7a0f1a;
-      font-weight: 900;
-      display:none;
+      font-weight: 800;
     }
     #countdownBanner small{
       display:block;
@@ -399,7 +332,7 @@
     }
     #countdownTime{
       font-variant-numeric: tabular-nums;
-      font-size: 1.45rem;
+      font-size: 1.4rem;
       color: #b02030;
     }
     .spoiler-hidden #wrapper{
@@ -419,1042 +352,926 @@
       color: rgba(122,15,26,0.85);
     }
 
-    /* ===== MODAL (login / register / request) ===== */
+    /* Modal */
     .modal-backdrop{
-      position:fixed;
-      inset:0;
-      background: rgba(0,0,0,0.45);
-      display:none;
-      align-items:center;
-      justify-content:center;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      align-items: center;
+      justify-content: center;
       z-index: 10000;
       padding: 14px;
     }
     .modal{
-      width: min(520px, 100%);
+      width: min(560px, 100%);
       background: rgba(255,250,243,0.98);
-      border: 2px solid rgba(176,32,48,0.28);
-      border-radius: 16px;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+      border: 2px solid rgba(176,32,48,0.25);
+      border-radius: 18px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
       padding: 14px 14px 12px;
-      position:relative;
+      position: relative;
     }
-    .modal h2{
-      margin: 6px 0 10px;
-      font-size: 1.2rem;
-      color:#7a0f1a;
+    .modal h3{
+      margin: 6px 8px 10px;
+      color: var(--rosso-natale);
+      text-shadow: 0 1px 0 #fff;
     }
     .modal .row{
       display:flex;
-      gap:10px;
-      flex-wrap:wrap;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 8px;
     }
-    .modal .field{
-      flex: 1 1 200px;
-      display:flex;
-      flex-direction:column;
-      gap:6px;
-      margin-bottom: 10px;
-    }
-    .modal label{
-      font-size:0.85rem;
-      color:#444;
-      font-weight:800;
-    }
-    .modal input, .modal textarea{
-      padding: 8px 10px;
-      border-radius: 10px;
-      border:1px solid #ccc;
-      font-size: 0.95rem;
-      background:#fff;
-    }
-    .modal textarea{ min-height: 80px; resize: vertical; }
+    .modal .row > div{ flex: 1 1 180px; }
     .modal .actions{
       display:flex;
-      gap:10px;
       justify-content:flex-end;
-      margin-top: 6px;
-      flex-wrap:wrap;
+      gap: 8px;
+      padding: 8px;
     }
-    .btn{
-      padding: 8px 12px;
-      border-radius: 10px;
-      border:1px solid rgba(31,122,58,0.35);
-      background:#f7fff7;
-      color:#1f7a3a;
-      font-weight:900;
-      cursor:pointer;
-    }
-    .btn.red{
-      border-color: rgba(176,32,48,0.35);
-      background:#fff7f7;
-      color:#b02030;
-    }
-    .btn:disabled{ opacity:.6; cursor:not-allowed; }
-    .modal .msg{
-      margin-top:8px;
-      font-size:0.9rem;
-      font-weight:800;
-      color:#7a0f1a;
-    }
-    .modal .closeX{
-      position:absolute;
-      top: 10px;
-      right: 10px;
-      border:none;
-      background: transparent;
-      cursor:pointer;
-      font-size: 1.2rem;
-      line-height:1;
-    }
+    .smallmuted{ font-size: 0.8rem; color:#555; padding: 0 8px 10px; }
 
     @media(max-width: 900px) {
       .stats-bar { grid-template-columns: 1fr; }
-      .top-actions{ position:static; transform:none; justify-content:center; margin-top:8px; }
-      .header-flex{ flex-direction: column; }
     }
-
     @media(max-width: 768px) {
       #wrapper { margin: 80px 10px 20px; padding: 14px; }
       .filters { flex-direction: column; align-items: stretch; }
-      .logo-amar { height: 74px; }
+      .header-flex { flex-direction: column; }
+      .logo-amar { height: 70px; }
+      .topbar { flex-direction: column; align-items: stretch; }
+      .topbar-left { justify-content: center; }
     }
   </style>
 </head>
 
 <body>
+  <div id="countdownBanner" style="display:none;">
+    🎁 La pagina della nostra Ludoteca si sbloccherà tra <span id="countdownTime">--:--:--</span>
+    <small>Stiamo “intavolando” la pagina…</small>
+  </div>
 
-<div id="countdownBanner">
-  🎁 La pagina della nostra Ludoteca si sbloccherà tra <span id="countdownTime">--:--:--</span>
-  <small>Stiamo “intavolando” la pagina: fino a quell’ora resta coperta.</small>
-</div>
+  <div class="garland">
+    <span>✨</span><span>🎄</span><span>⭐</span><span>🕯️</span>
+    <span>🎲 AmarBoard Romagna 🎲</span>
+    <span>⭐</span><span>🎄</span><span>✨</span>
+  </div>
 
-<div class="garland">
-  <span>✨</span><span>🎄</span><span>⭐</span><span>🕯️</span>
-  <span>🎲 AmarBoard Romagna 🎲</span>
-  <span>⭐</span><span>🎄</span><span>✨</span>
-</div>
+  <!-- Fiocchi di neve -->
+  <div class="snowflake">❄</div>
+  <div class="snowflake">✻</div>
+  <div class="snowflake">❅</div>
+  <div class="snowflake">❆</div>
+  <div class="snowflake">❄</div>
+  <div class="snowflake">✵</div>
+  <div class="snowflake">❄</div>
 
-<!-- Fiocchi di neve -->
-<div class="snowflake">❄</div>
-<div class="snowflake">✻</div>
-<div class="snowflake">❅</div>
-<div class="snowflake">❆</div>
-<div class="snowflake">❄</div>
-<div class="snowflake">✵</div>
-<div class="snowflake">❄</div>
+  <div id="wrapper">
+    <div class="header-flex">
+      <span class="xmas-icon">🎄</span>
+      <img class="logo-amar" src="logo_amarboard.png" alt="AmarBoard Romagna">
+      <span class="xmas-icon">🎲</span>
+    </div>
 
-<div id="wrapper">
-  <div class="header-flex">
-    <img class="logo-amar"
-         src="logo_amarboard.png"
-         alt="AmarBoard Romagna">
+    <h1>Catalogo Giochi – AmarBoard</h1>
 
-    <div class="top-actions">
-      <button class="btn-top" id="btnLogin">Accedi</button>
-      <button class="btn-top" id="btnRegister">Registrati</button>
-      <button class="btn-top red" id="btnLogout" style="display:none;">Esci</button>
-      <button class="btn-top" id="btnAdmin" style="display:none;">Admin</button>
+    <div class="subtitle">
+      <span>Speciale Natale:</span> trova il gioco giusto (o fatti suggerire dai nostri Volontari) da intavolare con gli amici sui nostri tavoli.
+    </div>
+
+    <div class="topbar">
+      <div class="topbar-left">
+        <span id="whoami">👤 Ospite</span>
+        <span id="onlyRegHint" style="display:none;">• 🔒 Solo utenti registrati</span>
+      </div>
+
+      <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end;">
+        <button class="btn btn-gray" id="btnLogin">🔑 Login</button>
+        <button class="btn btn-gray" id="btnRegister" onclick="location.href='register.html'">📝 Registrati</button>
+        <button class="btn btn-red"  id="btnLogout" style="display:none;">🚪 Logout</button>
+
+        <button class="btn btn-green" id="btnPreview" style="display:none;">👁️ Preview</button>
+        <button class="btn btn-red"  id="btnAdmin" style="display:none;">🛠️ Admin</button>
+      </div>
+    </div>
+
+    <!-- STATS -->
+    <div class="stats-bar">
+      <div class="stat-box">
+        <div class="stat-label">Giochi attualmente in prestito</div>
+        <div class="stat-value" id="cntAttivi">–</div>
+        <div class="stat-note">Numero di prestiti attivi in questo momento.</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Prestiti totali effettuati</div>
+        <div class="stat-value" id="cntTotali">–</div>
+        <div class="stat-note">Conteggio cumulativo dei prestiti registrati.</div>
+      </div>
+      <div class="stat-box stat-top">
+        <div class="stat-label">Top 3 giochi più prestati ora</div>
+        <ol id="topList"></ol>
+      </div>
+    </div>
+
+    <!-- FILTRI -->
+    <div class="filters">
+      <div class="filters-left">
+        <div class="filter-block">
+          <span class="filter-label">Stato</span>
+          <select id="filtroStato">
+            <option value="">Tutti</option>
+            <option value="Disponibile">Disponibile</option>
+            <option value="In prestito">In prestito</option>
+          </select>
+        </div>
+
+        <div class="filter-block">
+          <span class="filter-label">Giocatori (contiene)</span>
+          <input type="text" id="filtroGiocatori" placeholder="es. 2-4">
+        </div>
+      </div>
+
+      <button class="btn btn-green" id="btnRefresh" type="button">🔄 Aggiorna dati</button>
+    </div>
+
+    <div id="errorBox"></div>
+
+    <table id="tblCatalogo" class="display" style="width:100%">
+      <thead>
+        <tr>
+          <th>Titolo</th>
+          <th>Giocatori</th>
+          <th>Durata</th>
+          <th>Età</th>
+          <th>Editore</th>
+          <th>Disponibili</th>
+          <th>Stato</th>
+          <th>BGG</th>
+          <th>Richiedi</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <div class="footer-note">
+      🎅 Catalogo generato dalla ludoteca AmarBoard – versione natalizia
     </div>
   </div>
 
-  <h1>Catalogo Giochi – AmarBoard</h1>
-
-  <div class="subtitle">
-    <span>Speciale Natale:</span> trova il gioco giusto (o fatti suggerire dai nostri Volontari) da intavolare con gli amici sui nostri tavoli.
-  </div>
-
-  <div class="stats-bar">
-    <div class="stat-box">
-      <div class="stat-label">Giochi attualmente in prestito</div>
-      <div class="stat-value" id="cntAttivi">–</div>
-      <div class="stat-note">Numero di prestiti attivi in questo momento.</div>
-    </div>
-    <div class="stat-box">
-      <div class="stat-label">Prestiti totali effettuati</div>
-      <div class="stat-value" id="cntTotali">–</div>
-      <div class="stat-note">Conteggio cumulativo dei prestiti registrati.</div>
-    </div>
-    <div class="stat-box stat-top">
-      <div class="stat-label">Top 3 giochi più prestati ora</div>
-      <ol id="topList"></ol>
-    </div>
-  </div>
-
-  <div class="filters">
-    <div class="filters-left">
-      <div class="filter-block">
-        <span class="filter-label">Stato</span>
-        <select id="filtroStato">
-          <option value="">Tutti</option>
-          <option value="Disponibile">Disponibile</option>
-          <option value="In prestito">In prestito</option>
-        </select>
+  <!-- MODAL LOGIN -->
+  <div class="modal-backdrop" id="loginModal">
+    <div class="modal">
+      <h3>🔑 Login</h3>
+      <div class="smallmuted">Se sei admin, dopo login comparirà il tasto “Admin”.</div>
+      <div class="row">
+        <div>
+          <div class="filter-label">Username</div>
+          <input id="loginUser" type="text" placeholder="es. sacha">
+        </div>
+        <div>
+          <div class="filter-label">Password</div>
+          <input id="loginPass" type="password" placeholder="••••••••">
+        </div>
       </div>
-
-      <div class="filter-block">
-        <span class="filter-label">Giocatori (contiene)</span>
-        <input type="text" id="filtroGiocatori" placeholder="es. 2-4">
+      <div class="actions">
+        <button class="btn btn-gray" id="btnLoginCancel">Annulla</button>
+        <button class="btn btn-green" id="btnLoginGo">Entra</button>
       </div>
-    </div>
-
-    <div style="display:flex;flex-direction:column;align-items:flex-end;width:100%;">
-      <button id="btnRefresh" type="button">🔄 Aggiorna dati</button>
-      <div id="lastUpdate">Ultimo aggiornamento: –</div>
     </div>
   </div>
 
-  <div id="infoBox"></div>
-  <div id="errorBox"></div>
+  <!-- MODAL RICHIESTA -->
+  <div class="modal-backdrop" id="reqModal">
+    <div class="modal">
+      <h3>🎁 Richiedi prestito</h3>
+      <div class="smallmuted">
+        Titolo: <b id="reqTitle">–</b>
+        <span id="reqHints" style="display:block; margin-top:6px;"></span>
+      </div>
 
-  <table id="tblCatalogo" class="display" style="width:100%">
-    <thead>
-    <tr>
-      <th>Titolo</th>
-      <th>Giocatori</th>
-      <th>Durata</th>
-      <th>Età</th>
-      <th>Editore</th>
-      <th>Disponibili</th>
-      <th>Stato</th>
-      <th>BGG</th>
-      <th>Richiedi</th>
-    </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
+      <div class="row">
+        <div>
+          <div class="filter-label">Nome</div>
+          <input id="reqNome" type="text" placeholder="Nome e cognome">
+        </div>
+        <div>
+          <div class="filter-label">Telefono</div>
+          <input id="reqTel" type="text" placeholder="393...">
+        </div>
+      </div>
 
-  <div class="footer-note">
-    🎅 Catalogo generato dalla ludoteca AmarBoard – versione natalizia
+      <div class="row">
+        <div style="flex:1 1 100%;">
+          <div class="filter-label">Note (opzionali)</div>
+          <textarea id="reqNote" rows="2" placeholder="Es. passo alle 17:00"></textarea>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-gray" id="btnReqCancel">Annulla</button>
+        <button class="btn btn-green" id="btnReqSend">Invia richiesta</button>
+      </div>
+    </div>
   </div>
-</div>
-
-<!-- ===== MODALS ===== -->
-<div class="modal-backdrop" id="modalLogin">
-  <div class="modal" role="dialog" aria-modal="true">
-    <button class="closeX" type="button" onclick="closeModal('modalLogin')">✖</button>
-    <h2>Accedi</h2>
-    <div class="row">
-      <div class="field">
-        <label>Username</label>
-        <input id="loginUser" autocomplete="username" placeholder="es. mario">
-      </div>
-      <div class="field">
-        <label>Password</label>
-        <input id="loginPass" type="password" autocomplete="current-password" placeholder="••••••••">
-      </div>
-    </div>
-    <div class="actions">
-      <button class="btn" type="button" onclick="doLogin()">Accedi</button>
-      <button class="btn red" type="button" onclick="closeModal('modalLogin')">Annulla</button>
-    </div>
-    <div class="msg" id="loginMsg"></div>
-  </div>
-</div>
-
-<div class="modal-backdrop" id="modalRegister">
-  <div class="modal" role="dialog" aria-modal="true">
-    <button class="closeX" type="button" onclick="closeModal('modalRegister')">✖</button>
-    <h2>Registrati</h2>
-    <div class="row">
-      <div class="field">
-        <label>Username (solo lettere/numeri)</label>
-        <input id="regUser" autocomplete="username" placeholder="min 4 caratteri">
-      </div>
-      <div class="field">
-        <label>Nome</label>
-        <input id="regNome" autocomplete="name" placeholder="es. Mario Rossi">
-      </div>
-    </div>
-    <div class="row">
-      <div class="field">
-        <label>Telefono</label>
-        <input id="regTel" autocomplete="tel" placeholder="es. 3939056348">
-      </div>
-      <div class="field">
-        <label>Password</label>
-        <input id="regPass" type="password" autocomplete="new-password" placeholder="••••••••">
-      </div>
-    </div>
-    <div class="actions">
-      <button class="btn" type="button" onclick="doRegister()">Crea account</button>
-      <button class="btn red" type="button" onclick="closeModal('modalRegister')">Annulla</button>
-    </div>
-    <div class="msg" id="regMsg"></div>
-  </div>
-</div>
-
-<div class="modal-backdrop" id="modalRequest">
-  <div class="modal" role="dialog" aria-modal="true">
-    <button class="closeX" type="button" onclick="closeModal('modalRequest')">✖</button>
-    <h2>Richiedi prestito 🎲</h2>
-
-    <div class="field">
-      <label>Gioco</label>
-      <input id="reqTitolo" readonly>
-    </div>
-
-    <div class="row">
-      <div class="field">
-        <label>Giocatori</label>
-        <input id="reqGiocatori" readonly>
-      </div>
-      <div class="field">
-        <label>Nome</label>
-        <input id="reqNome" placeholder="Il tuo nome">
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="field">
-        <label>Telefono</label>
-        <input id="reqTel" placeholder="Il tuo numero">
-      </div>
-      <div class="field">
-        <label>Note (facoltativo)</label>
-        <input id="reqNote" placeholder="Es. arrivo alle 16, ecc.">
-      </div>
-    </div>
-
-    <div class="actions">
-      <button class="btn" id="btnSendReq" type="button" onclick="sendRequest()">Invia richiesta</button>
-      <button class="btn red" type="button" onclick="closeModal('modalRequest')">Chiudi</button>
-    </div>
-    <div class="msg" id="reqMsg"></div>
-  </div>
-</div>
 
 <script>
-  // =========================
-  // CONFIG
-  // =========================
-  const API_URL = "https://script.google.com/macros/s/AKfycbyoQBfaYvxQBTS_EnK1-IOlPjLoFT0sWn1jcHPuDg5t0nUkwrvKPY-x8Qg8ii5BmtLDYg/exec";
+/* =========================
+   CONFIG
+========================= */
+const API_URL = "https://script.google.com/macros/s/AKfycbyoQBfaYvxQBTS_EnK1-IOlPjLoFT0sWn1jcHPuDg5t0nUkwrvKPY-x8Qg8ii5BmtLDYg/exec";
 
-  // CSV locali (root)
-  const CSV_BASE_URL   = "/catalogo_ludoteca.csv";
-  const STATS_BASE_URL = "/stats_ludoteca.csv";
+// CSV
+const CSV_BASE_URL   = "/catalogo_ludoteca.csv";
+const STATS_BASE_URL = "/stats_ludoteca.csv";
 
-  // LocalStorage keys
-  const LS_USER_TOKEN = "AB_USER_TOKEN";
-  const LS_PROFILE    = "AB_PROFILE";
-  const LS_REQ_LOCAL  = "AB_REQ_LOCAL"; // {Titolo: timestamp}
-  const LS_PREVIEW    = "AB_PREVIEW";   // "1" (solo admin) per bypass countdown su device
+// COUNTDOWN: imposta data/ora sblocco.
+// Per DISATTIVARE countdown: metti REVEAL_AT = 0
+// Esempio: "2025-12-12T09:00:00+01:00"
+const REVEAL_AT = 0; // <--- metti la tua data/ora, oppure 0 per niente countdown
 
-  // Stato runtime
-  let table = null;
-  let requestedMap = {};
-  let config = { requireLoginForRequest:false, countdownEnabled:true, revealAtIso:"" };
-  let profile = null;
+// Preview bypass (quando admin clicca "Preview"), durata in minuti
+const PREVIEW_MINUTES = 180;
 
-  // =========================
-  // UTIL UI
-  // =========================
-  function E(id){ return document.getElementById(id); }
+/* =========================
+   STATE
+========================= */
+let table = null;
+let onlyRegistered = false;
+let bookingStateByTitle = new Map(); // titoloLower -> "requested"|"reserved"|""
+let countdownTimer = null;
 
-  function showError(msg){
-    const b = E("errorBox");
-    b.style.display = "block";
-    b.textContent = msg;
-  }
-  function clearError(){
-    const b = E("errorBox");
-    b.style.display = "none";
-    b.textContent = "";
-  }
-  function showInfo(msg){
-    const b = E("infoBox");
-    b.style.display = "block";
-    b.textContent = msg;
-  }
-  function clearInfo(){
-    const b = E("infoBox");
-    b.style.display = "none";
-    b.textContent = "";
-  }
+const LS = {
+  TOKEN: "AB_TOKEN",
+  PROFILE: "AB_PROFILE",
+  PREVIEW_UNTIL: "AB_PREVIEW_UNTIL"
+};
 
-  function openModal(id){
-    E(id).style.display = "flex";
-  }
-  function closeModal(id){
-    E(id).style.display = "none";
-    const msg = E("loginMsg"); if(msg) msg.textContent="";
-    const msg2 = E("regMsg"); if(msg2) msg2.textContent="";
-    const msg3 = E("reqMsg"); if(msg3) msg3.textContent="";
-  }
+function E(id){ return document.getElementById(id); }
+function showError(msg){
+  const box = E("errorBox");
+  box.style.display = "block";
+  box.textContent = msg;
+}
+function clearError(){
+  const box = E("errorBox");
+  box.style.display = "none";
+  box.textContent = "";
+}
 
-  function aggiornaTimestamp(){
-    const now = new Date();
-    E("lastUpdate").textContent = "Ultimo aggiornamento: " +
-      now.toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit",second:"2-digit"});
-  }
+/* =========================
+   JSONP helper (no CORS)
+========================= */
+function jsonp(url, params={}, timeoutMs=12000){
+  return new Promise((resolve, reject) => {
+    const cbName = "cb_" + Math.random().toString(36).slice(2);
+    const qs = new URLSearchParams({ ...params, callback: cbName }).toString();
+    const full = url + (url.includes("?") ? "&" : "?") + qs;
 
-  // =========================
-  // JSONP helper (compatibile GAS)
-  // =========================
-  function jsonp(url, timeoutMs=18000){
-    return new Promise((resolve, reject) => {
-      const cbName = "cb_" + Math.random().toString(36).slice(2);
-      const sep = url.includes("?") ? "&" : "?";
-      const full = url + sep + "callback=" + cbName;
+    const script = document.createElement("script");
+    let done = false;
 
-      const script = document.createElement("script");
-      let done = false;
+    window[cbName] = (data) => {
+      done = true;
+      cleanup();
+      resolve(data);
+    };
 
-      const timer = setTimeout(() => {
-        if(done) return;
-        done = true;
-        cleanup();
-        reject(new Error("JSONP timeout"));
-      }, timeoutMs);
+    const t = setTimeout(() => {
+      if (done) return;
+      done = true;
+      cleanup();
+      reject(new Error("JSONP timeout"));
+    }, timeoutMs);
 
-      window[cbName] = (data) => {
-        if(done) return;
-        done = true;
-        clearTimeout(timer);
-        cleanup();
-        resolve(data);
-      };
-
-      function cleanup(){
-        try { delete window[cbName]; } catch(e){ window[cbName] = undefined; }
-        if(script && script.parentNode) script.parentNode.removeChild(script);
-      }
-
-      script.src = full;
-      script.onerror = () => {
-        if(done) return;
-        done = true;
-        clearTimeout(timer);
-        cleanup();
-        reject(new Error("JSONP load error"));
-      };
-
-      document.head.appendChild(script);
-    });
-  }
-
-  // =========================
-  // SHA-256 (WebCrypto se disponibile + fallback)
-  // =========================
-  async function sha256hex_async(text){
-    if(window.crypto && window.crypto.subtle){
-      const enc = new TextEncoder();
-      const buf = await crypto.subtle.digest("SHA-256", enc.encode(text));
-      return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,"0")).join("");
-    }
-    // fallback sync (mini)
-    return sha256hex_fallback(text);
-  }
-
-  // Fallback SHA256 (compatibilità)
-  function sha256hex_fallback(ascii) {
-    function rightRotate(value, amount) { return (value>>>amount) | (value<<(32-amount)); }
-    var mathPow = Math.pow; var maxWord = mathPow(2, 32);
-    var lengthProperty = "length";
-    var i, j; var result = "";
-
-    var words = [];
-    var asciiBitLength = ascii[lengthProperty]*8;
-
-    var hash = sha256hex_fallback.h = sha256hex_fallback.h || [];
-    var k = sha256hex_fallback.k = sha256hex_fallback.k || [];
-    var primeCounter = k[lengthProperty];
-
-    var isComposite = {};
-    for (var candidate = 2; primeCounter < 64; candidate++) {
-      if (!isComposite[candidate]) {
-        for (i = 0; i < 313; i += candidate) isComposite[i] = candidate;
-        hash[primeCounter] = (mathPow(candidate, .5)*maxWord)|0;
-        k[primeCounter++] = (mathPow(candidate, 1/3)*maxWord)|0;
-      }
+    function cleanup(){
+      clearTimeout(t);
+      delete window[cbName];
+      if (script.parentNode) script.parentNode.removeChild(script);
     }
 
-    ascii += "\x80";
-    while (ascii[lengthProperty]%64 - 56) ascii += "\x00";
-    for (i = 0; i < ascii[lengthProperty]; i++) {
-      j = ascii.charCodeAt(i);
-      words[i>>2] |= j << ((3 - i)%4)*8;
-    }
-    words[words[lengthProperty]] = ((asciiBitLength/maxWord)|0);
-    words[words[lengthProperty]] = (asciiBitLength);
-
-    for (j = 0; j < words[lengthProperty];) {
-      var w = words.slice(j, j += 16);
-      var oldHash = hash.slice(0);
-
-      for (i = 0; i < 64; i++) {
-        var w15 = w[i - 15], w2 = w[i - 2];
-
-        var a = hash[0], e = hash[4];
-        var temp1 = hash[7]
-          + (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25))
-          + ((e&hash[5])^((~e)&hash[6]))
-          + k[i]
-          + (w[i] = (i < 16) ? w[i] : (
-              w[i - 16]
-              + (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15>>>3))
-              + w[i - 7]
-              + (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2>>>10))
-            )|0
-          );
-        var temp2 = (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22))
-          + ((a&hash[1])^(a&hash[2])^(hash[1]&hash[2]));
-
-        hash = [(temp1 + temp2)|0].concat(hash);
-        hash[4] = (hash[4] + temp1)|0;
-        hash.pop();
-      }
-
-      for (i = 0; i < 8; i++) hash[i] = (hash[i] + oldHash[i])|0;
-    }
-
-    for (i = 0; i < 8; i++) {
-      for (j = 3; j + 1; j--) {
-        var b = (hash[i] >> (j * 8)) & 255;
-        result += ((b < 16) ? 0 : "") + b.toString(16);
-      }
-    }
-    return result;
-  }
-
-  // =========================
-  // AUTH
-  // =========================
-  function loadProfileFromLS(){
-    try{
-      const raw = localStorage.getItem(LS_PROFILE);
-      profile = raw ? JSON.parse(raw) : null;
-    }catch(e){ profile=null; }
-  }
-  function setProfile(p){
-    profile = p || null;
-    localStorage.setItem(LS_PROFILE, JSON.stringify(profile||null));
-  }
-  function clearAuth(){
-    localStorage.removeItem(LS_USER_TOKEN);
-    localStorage.removeItem(LS_PROFILE);
-    profile = null;
-  }
-
-  async function refreshAuthUI(){
-    const token = localStorage.getItem(LS_USER_TOKEN) || "";
-    loadProfileFromLS();
-
-    E("btnLogout").style.display = token ? "inline-flex" : "none";
-    E("btnLogin").style.display  = token ? "none" : "inline-flex";
-    E("btnRegister").style.display = token ? "none" : "inline-flex";
-
-    // prova a capire ruolo (solo se token c'è)
-    if(token){
-      try{
-        const r = await jsonp(API_URL + "?action=me&token=" + encodeURIComponent(token), 12000);
-        if(r && r.ok && r.profile){
-          setProfile(r.profile);
-          const isAdmin = (r.profile.Ruolo === "admin");
-          E("btnAdmin").style.display = isAdmin ? "inline-flex" : "none";
-          return;
-        }
-      }catch(_){}
-    }
-    E("btnAdmin").style.display = "none";
-  }
-
-  async function doLogin(){
-    E("loginMsg").textContent = "";
-    const u = (E("loginUser").value||"").trim().toLowerCase();
-    const p = (E("loginPass").value||"");
-
-    if(!u || !p){ E("loginMsg").textContent = "Inserisci username e password."; return; }
-
-    const passhash = await sha256hex_async(p);
-
-    try{
-      const r = await jsonp(
-        API_URL + "?action=login"
-          + "&username=" + encodeURIComponent(u)
-          + "&passhash=" + encodeURIComponent(passhash),
-        18000
-      );
-      if(!r || !r.ok){
-        E("loginMsg").textContent = "Login fallito: " + (r?.error || "sconosciuto");
-        return;
-      }
-      localStorage.setItem(LS_USER_TOKEN, r.token);
-      setProfile(r.profile);
-      closeModal("modalLogin");
-      await refreshAuthUI();
-      showInfo("Accesso effettuato ✅");
-      await aggiornaTutto(true);
-    }catch(e){
-      E("loginMsg").textContent = "Errore rete: " + e.message;
-    }
-  }
-
-  async function doRegister(){
-    E("regMsg").textContent = "";
-    const u = (E("regUser").value||"").trim().toLowerCase();
-    const nome = (E("regNome").value||"").trim();
-    const tel = (E("regTel").value||"").trim();
-    const pass = (E("regPass").value||"");
-
-    if(!u || !nome || !pass){
-      E("regMsg").textContent = "Compila username, nome e password.";
-      return;
-    }
-    if(!/^[a-z0-9]{4,}$/.test(u)){
-      E("regMsg").textContent = "Username non valido (min 4, solo lettere/numeri).";
-      return;
-    }
-
-    const passhash = await sha256hex_async(pass);
-
-    try{
-      const r = await jsonp(
-        API_URL + "?action=register"
-          + "&username=" + encodeURIComponent(u)
-          + "&nome=" + encodeURIComponent(nome)
-          + "&telefono=" + encodeURIComponent(tel)
-          + "&passhash=" + encodeURIComponent(passhash),
-        18000
-      );
-      if(!r || !r.ok){
-        E("regMsg").textContent = "Registrazione fallita: " + (r?.error || "sconosciuto");
-        return;
-      }
-      E("regMsg").textContent = "Account creato ✅ Ora fai login.";
-      // auto-apri login
-      setTimeout(()=>{ closeModal("modalRegister"); openModal("modalLogin"); }, 700);
-    }catch(e){
-      E("regMsg").textContent = "Errore rete: " + e.message;
-    }
-  }
-
-  // =========================
-  // COUNTDOWN / SPOILER SHIELD (config-driven)
-  // =========================
-  let countdownTimer = null;
-
-  function canPreview(){
-    // preview solo se admin e flag su device
-    const pv = localStorage.getItem(LS_PREVIEW) === "1";
-    const isAdmin = (profile && profile.Ruolo === "admin");
-    return pv && isAdmin;
-  }
-
-  function isRevealActiveNow(){
-    if(!config.countdownEnabled) return true;
-    const iso = (config.revealAtIso||"").trim();
-    if(!iso) return true;
-    const t = new Date(iso).getTime();
-    if(!isFinite(t)) return true;
-    return Date.now() >= t;
-  }
-
-  function startCountdownShield(){
-    const banner = E("countdownBanner");
-    const timeEl = E("countdownTime");
-
-    if(countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
-
-    function tick(){
-      if(canPreview()){
-        document.body.classList.remove("spoiler-hidden");
-        banner.style.display = "none";
-        return;
-      }
-
-      if(isRevealActiveNow()){
-        document.body.classList.remove("spoiler-hidden");
-        banner.style.display = "none";
-        if(countdownTimer) clearInterval(countdownTimer);
-        countdownTimer = null;
-        // sbloccato => carica dati
-        aggiornaTutto(true);
-        return;
-      }
-
-      document.body.classList.add("spoiler-hidden");
-      banner.style.display = "block";
-
-      const target = new Date(config.revealAtIso).getTime();
-      const diff = Math.max(0, target - Date.now());
-      const totalSec = Math.floor(diff / 1000);
-      const h = String(Math.floor(totalSec / 3600)).padStart(2, "0");
-      const m = String(Math.floor((totalSec % 3600) / 60)).padStart(2, "0");
-      const s = String(totalSec % 60).padStart(2, "0");
-      timeEl.textContent = `${h}:${m}:${s}`;
-    }
-
-    tick();
-    countdownTimer = setInterval(tick, 1000);
-  }
-
-  // =========================
-  // CSV load (no-store) + parse
-  // =========================
-  async function fetchTextNoStore(path){
-    const url = path + "?v=" + Date.now();
-    const res = await fetch(url, { cache:"no-store" });
-    if(!res.ok) throw new Error(`Impossibile caricare ${path} (HTTP ${res.status})`);
-    return await res.text();
-  }
-
-  function parseCSVText(csvText){
-    const parsed = Papa.parse(csvText, { header:true, skipEmptyLines:true });
-    return parsed.data || [];
-  }
-
-  function statoBadge(stato){
-    stato = (stato || "").toLowerCase().trim();
-    if(stato === "disponibile") return '<span class="badge badge-disponibile">🎄 Disponibile</span>';
-    if(stato === "in prestito") return '<span class="badge badge-prestato">🎁 In prestito</span>';
-    return (stato || "");
-  }
-
-  function requestedBadgesForTitle(title){
-    const rec = requestedMap[title];
-    if(!rec) return "";
-    let out = "";
-    if((rec.open||0) > 0) out += ' <span class="badge badge-rich">⏳ Richiesto</span>';
-    if((rec.approved||0) > 0) out += ' <span class="badge badge-pren">✅ Prenotato</span>';
-    return out;
-  }
-
-  function isRequestDisabled(title){
-    const rec = requestedMap[title];
-    if(rec && ((rec.open||0) > 0 || (rec.approved||0) > 0)) return true;
-
-    // fallback locale per evitare doppio click immediato
-    try{
-      const raw = localStorage.getItem(LS_REQ_LOCAL);
-      const obj = raw ? JSON.parse(raw) : {};
-      return !!obj[title];
-    }catch(e){ return false; }
-  }
-
-  function markRequestedLocal(title){
-    try{
-      const raw = localStorage.getItem(LS_REQ_LOCAL);
-      const obj = raw ? JSON.parse(raw) : {};
-      obj[title] = Date.now();
-      localStorage.setItem(LS_REQ_LOCAL, JSON.stringify(obj));
-    }catch(e){}
-  }
-
-  // =========================
-  // LOAD DATA
-  // =========================
-  async function loadConfig(){
-    try{
-      const r = await jsonp(API_URL + "?action=get_config", 15000);
-      if(r && r.ok && r.config) config = r.config;
-    }catch(_){}
-  }
-
-  async function caricaRequestedMap(){
-    try{
-      const r = await jsonp(API_URL + "?action=requested_map", 18000);
-      if(r && r.ok && r.map) requestedMap = r.map;
-    }catch(e){
-      // non bloccare
-      requestedMap = {};
-    }
-  }
-
-  async function caricaStats(){
-    try{
-      const text = await fetchTextNoStore(STATS_BASE_URL);
-      const rows = parseCSVText(text);
-      if(!rows.length) return;
-
-      const s = rows[0];
-      E("cntAttivi").textContent = s["PrestitiAttivi"] || "0";
-      E("cntTotali").textContent = s["PrestitiTotali"] || "0";
-
-      const topList = E("topList");
-      topList.innerHTML = "";
-
-      function addTop(titoloKey, countKey){
-        const titolo = s[titoloKey];
-        const cnt = s[countKey];
-        if(titolo && cnt && Number(cnt) > 0){
-          const li = document.createElement("li");
-          li.textContent = titolo + " (" + cnt + ")";
-          topList.appendChild(li);
-        }
-      }
-
-      addTop("Top1Titolo", "Top1Prestiti");
-      addTop("Top2Titolo", "Top2Prestiti");
-      addTop("Top3Titolo", "Top3Prestiti");
-    }catch(_){}
-  }
-
-  async function caricaCatalogo(){
-    const text = await fetchTextNoStore(CSV_BASE_URL);
-    const raw = parseCSVText(text);
-
-    const data = [];
-    for(const row of raw){
-      if(!row["Titolo"]) continue;
-
-      data.push({
-        Titolo: row["Titolo"] || "",
-        Giocatori: row["NumeroGiocatori"] || "",
-        Durata: row["Durata"] || "",
-        Eta: row["Eta"] || "",
-        Editore: row["Editore"] || "",
-        Disponibili: row["CopieDisponibili"] || "",
-        Stato: row["StatoDisponibilita"] || "",
-        BGG: row["BGG"] || ""
-      });
-    }
-
-    if(!table){
-      table = $("#tblCatalogo").DataTable({
-        data,
-        deferRender: true,
-        pageLength: 50,
-        lengthMenu: [[25,50,100,-1],[25,50,100,"Tutti"]],
-        columns: [
-          {
-            data: "Titolo",
-            render: (d) => {
-              const title = String(d||"");
-              return `<strong>${escapeHtml(title)}</strong>${requestedBadgesForTitle(title)}`;
-            }
-          },
-          { data: "Giocatori" },
-          { data: "Durata" },
-          { data: "Eta" },
-          { data: "Editore" },
-          { data: "Disponibili", render: d => `<strong>${escapeHtml(String(d ?? ""))}</strong>` },
-          { data: "Stato", render: d => statoBadge(d) },
-          {
-            data: "BGG",
-            orderable: false,
-            render: d => {
-              if(!d) return "";
-              const safe = String(d).trim();
-              if(!/^https?:\/\//i.test(safe)) return "";
-              return `<a class="bgg-link" href="${safe}" target="_blank" rel="noopener noreferrer">Scheda</a>`;
-            }
-          },
-          {
-            data: null,
-            orderable: false,
-            render: (row) => {
-              const title = String(row.Titolo||"");
-              const disabled = isRequestDisabled(title) ? "disabled" : "";
-              const label = isRequestDisabled(title) ? "Già richiesto" : "Richiedi";
-              return `<button class="btn-req" ${disabled} data-title="${escapeAttr(title)}" data-gioc="${escapeAttr(String(row.Giocatori||""))}">🎲 ${label}</button>`;
-            }
-          }
-        ],
-        paging: true,
-        info: true,
-        lengthChange: true,
-        order: [[0, "asc"]],
-        language: { url: "https://cdn.datatables.net/plug-ins/1.13.8/i18n/it-IT.json" },
-        rowCallback: function(row, rowData){
-          row.classList.remove("disponibile-row","prestato-row");
-          const stato = (rowData.Stato || "").toLowerCase().trim();
-          if(stato === "disponibile") row.classList.add("disponibile-row");
-          else if(stato === "in prestito") row.classList.add("prestato-row");
-        }
-      });
-
-      // Filtri custom
-      E("filtroStato").addEventListener("change", function(){
-        table.column(6).search(this.value, false, false).draw();
-      });
-      E("filtroGiocatori").addEventListener("keyup", function(){
-        table.column(1).search(this.value, false, false).draw();
-      });
-
-      // Delegation per bottoni (datatable rigenera DOM)
-      $("#tblCatalogo tbody").on("click", "button.btn-req", function(){
-        const title = this.getAttribute("data-title") || "";
-        const gioc = this.getAttribute("data-gioc") || "";
-
-        // se countdown copre, non spoilerare
-        if(!canPreview() && !isRevealActiveNow()){
-          showError("Catalogo coperto fino allo sblocco ⏳");
-          return;
-        }
-
-        // se già disabilitato, stop
-        if(this.disabled) return;
-
-        openRequestModal(title, gioc);
-      });
-
-    } else {
-      table.clear();
-      table.rows.add(data).draw(false);
-    }
-  }
-
-  function escapeHtml(s){
-    return String(s||"")
-      .replaceAll("&","&amp;").replaceAll("<","&lt;")
-      .replaceAll(">","&gt;").replaceAll('"',"&quot;")
-      .replaceAll("'","&#039;");
-  }
-  function escapeAttr(s){ return escapeHtml(s).replaceAll("\n"," "); }
-
-  async function aggiornaTutto(force){
-    clearError(); clearInfo();
-
-    // Se countdown attivo e non admin-preview => non caricare il catalogo
-    if(!canPreview() && !isRevealActiveNow()){
-      // mantieni UI, ma non caricare dati
-      aggiornaTimestamp();
-      return;
-    }
-
-    try{
-      // per aggiornare badges e disabilitazioni
-      await Promise.all([
-        caricaRequestedMap(),
-        caricaStats(),
-        caricaCatalogo()
-      ]);
-      aggiornaTimestamp();
-    }catch(e){
-      showError("Errore refresh: " + (e?.message || String(e)));
-    }
-  }
-
-  // =========================
-  // REQUEST FLOW
-  // =========================
-  let pendingTitle = "";
-  let pendingGioc = "";
-
-  function openRequestModal(title, gioc){
-    pendingTitle = title;
-    pendingGioc = gioc;
-
-    E("reqTitolo").value = title;
-    E("reqGiocatori").value = gioc;
-
-    loadProfileFromLS();
-    E("reqNome").value = profile?.Nome || "";
-    E("reqTel").value  = profile?.Telefono || "";
-    E("reqNote").value = "";
-
-    E("reqMsg").textContent = "";
-    E("btnSendReq").disabled = false;
-
-    openModal("modalRequest");
-  }
-
-  async function sendRequest(){
-    E("reqMsg").textContent = "";
-
-    const titolo = (E("reqTitolo").value||"").trim();
-    const gioc = (E("reqGiocatori").value||"").trim();
-    const nome = (E("reqNome").value||"").trim();
-    const tel  = (E("reqTel").value||"").trim();
-    const note = (E("reqNote").value||"").trim();
-
-    if(!titolo || !nome){
-      E("reqMsg").textContent = "Inserisci almeno il nome.";
-      return;
-    }
-
-    const token = localStorage.getItem(LS_USER_TOKEN) || "";
-
-    // Se configurato “solo registrati” e non loggato => obbliga login
-    if(config.requireLoginForRequest && !token){
-      E("reqMsg").textContent = "Per richiedere devi essere registrato: fai login.";
-      closeModal("modalRequest");
-      openModal("modalLogin");
-      return;
-    }
-
-    E("btnSendReq").disabled = true;
-
-    try{
-      const url = API_URL
-        + "?action=submit"
-        + "&token=" + encodeURIComponent(token)
-        + "&Titolo=" + encodeURIComponent(titolo)
-        + "&Giocatori=" + encodeURIComponent(gioc)
-        + "&Nome=" + encodeURIComponent(nome)
-        + "&Telefono=" + encodeURIComponent(tel)
-        + "&Note=" + encodeURIComponent(note);
-
-      const r = await jsonp(url, 20000);
-      if(!r || !r.ok){
-        E("reqMsg").textContent = "Errore invio: " + (r?.error || "sconosciuto");
-        E("btnSendReq").disabled = false;
-        return;
-      }
-
-      // blocco locale immediato (anti doppio click)
-      markRequestedLocal(titolo);
-
-      closeModal("modalRequest");
-      showInfo("Richiesta inviata ✅ (ID: " + r.id + ")");
-      await caricaRequestedMap();
-      await caricaCatalogo(); // ridisegna badge/bottoni
-
-    }catch(e){
-      E("reqMsg").textContent = "Errore invio: " + e.message;
-      E("btnSendReq").disabled = false;
-    }
-  }
-
-  // =========================
-  // INIT
-  // =========================
-  document.addEventListener("DOMContentLoaded", async function(){
-    // bottoni top
-    E("btnLogin").addEventListener("click", ()=>openModal("modalLogin"));
-    E("btnRegister").addEventListener("click", ()=>openModal("modalRegister"));
-    E("btnLogout").addEventListener("click", async ()=>{
-      clearAuth();
-      await refreshAuthUI();
-      showInfo("Sei uscito.");
-      await aggiornaTutto(true);
-    });
-    E("btnAdmin").addEventListener("click", ()=>{
-      window.location.href = "admin.html";
-    });
-
-    // carico config + auth role (per bypass preview admin) e poi countdown
-    await refreshAuthUI();
-    await loadConfig();
-
-    // se arrivi con ?preview=1 e sei admin => abilita preview device
-    try{
-      const qs = new URLSearchParams(location.search);
-      if(qs.get("preview") === "1"){
-        loadProfileFromLS();
-        if(profile && profile.Ruolo === "admin"){
-          localStorage.setItem(LS_PREVIEW, "1");
-          showInfo("Modalità preview attiva su questo dispositivo ✅");
-          history.replaceState(null,"",location.pathname);
-        }
-      }
-      if(qs.get("preview") === "0"){
-        localStorage.removeItem(LS_PREVIEW);
-        showInfo("Modalità preview disattivata.");
-        history.replaceState(null,"",location.pathname);
-      }
-    }catch(_){}
-
-    startCountdownShield();
-
-    // refresh manuale
-    E("btnRefresh").addEventListener("click", ()=>aggiornaTutto(true));
-
-    // auto refresh (solo se sbloccato o preview)
-    setInterval(()=>{ aggiornaTutto(false); }, 30000);
+    script.onerror = () => {
+      if (done) return;
+      done = true;
+      cleanup();
+      reject(new Error("JSONP load error"));
+    };
+
+    script.src = full;
+    document.body.appendChild(script);
   });
-</script>
+}
 
+/* =========================
+   SHA-256 (crypto.subtle or fallback)
+========================= */
+async function sha256hex(text){
+  // modern
+  if (window.crypto && crypto.subtle && window.isSecureContext) {
+    const enc = new TextEncoder().encode(text);
+    const buf = await crypto.subtle.digest("SHA-256", enc);
+    return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2,"0")).join("");
+  }
+  // fallback (pure js)
+  return sha256_fallback_(text);
+}
+
+/* Minimal SHA256 fallback */
+function sha256_fallback_(ascii) {
+  function rightRotate(value, amount){ return (value>>>amount) | (value<<(32-amount)); }
+
+  var mathPow = Math.pow; var maxWord = mathPow(2, 32);
+  var lengthProperty = 'length';
+  var i, j; var result = '';
+
+  var words = [];
+  var asciiBitLength = ascii[lengthProperty]*8;
+
+  var hash = sha256_fallback_.h = sha256_fallback_.h || [];
+  var k = sha256_fallback_.k = sha256_fallback_.k || [];
+  var primeCounter = k[lengthProperty];
+
+  var isComposite = {};
+  for (var candidate = 2; primeCounter < 64; candidate++) {
+    if (!isComposite[candidate]) {
+      for (i = 0; i < 313; i += candidate) isComposite[i] = candidate;
+      hash[primeCounter] = (mathPow(candidate, .5)*maxWord)|0;
+      k[primeCounter++] = (mathPow(candidate, 1/3)*maxWord)|0;
+    }
+  }
+
+  ascii += '\x80';
+  while (ascii[lengthProperty]%64 - 56) ascii += '\x00';
+  for (i = 0; i < ascii[lengthProperty]; i++) {
+    j = ascii.charCodeAt(i);
+    words[i>>2] |= j << ((3 - i)%4)*8;
+  }
+  words[words[lengthProperty]] = ((asciiBitLength/maxWord)|0);
+  words[words[lengthProperty]] = (asciiBitLength);
+
+  for (j = 0; j < words[lengthProperty];) {
+    var w = words.slice(j, j += 16);
+    var oldHash = hash.slice(0);
+
+    for (i = 0; i < 64; i++) {
+      var w15 = w[i - 15], w2 = w[i - 2];
+
+      var a = hash[0], e = hash[4];
+      var temp1 = hash[7]
+        + (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25))
+        + ((e&hash[5])^((~e)&hash[6]))
+        + k[i]
+        + (w[i] = (i < 16) ? w[i] : (
+            w[i - 16]
+            + (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15>>>3))
+            + w[i - 7]
+            + (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2>>>10))
+          )|0
+        );
+
+      var temp2 = (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22))
+        + ((a&hash[1])^(a&hash[2])^(hash[1]&hash[2]));
+
+      hash = [(temp1+temp2)|0].concat(hash);
+      hash[4] = (hash[4]+temp1)|0;
+      hash.pop();
+    }
+
+    for (i = 0; i < 8; i++) hash[i] = (hash[i]+oldHash[i])|0;
+  }
+
+  for (i = 0; i < 8; i++) {
+    for (j = 3; j + 1; j--) {
+      var b = (hash[i]>>(j*8))&255;
+      result += ((b < 16) ? 0 : '') + b.toString(16);
+    }
+  }
+  return result;
+}
+
+/* =========================
+   AUTH UI
+========================= */
+function getToken(){ return localStorage.getItem(LS.TOKEN) || ""; }
+function setSession(token, profile){
+  localStorage.setItem(LS.TOKEN, token);
+  localStorage.setItem(LS.PROFILE, JSON.stringify(profile || {}));
+}
+function clearSession(){
+  localStorage.removeItem(LS.TOKEN);
+  localStorage.removeItem(LS.PROFILE);
+}
+function getProfile(){
+  try { return JSON.parse(localStorage.getItem(LS.PROFILE) || "{}"); } catch { return {}; }
+}
+function isAdmin(){
+  const p = getProfile();
+  return String(p.Ruolo||"").toLowerCase() === "admin";
+}
+
+function setWhoami(){
+  const tok = getToken();
+  const p = getProfile();
+
+  if (tok && p && p.Username){
+    E("whoami").textContent = `👤 ${p.Username}${isAdmin() ? " (admin)" : ""}`;
+    E("btnLogin").style.display = "none";
+    E("btnRegister").style.display = "none";
+    E("btnLogout").style.display = "inline-flex";
+    E("btnAdmin").style.display = isAdmin() ? "inline-flex" : "none";
+    E("btnPreview").style.display = isAdmin() ? "inline-flex" : "none";
+  } else {
+    E("whoami").textContent = "👤 Ospite";
+    E("btnLogin").style.display = "inline-flex";
+    E("btnRegister").style.display = "inline-flex";
+    E("btnLogout").style.display = "none";
+    E("btnAdmin").style.display = "none";
+    E("btnPreview").style.display = "none";
+  }
+}
+
+function openModal(id){ E(id).style.display = "flex"; }
+function closeModal(id){ E(id).style.display = "none"; }
+
+/* =========================
+   COUNTDOWN / PREVIEW
+========================= */
+function hasPreviewBypass(){
+  const until = Number(localStorage.getItem(LS.PREVIEW_UNTIL) || "0");
+  return until && Date.now() < until;
+}
+function enablePreviewBypass(){
+  const until = Date.now() + PREVIEW_MINUTES*60*1000;
+  localStorage.setItem(LS.PREVIEW_UNTIL, String(until));
+}
+function clearPreviewBypass(){
+  localStorage.removeItem(LS.PREVIEW_UNTIL);
+}
+
+function startCountdownShield(){
+  const banner = E("countdownBanner");
+  const timeEl = E("countdownTime");
+
+  if (!REVEAL_AT || REVEAL_AT === 0){
+    document.body.classList.remove("spoiler-hidden");
+    banner.style.display = "none";
+    return;
+  }
+
+  function tick(){
+    const now = Date.now();
+
+    // bypass per admin preview
+    if (hasPreviewBypass()){
+      document.body.classList.remove("spoiler-hidden");
+      banner.style.display = "none";
+      return;
+    }
+
+    const diff = new Date(REVEAL_AT).getTime() - now;
+    if (diff <= 0){
+      document.body.classList.remove("spoiler-hidden");
+      banner.style.display = "none";
+      if (countdownTimer) clearInterval(countdownTimer);
+      return;
+    }
+
+    document.body.classList.add("spoiler-hidden");
+    banner.style.display = "block";
+
+    const totalSec = Math.floor(diff/1000);
+    const h = String(Math.floor(totalSec/3600)).padStart(2,"0");
+    const m = String(Math.floor((totalSec%3600)/60)).padStart(2,"0");
+    const s = String(totalSec%60).padStart(2,"0");
+    timeEl.textContent = `${h}:${m}:${s}`;
+  }
+
+  tick();
+  countdownTimer = setInterval(tick, 1000);
+}
+
+/* =========================
+   CSV load (no-store)
+========================= */
+async function fetchTextNoStore(path){
+  const url = path + "?v=" + Date.now();
+  const res = await fetch(url, { cache:"no-store" });
+  if (!res.ok) throw new Error(`Impossibile caricare ${path} (HTTP ${res.status})`);
+  return await res.text();
+}
+function parseCSVText(csvText){
+  const parsed = Papa.parse(csvText, { header:true, skipEmptyLines:true });
+  return parsed.data || [];
+}
+
+/* =========================
+   Badges
+========================= */
+function statoBadge(stato){
+  const s = String(stato||"").toLowerCase().trim();
+  if (s === "disponibile") return '<span class="badge badge-disponibile">🎄 Disponibile</span>';
+  if (s === "in prestito") return '<span class="badge badge-prestato">🎁 In prestito</span>';
+  return (stato || "");
+}
+
+function bookingBadgeForTitle(titolo){
+  const key = String(titolo||"").trim().toLowerCase();
+  const st = bookingStateByTitle.get(key) || "";
+  if (st === "requested") return '<span class="badge badge-rich">⏳ Richiesto</span>';
+  if (st === "reserved")  return '<span class="badge badge-pren">✅ Prenotato</span>';
+  return "";
+}
+
+/* =========================
+   API: me + settings
+========================= */
+async function refreshMeAndSettings(){
+  const tok = getToken();
+  if (!tok){
+    onlyRegistered = false;
+    E("onlyRegHint").style.display = "none";
+    setWhoami();
+    return;
+  }
+
+  try {
+    const r = await jsonp(API_URL, { action:"me", token: tok });
+    if (!r.ok){
+      // token non valido => logout client-side
+      clearSession();
+      onlyRegistered = false;
+      E("onlyRegHint").style.display = "none";
+      setWhoami();
+      return;
+    }
+    // keep profile updated
+    localStorage.setItem(LS.PROFILE, JSON.stringify(r.profile || {}));
+    onlyRegistered = !!r.onlyRegistered;
+    E("onlyRegHint").style.display = onlyRegistered ? "inline" : "none";
+    setWhoami();
+  } catch (e){
+    // se non riesce, non rompiamo tutto
+    setWhoami();
+  }
+}
+
+/* =========================
+   Prenotazioni: can_request -> badge
+========================= */
+async function refreshCanRequestForAllVisible(){
+  // per performance: aggiorna solo le righe attualmente in pagina
+  if (!table) return;
+
+  const nodes = table.rows({ page: "current" }).nodes().toArray();
+  const titles = [];
+  nodes.forEach(tr => {
+    const t = tr.getAttribute("data-title") || "";
+    if (t) titles.push(t);
+  });
+
+  // richieste in batch? GAS non ha batch: facciamo seriale ma solo pagina corrente (max 50)
+  for (const titolo of titles){
+    const key = String(titolo).trim().toLowerCase();
+    try{
+      const r = await jsonp(API_URL, { action:"can_request", titolo });
+      if (r.ok && r.can === false){
+        // non distingue richiesto/prenotato, usiamo "requested" come default
+        bookingStateByTitle.set(key, "requested");
+      } else {
+        bookingStateByTitle.delete(key);
+      }
+    } catch {}
+  }
+
+  // ridisegna colonna "Richiedi" senza rifare tutto
+  table.rows({ page: "current" }).invalidate().draw(false);
+}
+
+/* =========================
+   Carica stats + catalogo
+========================= */
+async function caricaStats(){
+  try{
+    const text = await fetchTextNoStore(STATS_BASE_URL);
+    const rows = parseCSVText(text);
+    if (!rows.length) return;
+
+    const s = rows[0];
+    E("cntAttivi").textContent = s["PrestitiAttivi"] || "0";
+    E("cntTotali").textContent = s["PrestitiTotali"] || "0";
+
+    const topList = E("topList");
+    topList.innerHTML = "";
+
+    function addTop(titoloKey, countKey){
+      const titolo = s[titoloKey];
+      const cnt = s[countKey];
+      if (titolo && cnt && Number(cnt) > 0){
+        const li = document.createElement("li");
+        li.textContent = `${titolo} (${cnt})`;
+        topList.appendChild(li);
+      }
+    }
+    addTop("Top1Titolo", "Top1Prestiti");
+    addTop("Top2Titolo", "Top2Prestiti");
+    addTop("Top3Titolo", "Top3Prestiti");
+  } catch {
+    // stats opzionali
+  }
+}
+
+async function caricaCatalogo(){
+  const text = await fetchTextNoStore(CSV_BASE_URL);
+  const raw = parseCSVText(text);
+
+  const data = [];
+  raw.forEach(row => {
+    if (!row["Titolo"]) return;
+    data.push({
+      Titolo: row["Titolo"] || "",
+      Giocatori: row["NumeroGiocatori"] || "",
+      Durata: row["Durata"] || "",
+      Eta: row["Eta"] || "",
+      Editore: row["Editore"] || "",
+      Disponibili: row["CopieDisponibili"] || "",
+      Stato: row["StatoDisponibilita"] || "",
+      BGG: row["BGG"] || ""
+    });
+  });
+
+  if (!table){
+    table = $("#tblCatalogo").DataTable({
+      data,
+      deferRender: true,
+      pageLength: 50,
+      lengthMenu: [25, 50, 100, 200],
+      columns: [
+        { data:"Titolo" },
+        { data:"Giocatori" },
+        { data:"Durata" },
+        { data:"Eta" },
+        { data:"Editore" },
+        { data:"Disponibili", render: d => `<strong>${d ?? ""}</strong>` },
+        { data:"Stato", render: d => statoBadge(d) },
+        {
+          data:"BGG",
+          orderable:false,
+          render: d => {
+            const s = String(d||"").trim();
+            if (!s) return "";
+            if (!/^https?:\/\//i.test(s)) return "";
+            return `<a class="bgg-link" href="${s}" target="_blank" rel="noopener noreferrer">Scheda</a>`;
+          }
+        },
+        {
+          data:null,
+          orderable:false,
+          searchable:false,
+          render: (row) => {
+            const titolo = row.Titolo || "";
+            const key = String(titolo).trim().toLowerCase();
+            const badge = bookingBadgeForTitle(titolo);
+
+            // se countdown attivo e non bypass -> blocca
+            const spoilerBlocked = (REVEAL_AT && REVEAL_AT !== 0 && !hasPreviewBypass() && Date.now() < new Date(REVEAL_AT).getTime());
+            if (spoilerBlocked){
+              return `<span style="opacity:.7;">—</span>`;
+            }
+
+            const can = !bookingStateByTitle.has(key);
+            const disabled = can ? "" : "disabled";
+            const label = can ? "Richiedi" : "Non disponibile";
+            const btn = `<button class="btn btn-green" style="padding:6px 9px;border-radius:999px;" data-action="req" data-title="${escapeHtml_(titolo)}" ${disabled}>🎁 ${label}</button>`;
+            return `${badge} ${btn}`;
+          }
+        }
+      ],
+      order: [[0,"asc"]],
+      language: { url:"https://cdn.datatables.net/plug-ins/1.13.8/i18n/it-IT.json" },
+      createdRow: function(row, rowData){
+        row.setAttribute("data-title", rowData.Titolo || "");
+        row.classList.remove("disponibile-row","prestato-row");
+        const s = String(rowData.Stato||"").toLowerCase().trim();
+        if (s === "disponibile") row.classList.add("disponibile-row");
+        else if (s === "in prestito") row.classList.add("prestato-row");
+      }
+    });
+
+    // Filtri
+    E("filtroStato").addEventListener("change", function(){
+      table.column(6).search(this.value, false, false).draw();
+      refreshCanRequestForAllVisible();
+    });
+    E("filtroGiocatori").addEventListener("keyup", function(){
+      table.column(1).search(this.value, false, false).draw();
+      refreshCanRequestForAllVisible();
+    });
+
+    // Click su Richiedi
+    $("#tblCatalogo tbody").on("click", "button[data-action='req']", function(){
+      if (this.disabled) return;
+      const titolo = this.getAttribute("data-title") || "";
+      openRequestModal(titolo);
+    });
+
+    // Ogni cambio pagina -> ricalcola can_request per pagina corrente
+    table.on("draw", function(){
+      refreshCanRequestForAllVisible();
+    });
+
+  } else {
+    table.clear();
+    table.rows.add(data).draw(false);
+  }
+
+  // aggiorna stato prenotazioni visibili
+  await refreshCanRequestForAllVisible();
+}
+
+function escapeHtml_(s){
+  return String(s||"").replace(/[&<>"']/g, m => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"
+  }[m]));
+}
+
+/* =========================
+   Request modal logic
+========================= */
+let currentReqTitle = "";
+let currentReqGiocatori = "";
+
+function openRequestModal(titolo){
+  currentReqTitle = String(titolo||"");
+  E("reqTitle").textContent = currentReqTitle;
+
+  // precompila se loggato
+  const p = getProfile();
+  if (p && p.Nome) E("reqNome").value = p.Nome;
+  if (p && p.Telefono) E("reqTel").value = p.Telefono;
+
+  // hint se solo registrati
+  E("reqHints").textContent = onlyRegistered ? "🔒 Richiesta consentita solo a utenti registrati (sei ok se sei loggato)." : "";
+
+  // trova giocatori dalla tabella (se disponibile)
+  if (table){
+    const row = table.rows().data().toArray().find(r => String(r.Titolo||"") === currentReqTitle);
+    currentReqGiocatori = row ? String(row.Giocatori||"") : "";
+  } else {
+    currentReqGiocatori = "";
+  }
+
+  openModal("reqModal");
+}
+
+async function sendRequest(){
+  const nome = E("reqNome").value.trim();
+  const tel  = E("reqTel").value.trim();
+  const note = E("reqNote").value.trim();
+
+  if (!nome){
+    showError("Inserisci il tuo nome.");
+    return;
+  }
+
+  // se onlyRegistered -> devi essere loggato
+  if (onlyRegistered && !getToken()){
+    showError("Accesso richiesto: fai login prima di inviare la richiesta.");
+    closeModal("reqModal");
+    openModal("loginModal");
+    return;
+  }
+
+  clearError();
+
+  try{
+    const r = await jsonp(API_URL, {
+      action: "submit_request",
+      token: getToken(),
+      titolo: currentReqTitle,
+      giocatori: currentReqGiocatori,
+      nome,
+      telefono: tel,
+      note
+    });
+
+    if (!r.ok) throw new Error(r.error || "Errore invio");
+
+    // segna come requested localmente
+    bookingStateByTitle.set(currentReqTitle.trim().toLowerCase(), "requested");
+    if (table) table.rows().invalidate().draw(false);
+
+    closeModal("reqModal");
+    alert("✅ Richiesta inviata!");
+
+  } catch (e){
+    showError("Errore invio: " + (e?.message || String(e)));
+  }
+}
+
+/* =========================
+   Full refresh
+========================= */
+async function aggiornaTutto(){
+  clearError();
+
+  // blocco se countdown attivo e non bypass
+  if (REVEAL_AT && REVEAL_AT !== 0 && !hasPreviewBypass() && Date.now() < new Date(REVEAL_AT).getTime()){
+    return;
+  }
+
+  try{
+    await Promise.all([caricaStats(), caricaCatalogo()]);
+  } catch (e){
+    showError("Errore refresh: " + (e?.message || String(e)));
+  }
+}
+
+/* =========================
+   Events
+========================= */
+document.addEventListener("DOMContentLoaded", async () => {
+  startCountdownShield();
+
+  // inizializza sessione UI
+  setWhoami();
+  await refreshMeAndSettings();
+
+  // se countdown non blocca -> carica
+  await aggiornaTutto();
+
+  // auto refresh (solo se sbloccato o bypass)
+  setInterval(() => {
+    const blocked = (REVEAL_AT && REVEAL_AT !== 0 && !hasPreviewBypass() && Date.now() < new Date(REVEAL_AT).getTime());
+    if (!blocked) aggiornaTutto();
+  }, 30000);
+
+  // refresh button
+  E("btnRefresh").addEventListener("click", () => aggiornaTutto());
+
+  // login modal controls
+  E("btnLogin").addEventListener("click", () => openModal("loginModal"));
+  E("btnLoginCancel").addEventListener("click", () => closeModal("loginModal"));
+  E("loginModal").addEventListener("click", (ev) => { if (ev.target === E("loginModal")) closeModal("loginModal"); });
+
+  E("btnLoginGo").addEventListener("click", async () => {
+    clearError();
+    const u = E("loginUser").value.trim().toLowerCase();
+    const p = E("loginPass").value;
+    if (!u || !p){ showError("Inserisci username e password."); return; }
+
+    try{
+      const passhash = await sha256hex(p);
+      const r = await jsonp(API_URL, { action:"login", username:u, passhash });
+
+      if (!r.ok) throw new Error(r.error || "Login fallito");
+
+      setSession(r.token, r.profile);
+      closeModal("loginModal");
+      await refreshMeAndSettings();
+
+      // se admin: mostra bottoni, se countdown: ora puoi premere preview
+      setWhoami();
+      alert("✅ Login ok");
+
+    } catch (e){
+      showError("Login: " + (e?.message || String(e)));
+    }
+  });
+
+  // logout
+  E("btnLogout").addEventListener("click", async () => {
+    const tok = getToken();
+    clearSession();
+    clearPreviewBypass();
+    setWhoami();
+    onlyRegistered = false;
+    E("onlyRegHint").style.display = "none";
+    try { if (tok) await jsonp(API_URL, { action:"logout", token: tok }); } catch {}
+    alert("Logout effettuato");
+  });
+
+  // admin link
+  E("btnAdmin").addEventListener("click", () => {
+    location.href = "admin.html";
+  });
+
+  // preview bypass
+  E("btnPreview").addEventListener("click", () => {
+    if (!isAdmin()){
+      alert("Solo admin può attivare preview.");
+      return;
+    }
+    enablePreviewBypass();
+    startCountdownShield();
+    aggiornaTutto();
+    alert("👁️ Preview attivata (bypass countdown temporaneo).");
+  });
+
+  // request modal controls
+  E("btnReqCancel").addEventListener("click", () => closeModal("reqModal"));
+  E("btnReqSend").addEventListener("click", () => sendRequest());
+  E("reqModal").addEventListener("click", (ev) => { if (ev.target === E("reqModal")) closeModal("reqModal"); });
+});
+</script>
 </body>
 </html>
