@@ -2,17 +2,25 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Catalogo Giochi – AmarBoard Natale</title>
 
+  <!-- No cache per l'HTML -->
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
+  <!-- DataTables CSS -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
+
+  <!-- jQuery (DEVE essere prima di DataTables) -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+  <!-- DataTables JS -->
   <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
+
+  <!-- PapaParse -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-  <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
 
   <style>
     :root {
@@ -21,10 +29,11 @@
       --oro-soft:    #f3d08a;
       --bg-chiaro:   #fffaf3;
     }
+
     * { box-sizing: border-box; }
 
     body {
-      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Color Emoji", "Apple Color Emoji", sans-serif;
       margin: 0;
       padding: 0;
       background: radial-gradient(circle at top, #ffe9e9, #fdf5e6 45%, #e4f5ea 100%);
@@ -71,9 +80,11 @@
       justify-content: center;
       gap: 10px;
       color: #ffe;
-      font-size: 1.4rem;
+      font-size: 1.15rem;
       z-index: 2;
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      padding: 0 10px;
+      text-align: center;
     }
     .garland span { animation: blink 2.2s linear infinite; }
     .garland span:nth-child(odd) { animation-delay: 0.7s; }
@@ -108,14 +119,11 @@
     .header-flex {
       display: flex;
       align-items: center;
-      justify-content: center; /* logo centrato come prima */
+      justify-content: center;
       gap: 18px;
       margin-bottom: 6px;
       position: relative;
-      z-index: 2;
     }
-
-    .xmas-icon { font-size: 2rem; }
 
     .logo-amar {
       height: 80px;
@@ -125,64 +133,57 @@
       background: #fff;
     }
 
+    .top-actions{
+      position:absolute;
+      right:0;
+      top:50%;
+      transform: translateY(-50%);
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+    .btn-top{
+      padding: 6px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(31,122,58,0.35);
+      background: #f7fff7;
+      color: #1f7a3a;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 0.85rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+      white-space:nowrap;
+    }
+    .btn-top.red{
+      border-color: rgba(176,32,48,0.35);
+      background:#fff7f7;
+      color:#b02030;
+    }
+    .btn-top:hover{ filter: brightness(0.98); }
+
     h1 {
       text-align: center;
       margin: 6px 0;
       font-size: 1.8rem;
       color: var(--rosso-natale);
       text-shadow: 0 1px 0 #fff, 0 0 6px rgba(176,32,48,0.35);
-      position: relative;
-      z-index: 2;
     }
 
     .subtitle {
       text-align: center;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       color: #555;
       margin-bottom: 12px;
-      position: relative;
-      z-index: 2;
-      font-weight: 800;
+      line-height: 1.35;
     }
-    .subtitle span { color: var(--verde-natale); font-weight: 900; }
-
-    .top-actions{
-      display:flex;
-      justify-content: center;
-      gap:10px;
-      flex-wrap:wrap;
-      margin: 10px 0 14px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .btn {
-      padding: 7px 10px;
-      border-radius: 12px;
-      border: 1px solid #ccc;
-      background: #fff;
-      cursor: pointer;
-      font-weight: 900;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      user-select:none;
-      text-decoration:none;
-      color:#222;
-    }
-    .btn:hover { filter: brightness(0.98); }
-    .btn-ok { border-color: rgba(31,122,58,.55); background: rgba(233,255,240,.95); color:#155724; }
-    .btn-no { border-color: rgba(176,32,48,.45); background: rgba(255,231,231,.92); color:#7a0f1a; }
-    .btn-neutral { border-color: rgba(0,0,0,.18); background: rgba(255,255,255,.92); color:#333; }
-    .btn:disabled { opacity:.55; cursor:not-allowed; }
+    .subtitle span { color: var(--verde-natale); font-weight: 800; }
 
     .stats-bar {
       display: grid;
       grid-template-columns: repeat(3, minmax(0,1fr));
       gap: 12px;
       margin-bottom: 16px;
-      position: relative;
-      z-index: 2;
     }
 
     .stat-box {
@@ -192,7 +193,6 @@
       border: 1px solid rgba(176,32,48,0.2);
       box-shadow: 0 2px 6px rgba(0,0,0,0.06);
       font-size: 0.85rem;
-      font-weight: 800;
     }
 
     .stat-label {
@@ -201,12 +201,11 @@
       font-size: 0.75rem;
       letter-spacing: 0.05em;
       margin-bottom: 4px;
-      font-weight: 900;
     }
 
     .stat-value {
       font-size: 1.4rem;
-      font-weight: 900;
+      font-weight: 800;
       color: var(--rosso-natale);
     }
 
@@ -214,14 +213,12 @@
       font-size: 0.75rem;
       color: #777;
       margin-top: 3px;
-      font-weight: 800;
     }
 
     .stat-top ol {
       margin: 0;
       padding-left: 18px;
-      font-size: 0.8rem;
-      font-weight: 900;
+      font-size: 0.85rem;
     }
 
     .filters {
@@ -235,8 +232,6 @@
       border-radius: 12px;
       background: linear-gradient(90deg, #fffdf7, #f7fff7);
       border: 1px solid rgba(31,122,58,0.18);
-      position: relative;
-      z-index: 2;
     }
 
     .filters-left {
@@ -247,29 +242,40 @@
     }
 
     .filter-block { display: flex; flex-direction: column; gap: 4px; }
+    .filter-label { color: #444; font-size: 0.8rem; }
 
-    .filter-label {
-      color: #444;
-      font-size: 0.8rem;
-      font-weight: 900;
-    }
-
-    select, input[type="text"], input[type="password"], input[type="tel"] {
-      padding: 7px 10px;
-      border-radius: 12px;
+    select, input[type="text"] {
+      padding: 6px 9px;
+      border-radius: 8px;
       border: 1px solid #ccc;
       font-size: 0.9rem;
-      min-width: 160px;
+      min-width: 140px;
       background: #fff;
-      font-weight: 900;
     }
 
-    #lastUpdate {
-      font-size: 0.75rem;
-      color: #666;
-      margin-top: 6px;
-      text-align: right;
-      font-weight: 900;
+    #btnRefresh {
+      padding: 8px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--verde-natale);
+      background: #e9fff0;
+      color: var(--verde-natale);
+      font-weight: 800;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+      white-space:nowrap;
+    }
+    #btnRefresh:hover { background: #d6ffe5; }
+
+    #lastUpdate{
+      margin-top:6px;
+      font-size:0.78rem;
+      color:#666;
+      text-align:right;
+      width:100%;
     }
 
     #tblCatalogo_wrapper { margin-top: 6px; }
@@ -277,58 +283,98 @@
     table.dataTable thead th {
       background: linear-gradient(180deg,#f7f7f7,#e3e3e3);
       border-bottom: 2px solid var(--rosso-natale);
-      font-weight: 900;
+    }
+    table.dataTable tbody tr:nth-child(even) { background-color: #fffaf5; }
+    table.dataTable tbody tr.disponibile-row {
+      background: linear-gradient(90deg, #f7fff7, #ffffff);
+    }
+    table.dataTable tbody tr.prestato-row {
+      background: linear-gradient(90deg, #fff7f7, #ffffff);
     }
 
-    table.dataTable tbody tr:nth-child(even) { background-color: #fffaf5; }
-    table.dataTable tbody tr.disponibile-row { background: linear-gradient(90deg, #f7fff7, #ffffff); }
-    table.dataTable tbody tr.prestato-row { background: linear-gradient(90deg, #fff7f7, #ffffff); }
-
     .badge {
-      padding: 5px 10px;
+      padding: 4px 10px;
       border-radius: 999px;
       font-size: 0.75rem;
       font-weight: 900;
       display: inline-block;
       white-space: nowrap;
-      border: 1px solid rgba(0,0,0,0.1);
+      line-height:1.2;
     }
-    .badge-disponibile { background: #d4edda; color: #155724; border-color:#b1dfbb; }
-    .badge-prestato { background: #f8d7da; color: #721c24; border-color:#f1b0b7; }
-    .badge-req { background:#efe1ff; border-color:#c9a7ff; color:#4a1a7a; }
-    .badge-booked { background:#ffe8c7; border-color:#ffc37a; color:#7a3d00; }
+    .badge-disponibile {
+      background: #d4edda;
+      color: #155724;
+      border: 1px solid #b1dfbb;
+    }
+    .badge-prestato {
+      background: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f1b0b7;
+    }
+    .badge-rich {
+      background:#fff3cd;
+      color:#856404;
+      border:1px solid #ffeeba;
+    }
+    .badge-pren {
+      background:#d1ecf1;
+      color:#0c5460;
+      border:1px solid #bee5eb;
+    }
 
     a.bgg-link {
       color: var(--rosso-natale);
       font-size: 0.85rem;
       text-decoration: none;
-      font-weight: 900;
+      font-weight: 800;
     }
     a.bgg-link:hover { text-decoration: underline; }
 
-    .footer-note {
-      margin-top: 10px;
-      font-size: 0.8rem;
-      color: #777;
-      text-align: right;
+    .btn-req{
+      padding: 7px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(176,32,48,0.35);
+      background: #fff7f7;
+      color: #b02030;
       font-weight: 900;
+      cursor: pointer;
+      font-size: 0.85rem;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+      white-space:nowrap;
+    }
+    .btn-req:hover{ filter: brightness(0.98); }
+    .btn-req[disabled]{
+      opacity: 0.55;
+      cursor: not-allowed;
+      filter:none;
     }
 
-    #errorBox, #infoBox {
+    .footer-note {
+      margin-top: 10px;
+      font-size: 0.85rem;
+      color: #777;
+      text-align: right;
+    }
+
+    #errorBox, #infoBox{
       display:none;
       margin: 10px 0 12px;
       padding: 10px 12px;
       border-radius: 12px;
+      border: 1px solid rgba(176,32,48,0.35);
+      background: rgba(255, 231, 231, 0.85);
+      color: #7a0f1a;
       font-size: 0.9rem;
       line-height: 1.35;
-      font-weight: 900;
-      position: relative;
-      z-index: 2;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
     }
-    #errorBox { border: 1px solid rgba(176,32,48,0.35); background: rgba(255, 231, 231, 0.85); color: #7a0f1a; }
-    #infoBox  { border: 1px solid rgba(31,122,58,0.25); background: rgba(233,255,240,0.95); color: #155724; }
+    #infoBox{
+      border-color: rgba(31,122,58,0.28);
+      background: rgba(233, 255, 240, 0.85);
+      color:#145c2a;
+    }
 
-    /* COUNTDOWN */
+    /* ===== COUNTDOWN BANNER + SPOILER SHIELD ===== */
     #countdownBanner{
       position: fixed;
       inset: 70px 16px auto 16px;
@@ -348,12 +394,12 @@
     #countdownBanner small{
       display:block;
       margin-top:6px;
-      font-weight: 900;
+      font-weight: 700;
       color:#444;
     }
     #countdownTime{
       font-variant-numeric: tabular-nums;
-      font-size: 1.4rem;
+      font-size: 1.45rem;
       color: #b02030;
     }
     .spoiler-hidden #wrapper{
@@ -373,99 +419,105 @@
       color: rgba(122,15,26,0.85);
     }
 
-    /* OVERLAY CARICAMENTO */
-    #loadingOverlay{
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.25);
-      display:none;
-      align-items:center;
-      justify-content:center;
-      z-index: 9998;
-      padding: 18px;
-    }
-    #loadingCard{
-      width: min(520px, 100%);
-      background: rgba(255,250,243,0.98);
-      border: 2px solid rgba(176,32,48,0.25);
-      border-radius: 16px;
-      box-shadow: 0 0 18px rgba(0,0,0,0.2);
-      padding: 14px 14px 12px;
-      text-align:center;
-      font-weight: 1000;
-      color:#7a0f1a;
-    }
-    #loadingBar{
-      margin-top: 10px;
-      height: 10px;
-      width: 100%;
-      background: rgba(0,0,0,0.08);
-      border-radius: 999px;
-      overflow:hidden;
-      border: 1px solid rgba(0,0,0,0.08);
-    }
-    #loadingBar > div{
-      height:100%;
-      width:30%;
-      background: rgba(176,32,48,0.55);
-      border-radius:999px;
-      animation: loadingmove 1.0s ease-in-out infinite;
-    }
-    @keyframes loadingmove{
-      0%{ transform: translateX(-30%); }
-      100%{ transform: translateX(330%); }
-    }
-    #loadingDetail{
-      margin-top: 8px;
-      font-size: .9rem;
-      color:#444;
-      font-weight: 900;
-    }
-
-    /* MODAL */
+    /* ===== MODAL (login / register / request) ===== */
     .modal-backdrop{
-      position:fixed; inset:0;
+      position:fixed;
+      inset:0;
       background: rgba(0,0,0,0.45);
       display:none;
       align-items:center;
       justify-content:center;
       z-index: 10000;
-      padding: 18px;
+      padding: 14px;
     }
     .modal{
-      width: min(560px, 100%);
+      width: min(520px, 100%);
       background: rgba(255,250,243,0.98);
-      border: 2px solid rgba(176,32,48,0.25);
+      border: 2px solid rgba(176,32,48,0.28);
       border-radius: 16px;
-      box-shadow: 0 0 18px rgba(0,0,0,0.2);
+      box-shadow: 0 12px 40px rgba(0,0,0,0.25);
       padding: 14px 14px 12px;
+      position:relative;
     }
-    .modal h3{
-      margin: 0 0 8px;
-      color: var(--rosso-natale);
-      font-weight: 1000;
+    .modal h2{
+      margin: 6px 0 10px;
+      font-size: 1.2rem;
+      color:#7a0f1a;
     }
     .modal .row{
-      display:flex; gap:10px; flex-wrap:wrap;
-      margin: 10px 0;
-      align-items:center;
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
     }
-    .modal .row > * { flex: 1; min-width: 200px; }
+    .modal .field{
+      flex: 1 1 200px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      margin-bottom: 10px;
+    }
+    .modal label{
+      font-size:0.85rem;
+      color:#444;
+      font-weight:800;
+    }
+    .modal input, .modal textarea{
+      padding: 8px 10px;
+      border-radius: 10px;
+      border:1px solid #ccc;
+      font-size: 0.95rem;
+      background:#fff;
+    }
+    .modal textarea{ min-height: 80px; resize: vertical; }
     .modal .actions{
-      display:flex; gap:10px; justify-content:flex-end; flex-wrap:wrap;
-      margin-top: 10px;
+      display:flex;
+      gap:10px;
+      justify-content:flex-end;
+      margin-top: 6px;
+      flex-wrap:wrap;
     }
-    .muted{ color:#555; font-weight:900; font-size:.9rem; }
+    .btn{
+      padding: 8px 12px;
+      border-radius: 10px;
+      border:1px solid rgba(31,122,58,0.35);
+      background:#f7fff7;
+      color:#1f7a3a;
+      font-weight:900;
+      cursor:pointer;
+    }
+    .btn.red{
+      border-color: rgba(176,32,48,0.35);
+      background:#fff7f7;
+      color:#b02030;
+    }
+    .btn:disabled{ opacity:.6; cursor:not-allowed; }
+    .modal .msg{
+      margin-top:8px;
+      font-size:0.9rem;
+      font-weight:800;
+      color:#7a0f1a;
+    }
+    .modal .closeX{
+      position:absolute;
+      top: 10px;
+      right: 10px;
+      border:none;
+      background: transparent;
+      cursor:pointer;
+      font-size: 1.2rem;
+      line-height:1;
+    }
 
-    img.emoji{ height: 1em; width: 1em; margin: 0 .05em 0 .1em; vertical-align: -0.1em; }
+    @media(max-width: 900px) {
+      .stats-bar { grid-template-columns: 1fr; }
+      .top-actions{ position:static; transform:none; justify-content:center; margin-top:8px; }
+      .header-flex{ flex-direction: column; }
+    }
 
-    @media(max-width: 900px) { .stats-bar { grid-template-columns: 1fr; } }
     @media(max-width: 768px) {
       #wrapper { margin: 80px 10px 20px; padding: 14px; }
       .filters { flex-direction: column; align-items: stretch; }
-      .header-flex { flex-direction: column; }
-      .logo-amar { height: 70px; }
-      select, input[type="text"], input[type="password"], input[type="tel"] { min-width: 100%; }
+      .logo-amar { height: 74px; }
     }
   </style>
 </head>
@@ -477,20 +529,13 @@
   <small>Stiamo “intavolando” la pagina: fino a quell’ora resta coperta.</small>
 </div>
 
-<div id="loadingOverlay">
-  <div id="loadingCard">
-    ⏳ Sto caricando il catalogo…
-    <div id="loadingBar"><div></div></div>
-    <div id="loadingDetail">Preparazione tabella e controlli richieste.</div>
-  </div>
-</div>
-
 <div class="garland">
   <span>✨</span><span>🎄</span><span>⭐</span><span>🕯️</span>
   <span>🎲 AmarBoard Romagna 🎲</span>
   <span>⭐</span><span>🎄</span><span>✨</span>
 </div>
 
+<!-- Fiocchi di neve -->
 <div class="snowflake">❄</div>
 <div class="snowflake">✻</div>
 <div class="snowflake">❅</div>
@@ -501,22 +546,22 @@
 
 <div id="wrapper">
   <div class="header-flex">
-    <span class="xmas-icon">🎄</span>
-    <img class="logo-amar" src="logo_amarboard.png" alt="AmarBoard Romagna">
-    <span class="xmas-icon">🎲</span>
+    <img class="logo-amar"
+         src="logo_amarboard.png"
+         alt="AmarBoard Romagna">
+
+    <div class="top-actions">
+      <button class="btn-top" id="btnLogin">Accedi</button>
+      <button class="btn-top" id="btnRegister">Registrati</button>
+      <button class="btn-top red" id="btnLogout" style="display:none;">Esci</button>
+      <button class="btn-top" id="btnAdmin" style="display:none;">Admin</button>
+    </div>
   </div>
 
   <h1>Catalogo Giochi – AmarBoard</h1>
 
   <div class="subtitle">
     <span>Speciale Natale:</span> trova il gioco giusto (o fatti suggerire dai nostri Volontari) da intavolare con gli amici sui nostri tavoli.
-  </div>
-
-  <div class="top-actions">
-    <button class="btn btn-neutral" id="btnLogin" type="button">🔐 Accedi</button>
-    <button class="btn btn-neutral" id="btnRegister" type="button">🧾 Registrati</button>
-    <a class="btn btn-neutral" id="btnAdminLink" href="admin.html" style="display:none;">🛠️ Area Admin</a>
-    <button class="btn btn-no" id="btnLogout" type="button" style="display:none;">🚪 Logout</button>
   </div>
 
   <div class="stats-bar">
@@ -553,7 +598,10 @@
       </div>
     </div>
 
-    <button id="btnRefresh" class="btn btn-ok" type="button">🔄 Aggiorna dati</button>
+    <div style="display:flex;flex-direction:column;align-items:flex-end;width:100%;">
+      <button id="btnRefresh" type="button">🔄 Aggiorna dati</button>
+      <div id="lastUpdate">Ultimo aggiornamento: –</div>
+    </div>
   </div>
 
   <div id="infoBox"></div>
@@ -570,766 +618,842 @@
       <th>Disponibili</th>
       <th>Stato</th>
       <th>BGG</th>
-      <th>Richiesta</th>
+      <th>Richiedi</th>
     </tr>
     </thead>
     <tbody></tbody>
   </table>
-
-  <div id="lastUpdate">Ultimo aggiornamento: –</div>
 
   <div class="footer-note">
     🎅 Catalogo generato dalla ludoteca AmarBoard – versione natalizia
   </div>
 </div>
 
-<!-- MODAL LOGIN -->
+<!-- ===== MODALS ===== -->
 <div class="modal-backdrop" id="modalLogin">
-  <div class="modal">
-    <h3>🔐 Accedi</h3>
+  <div class="modal" role="dialog" aria-modal="true">
+    <button class="closeX" type="button" onclick="closeModal('modalLogin')">✖</button>
+    <h2>Accedi</h2>
     <div class="row">
-      <div>
-        <div class="muted">Username</div>
-        <input id="loginUser" type="text" autocomplete="username" placeholder="es: mario">
+      <div class="field">
+        <label>Username</label>
+        <input id="loginUser" autocomplete="username" placeholder="es. mario">
       </div>
-      <div>
-        <div class="muted">Password</div>
-        <input id="loginPass" type="password" autocomplete="current-password" placeholder="••••••">
+      <div class="field">
+        <label>Password</label>
+        <input id="loginPass" type="password" autocomplete="current-password" placeholder="••••••••">
       </div>
     </div>
-    <div class="muted" id="loginMsg" style="margin-top:6px;"></div>
     <div class="actions">
-      <button class="btn btn-neutral" type="button" data-close="modalLogin">Annulla</button>
-      <button class="btn btn-ok" id="btnDoLogin" type="button">Entra</button>
+      <button class="btn" type="button" onclick="doLogin()">Accedi</button>
+      <button class="btn red" type="button" onclick="closeModal('modalLogin')">Annulla</button>
     </div>
+    <div class="msg" id="loginMsg"></div>
   </div>
 </div>
 
-<!-- MODAL REGISTER -->
 <div class="modal-backdrop" id="modalRegister">
-  <div class="modal">
-    <h3>🧾 Registrati</h3>
+  <div class="modal" role="dialog" aria-modal="true">
+    <button class="closeX" type="button" onclick="closeModal('modalRegister')">✖</button>
+    <h2>Registrati</h2>
     <div class="row">
-      <div>
-        <div class="muted">Username (solo lettere/numeri)</div>
-        <input id="regUser" type="text" autocomplete="username" placeholder="min 4 caratteri">
+      <div class="field">
+        <label>Username (solo lettere/numeri)</label>
+        <input id="regUser" autocomplete="username" placeholder="min 4 caratteri">
       </div>
-      <div>
-        <div class="muted">Nome</div>
-        <input id="regNome" type="text" placeholder="Nome e cognome">
+      <div class="field">
+        <label>Nome</label>
+        <input id="regNome" autocomplete="name" placeholder="es. Mario Rossi">
       </div>
     </div>
     <div class="row">
-      <div>
-        <div class="muted">Telefono</div>
-        <input id="regTel" type="tel" placeholder="es. 393...">
+      <div class="field">
+        <label>Telefono</label>
+        <input id="regTel" autocomplete="tel" placeholder="es. 3939056348">
       </div>
-      <div>
-        <div class="muted">Password</div>
-        <input id="regPass" type="password" autocomplete="new-password" placeholder="••••••">
+      <div class="field">
+        <label>Password</label>
+        <input id="regPass" type="password" autocomplete="new-password" placeholder="••••••••">
       </div>
     </div>
-    <div class="muted" id="regMsg" style="margin-top:6px;"></div>
     <div class="actions">
-      <button class="btn btn-neutral" type="button" data-close="modalRegister">Annulla</button>
-      <button class="btn btn-ok" id="btnDoRegister" type="button">Crea account</button>
+      <button class="btn" type="button" onclick="doRegister()">Crea account</button>
+      <button class="btn red" type="button" onclick="closeModal('modalRegister')">Annulla</button>
     </div>
+    <div class="msg" id="regMsg"></div>
   </div>
 </div>
 
-<!-- MODAL RICHIESTA -->
-<div class="modal-backdrop" id="modalReq">
-  <div class="modal">
-    <h3>📝 Richiedi prestito</h3>
-    <div class="muted" style="margin-bottom:8px;">
-      Titolo: <strong id="reqTitoloLabel"></strong>
+<div class="modal-backdrop" id="modalRequest">
+  <div class="modal" role="dialog" aria-modal="true">
+    <button class="closeX" type="button" onclick="closeModal('modalRequest')">✖</button>
+    <h2>Richiedi prestito 🎲</h2>
+
+    <div class="field">
+      <label>Gioco</label>
+      <input id="reqTitolo" readonly>
     </div>
+
     <div class="row">
-      <div>
-        <div class="muted">Giocatori</div>
-        <input id="reqGiocatori" type="text" disabled>
+      <div class="field">
+        <label>Giocatori</label>
+        <input id="reqGiocatori" readonly>
       </div>
-      <div>
-        <div class="muted">Nome</div>
-        <input id="reqNome" type="text" placeholder="Il tuo nome">
+      <div class="field">
+        <label>Nome</label>
+        <input id="reqNome" placeholder="Il tuo nome">
       </div>
     </div>
+
     <div class="row">
-      <div>
-        <div class="muted">Telefono</div>
-        <input id="reqTel" type="tel" placeholder="es. 393...">
+      <div class="field">
+        <label>Telefono</label>
+        <input id="reqTel" placeholder="Il tuo numero">
       </div>
-      <div>
-        <div class="muted">Note</div>
-        <input id="reqNote" type="text" placeholder="Opzionale">
+      <div class="field">
+        <label>Note (facoltativo)</label>
+        <input id="reqNote" placeholder="Es. arrivo alle 16, ecc.">
       </div>
     </div>
-    <div class="muted" id="reqMsg" style="margin-top:6px;"></div>
+
     <div class="actions">
-      <button class="btn btn-neutral" type="button" data-close="modalReq">Annulla</button>
-      <button class="btn btn-ok" id="btnSendReq" type="button">Invia richiesta</button>
+      <button class="btn" id="btnSendReq" type="button" onclick="sendRequest()">Invia richiesta</button>
+      <button class="btn red" type="button" onclick="closeModal('modalRequest')">Chiudi</button>
     </div>
+    <div class="msg" id="reqMsg"></div>
   </div>
 </div>
 
 <script>
-/* ===== CONFIG ===== */
-const API_URL = "https://script.google.com/macros/s/AKfycby2LtiMH0OabM-O7ACudxF_K0q2X2MYHnCdyFBYi1Te41UcKlIjVh4I4eBODaUonbFv/exec";
-const CSV_BASE_URL   = "/catalogo_ludoteca.csv";
-const STATS_BASE_URL = "/stats_ludoteca.csv";
+  // =========================
+  // CONFIG
+  // =========================
+  const API_URL = "https://script.google.com/macros/s/AKfycbyoQBfaYvxQBTS_EnK1-IOlPjLoFT0sWn1jcHPuDg5t0nUkwrvKPY-x8Qg8ii5BmtLDYg/exec";
 
-const AUTO_REFRESH_MS = 30000;
+  // CSV locali (root)
+  const CSV_BASE_URL   = "/catalogo_ludoteca.csv";
+  const STATS_BASE_URL = "/stats_ludoteca.csv";
 
-// bypass PIN (solo se vuoi)
-const ADMIN_PIN = "1234";
+  // LocalStorage keys
+  const LS_USER_TOKEN = "AB_USER_TOKEN";
+  const LS_PROFILE    = "AB_PROFILE";
+  const LS_REQ_LOCAL  = "AB_REQ_LOCAL"; // {Titolo: timestamp}
+  const LS_PREVIEW    = "AB_PREVIEW";   // "1" (solo admin) per bypass countdown su device
 
-// cache CSV (client-side)
-const CSV_CACHE_TTL_MS = 30000; // 30s (ottimo per 500 righe)
+  // Stato runtime
+  let table = null;
+  let requestedMap = {};
+  let config = { requireLoginForRequest:false, countdownEnabled:true, revealAtIso:"" };
+  let profile = null;
 
-// localStorage keys
-const LS_USER_TOKEN     = "AB_USER_TOKEN";
-const LS_USER_PROFILE   = "AB_USER_PROFILE";
-const LS_PREVIEW        = "AB_PREVIEW";
-const LS_ADMIN_BYPASS   = "AB_ADMIN_BYPASS";
-const LS_CLEAR_VERSION  = "AB_CLEAR_VERSION_SEEN";
+  // =========================
+  // UTIL UI
+  // =========================
+  function E(id){ return document.getElementById(id); }
 
-// CSV cache keys
-const LS_CSV_CACHE      = "AB_CSV_CACHE_TEXT";
-const LS_CSV_CACHE_TIME = "AB_CSV_CACHE_TIME";
-
-/* ===== STATE ===== */
-let table = null;
-let requestedMap = {};
-let appConfig = {
-  requireLoginForRequest:false,
-  countdownEnabled:true,
-  revealAtIso:"",
-  clearVersion:0,
-  forceClearLocal:false
-};
-let REVEAL_AT = 0;
-let countdownTimer = null;
-
-// request modal state
-let REQ_TITLE = "";
-let REQ_GIOC = "";
-
-/* ===== UI helpers ===== */
-const E = (id)=> document.getElementById(id);
-
-function renderEmoji(){
-  try { twemoji.parse(document.body, { folder:"svg", ext:".svg" }); } catch(e){}
-}
-function showError(msg){ E("errorBox").style.display="block"; E("errorBox").textContent = msg; renderEmoji(); }
-function clearError(){ E("errorBox").style.display="none"; E("errorBox").textContent = ""; }
-function showInfo(msg){ E("infoBox").style.display="block"; E("infoBox").textContent = msg; renderEmoji(); }
-function clearInfo(){ E("infoBox").style.display="none"; E("infoBox").textContent = ""; }
-
-function openModal(id){ E(id).style.display="flex"; renderEmoji(); }
-function closeModal(id){ E(id).style.display="none"; }
-document.addEventListener("click",(e)=>{
-  const close = e.target.getAttribute("data-close");
-  if(close) closeModal(close);
-});
-
-function setLoading(on, detail){
-  const ov = E("loadingOverlay");
-  if(on){
-    E("loadingDetail").textContent = detail || "Caricamento…";
-    ov.style.display = "flex";
-    renderEmoji();
-  }else{
-    ov.style.display = "none";
+  function showError(msg){
+    const b = E("errorBox");
+    b.style.display = "block";
+    b.textContent = msg;
   }
-}
+  function clearError(){
+    const b = E("errorBox");
+    b.style.display = "none";
+    b.textContent = "";
+  }
+  function showInfo(msg){
+    const b = E("infoBox");
+    b.style.display = "block";
+    b.textContent = msg;
+  }
+  function clearInfo(){
+    const b = E("infoBox");
+    b.style.display = "none";
+    b.textContent = "";
+  }
 
-/* ===== JSONP ===== */
-function jsonp(url){
-  return new Promise((resolve,reject)=>{
-    const cb = "cb_" + Math.random().toString(36).slice(2);
-    const s = document.createElement("script");
-    const t = setTimeout(()=>{ cleanup(); reject(new Error("JSONP timeout")); }, 12000);
+  function openModal(id){
+    E(id).style.display = "flex";
+  }
+  function closeModal(id){
+    E(id).style.display = "none";
+    const msg = E("loginMsg"); if(msg) msg.textContent="";
+    const msg2 = E("regMsg"); if(msg2) msg2.textContent="";
+    const msg3 = E("reqMsg"); if(msg3) msg3.textContent="";
+  }
 
-    function cleanup(){
-      clearTimeout(t);
-      try{ delete window[cb]; }catch(e){ window[cb]=undefined; }
-      if(s && s.parentNode) s.parentNode.removeChild(s);
+  function aggiornaTimestamp(){
+    const now = new Date();
+    E("lastUpdate").textContent = "Ultimo aggiornamento: " +
+      now.toLocaleTimeString("it-IT",{hour:"2-digit",minute:"2-digit",second:"2-digit"});
+  }
+
+  // =========================
+  // JSONP helper (compatibile GAS)
+  // =========================
+  function jsonp(url, timeoutMs=18000){
+    return new Promise((resolve, reject) => {
+      const cbName = "cb_" + Math.random().toString(36).slice(2);
+      const sep = url.includes("?") ? "&" : "?";
+      const full = url + sep + "callback=" + cbName;
+
+      const script = document.createElement("script");
+      let done = false;
+
+      const timer = setTimeout(() => {
+        if(done) return;
+        done = true;
+        cleanup();
+        reject(new Error("JSONP timeout"));
+      }, timeoutMs);
+
+      window[cbName] = (data) => {
+        if(done) return;
+        done = true;
+        clearTimeout(timer);
+        cleanup();
+        resolve(data);
+      };
+
+      function cleanup(){
+        try { delete window[cbName]; } catch(e){ window[cbName] = undefined; }
+        if(script && script.parentNode) script.parentNode.removeChild(script);
+      }
+
+      script.src = full;
+      script.onerror = () => {
+        if(done) return;
+        done = true;
+        clearTimeout(timer);
+        cleanup();
+        reject(new Error("JSONP load error"));
+      };
+
+      document.head.appendChild(script);
+    });
+  }
+
+  // =========================
+  // SHA-256 (WebCrypto se disponibile + fallback)
+  // =========================
+  async function sha256hex_async(text){
+    if(window.crypto && window.crypto.subtle){
+      const enc = new TextEncoder();
+      const buf = await crypto.subtle.digest("SHA-256", enc.encode(text));
+      return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,"0")).join("");
+    }
+    // fallback sync (mini)
+    return sha256hex_fallback(text);
+  }
+
+  // Fallback SHA256 (compatibilità)
+  function sha256hex_fallback(ascii) {
+    function rightRotate(value, amount) { return (value>>>amount) | (value<<(32-amount)); }
+    var mathPow = Math.pow; var maxWord = mathPow(2, 32);
+    var lengthProperty = "length";
+    var i, j; var result = "";
+
+    var words = [];
+    var asciiBitLength = ascii[lengthProperty]*8;
+
+    var hash = sha256hex_fallback.h = sha256hex_fallback.h || [];
+    var k = sha256hex_fallback.k = sha256hex_fallback.k || [];
+    var primeCounter = k[lengthProperty];
+
+    var isComposite = {};
+    for (var candidate = 2; primeCounter < 64; candidate++) {
+      if (!isComposite[candidate]) {
+        for (i = 0; i < 313; i += candidate) isComposite[i] = candidate;
+        hash[primeCounter] = (mathPow(candidate, .5)*maxWord)|0;
+        k[primeCounter++] = (mathPow(candidate, 1/3)*maxWord)|0;
+      }
     }
 
-    window[cb] = (data)=>{ cleanup(); resolve(data); };
-    s.onerror = ()=>{ cleanup(); reject(new Error("JSONP load error")); };
+    ascii += "\x80";
+    while (ascii[lengthProperty]%64 - 56) ascii += "\x00";
+    for (i = 0; i < ascii[lengthProperty]; i++) {
+      j = ascii.charCodeAt(i);
+      words[i>>2] |= j << ((3 - i)%4)*8;
+    }
+    words[words[lengthProperty]] = ((asciiBitLength/maxWord)|0);
+    words[words[lengthProperty]] = (asciiBitLength);
 
-    s.src = url + (url.includes("?") ? "&" : "?") + "callback=" + cb + "&v=" + Date.now();
-    document.body.appendChild(s);
-  });
-}
+    for (j = 0; j < words[lengthProperty];) {
+      var w = words.slice(j, j += 16);
+      var oldHash = hash.slice(0);
 
-/* ===== CSV (optimized cache) ===== */
-async function fetchTextNoStore(path){
-  const url = path + "?v=" + Date.now();
-  const res = await fetch(url, { cache:"no-store" });
-  if(!res.ok) throw new Error(`Impossibile caricare ${path} (HTTP ${res.status})`);
-  return await res.text();
-}
+      for (i = 0; i < 64; i++) {
+        var w15 = w[i - 15], w2 = w[i - 2];
 
-async function getCatalogCsvCached(){
-  const t = Number(localStorage.getItem(LS_CSV_CACHE_TIME) || 0);
-  const cached = localStorage.getItem(LS_CSV_CACHE);
-  const age = Date.now() - t;
+        var a = hash[0], e = hash[4];
+        var temp1 = hash[7]
+          + (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25))
+          + ((e&hash[5])^((~e)&hash[6]))
+          + k[i]
+          + (w[i] = (i < 16) ? w[i] : (
+              w[i - 16]
+              + (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15>>>3))
+              + w[i - 7]
+              + (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2>>>10))
+            )|0
+          );
+        var temp2 = (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22))
+          + ((a&hash[1])^(a&hash[2])^(hash[1]&hash[2]));
 
-  if(cached && t && age >= 0 && age < CSV_CACHE_TTL_MS){
-    return { text: cached, fromCache:true };
+        hash = [(temp1 + temp2)|0].concat(hash);
+        hash[4] = (hash[4] + temp1)|0;
+        hash.pop();
+      }
+
+      for (i = 0; i < 8; i++) hash[i] = (hash[i] + oldHash[i])|0;
+    }
+
+    for (i = 0; i < 8; i++) {
+      for (j = 3; j + 1; j--) {
+        var b = (hash[i] >> (j * 8)) & 255;
+        result += ((b < 16) ? 0 : "") + b.toString(16);
+      }
+    }
+    return result;
   }
 
-  const text = await fetchTextNoStore(CSV_BASE_URL);
-  try{
-    localStorage.setItem(LS_CSV_CACHE, text);
-    localStorage.setItem(LS_CSV_CACHE_TIME, String(Date.now()));
-  }catch(e){ /* storage pieno? pazienza */ }
-  return { text, fromCache:false };
-}
-
-function parseCSVText(csvText){
-  const parsed = Papa.parse(csvText, { header:true, skipEmptyLines:true });
-  return parsed.data || [];
-}
-
-/* ===== CONFIG + COUNTDOWN ===== */
-function computeRevealAtFromConfig(){
-  if(!appConfig.countdownEnabled){ REVEAL_AT = 0; return; }
-  if(appConfig.revealAtIso){
-    const d = new Date(appConfig.revealAtIso);
-    if(!isNaN(d.getTime())){ REVEAL_AT = d.getTime(); return; }
+  // =========================
+  // AUTH
+  // =========================
+  function loadProfileFromLS(){
+    try{
+      const raw = localStorage.getItem(LS_PROFILE);
+      profile = raw ? JSON.parse(raw) : null;
+    }catch(e){ profile=null; }
   }
-  // fallback: domani 09:00
-  const now = new Date();
-  REVEAL_AT = new Date(now.getFullYear(), now.getMonth(), now.getDate()+1, 9, 0, 0, 0).getTime();
-}
+  function setProfile(p){
+    profile = p || null;
+    localStorage.setItem(LS_PROFILE, JSON.stringify(profile||null));
+  }
+  function clearAuth(){
+    localStorage.removeItem(LS_USER_TOKEN);
+    localStorage.removeItem(LS_PROFILE);
+    profile = null;
+  }
 
-function isBypassEnabled(){ return localStorage.getItem(LS_ADMIN_BYPASS) === "1"; }
-function isPreviewEnabled(){ return localStorage.getItem(LS_PREVIEW) === "1"; }
+  async function refreshAuthUI(){
+    const token = localStorage.getItem(LS_USER_TOKEN) || "";
+    loadProfileFromLS();
 
-async function caricaConfig(){
-  try{
-    const cfg = await jsonp(API_URL + "?action=get_config");
-    if(cfg && cfg.ok && cfg.config){
-      appConfig = cfg.config;
+    E("btnLogout").style.display = token ? "inline-flex" : "none";
+    E("btnLogin").style.display  = token ? "none" : "inline-flex";
+    E("btnRegister").style.display = token ? "none" : "inline-flex";
 
-      // kill switch (opzionale)
-      const seen = Number(localStorage.getItem(LS_CLEAR_VERSION) || 0);
-      const serverVer = Number(appConfig.clearVersion || 0);
-      if(serverVer > seen && appConfig.forceClearLocal){
-        localStorage.setItem(LS_CLEAR_VERSION, String(serverVer));
-        localStorage.clear();
-        localStorage.setItem(LS_CLEAR_VERSION, String(serverVer));
-        location.reload();
+    // prova a capire ruolo (solo se token c'è)
+    if(token){
+      try{
+        const r = await jsonp(API_URL + "?action=me&token=" + encodeURIComponent(token), 12000);
+        if(r && r.ok && r.profile){
+          setProfile(r.profile);
+          const isAdmin = (r.profile.Ruolo === "admin");
+          E("btnAdmin").style.display = isAdmin ? "inline-flex" : "none";
+          return;
+        }
+      }catch(_){}
+    }
+    E("btnAdmin").style.display = "none";
+  }
+
+  async function doLogin(){
+    E("loginMsg").textContent = "";
+    const u = (E("loginUser").value||"").trim().toLowerCase();
+    const p = (E("loginPass").value||"");
+
+    if(!u || !p){ E("loginMsg").textContent = "Inserisci username e password."; return; }
+
+    const passhash = await sha256hex_async(p);
+
+    try{
+      const r = await jsonp(
+        API_URL + "?action=login"
+          + "&username=" + encodeURIComponent(u)
+          + "&passhash=" + encodeURIComponent(passhash),
+        18000
+      );
+      if(!r || !r.ok){
+        E("loginMsg").textContent = "Login fallito: " + (r?.error || "sconosciuto");
         return;
       }
-      localStorage.setItem(LS_CLEAR_VERSION, String(serverVer));
+      localStorage.setItem(LS_USER_TOKEN, r.token);
+      setProfile(r.profile);
+      closeModal("modalLogin");
+      await refreshAuthUI();
+      showInfo("Accesso effettuato ✅");
+      await aggiornaTutto(true);
+    }catch(e){
+      E("loginMsg").textContent = "Errore rete: " + e.message;
     }
-  }catch(e){}
-  computeRevealAtFromConfig();
-}
-
-function startCountdownShield(){
-  const banner = E("countdownBanner");
-  const timeEl = E("countdownTime");
-
-  function unlock(){
-    document.body.classList.remove("spoiler-hidden");
-    banner.style.display = "none";
-    if(countdownTimer) clearInterval(countdownTimer);
   }
 
-  function tick(){
-    const prof = getProfile();
-    const isAdmin = prof && String(prof.Ruolo||"") === "admin";
-    if(isAdmin && isPreviewEnabled()){ unlock(); return; }
-    if(isBypassEnabled()){ unlock(); return; }
+  async function doRegister(){
+    E("regMsg").textContent = "";
+    const u = (E("regUser").value||"").trim().toLowerCase();
+    const nome = (E("regNome").value||"").trim();
+    const tel = (E("regTel").value||"").trim();
+    const pass = (E("regPass").value||"");
 
-    if(!appConfig.countdownEnabled){ unlock(); return; }
+    if(!u || !nome || !pass){
+      E("regMsg").textContent = "Compila username, nome e password.";
+      return;
+    }
+    if(!/^[a-z0-9]{4,}$/.test(u)){
+      E("regMsg").textContent = "Username non valido (min 4, solo lettere/numeri).";
+      return;
+    }
 
-    const diff = REVEAL_AT - Date.now();
-    if(diff <= 0){ unlock(); return; }
+    const passhash = await sha256hex_async(pass);
 
-    document.body.classList.add("spoiler-hidden");
-    banner.style.display = "block";
-
-    const totalSec = Math.floor(diff/1000);
-    const h = String(Math.floor(totalSec/3600)).padStart(2,"0");
-    const m = String(Math.floor((totalSec%3600)/60)).padStart(2,"0");
-    const s = String(totalSec%60).padStart(2,"0");
-    timeEl.textContent = `${h}:${m}:${s}`;
-  }
-
-  tick();
-  countdownTimer = setInterval(tick, 1000);
-
-  document.addEventListener("keydown",(e)=>{
-    if(e.ctrlKey && e.shiftKey && (e.key||"").toLowerCase() === "b"){
-      const pin = prompt("PIN Admin (bypass countdown):");
-      if(pin === null) return;
-      if(String(pin) === String(ADMIN_PIN)){
-        localStorage.setItem(LS_ADMIN_BYPASS, "1");
-        alert("Bypass attivato su questo browser.");
-      }else{
-        alert("PIN errato.");
+    try{
+      const r = await jsonp(
+        API_URL + "?action=register"
+          + "&username=" + encodeURIComponent(u)
+          + "&nome=" + encodeURIComponent(nome)
+          + "&telefono=" + encodeURIComponent(tel)
+          + "&passhash=" + encodeURIComponent(passhash),
+        18000
+      );
+      if(!r || !r.ok){
+        E("regMsg").textContent = "Registrazione fallita: " + (r?.error || "sconosciuto");
+        return;
       }
+      E("regMsg").textContent = "Account creato ✅ Ora fai login.";
+      // auto-apri login
+      setTimeout(()=>{ closeModal("modalRegister"); openModal("modalLogin"); }, 700);
+    }catch(e){
+      E("regMsg").textContent = "Errore rete: " + e.message;
     }
-  });
-}
-
-function isUnlocked(){
-  const prof = getProfile();
-  const isAdmin = prof && String(prof.Ruolo||"") === "admin";
-  return (!appConfig.countdownEnabled) || (Date.now() >= REVEAL_AT) || isBypassEnabled() || (isAdmin && isPreviewEnabled());
-}
-
-/* ===== Requested map: badge + DISABILITA RICHIEDI ===== */
-async function caricaRequestedMap(){
-  try{
-    const r = await jsonp(API_URL + "?action=requested_map");
-    requestedMap = (r && r.ok && r.map) ? r.map : {};
-  }catch(e){
-    requestedMap = {};
-  }
-}
-
-function gameBadge(title){
-  const t = String(title||"").trim();
-  const info = requestedMap[t];
-  if(!info) return "";
-  if(Number(info.approved||0) > 0) return ' <span class="badge badge-booked">📌 Prenotato</span>';
-  if(Number(info.open||0) > 0) return ' <span class="badge badge-req">🟣 Richiesto</span>';
-  return "";
-}
-
-function canRequest(){
-  if(!appConfig.requireLoginForRequest) return true;
-  return !!localStorage.getItem(LS_USER_TOKEN);
-}
-
-function requestButtonHtml(title, gioc){
-  const t = String(title||"").trim();
-  const info = requestedMap[t];
-
-  // BLOCCO "COME PRIMA": se già richiesto o prenotato
-  if(info && (Number(info.open||0) > 0 || Number(info.approved||0) > 0)){
-    const label = (Number(info.approved||0) > 0) ? "📌 Prenotato" : "🟣 Richiesto";
-    return `<button class="btn btn-neutral" type="button" disabled title="Già presente una richiesta per questo gioco.">${label}</button>`;
   }
 
-  if(!canRequest()){
-    return `<button class="btn btn-neutral" type="button" disabled title="Devi fare accesso per richiedere.">🔒 Accedi</button>`;
+  // =========================
+  // COUNTDOWN / SPOILER SHIELD (config-driven)
+  // =========================
+  let countdownTimer = null;
+
+  function canPreview(){
+    // preview solo se admin e flag su device
+    const pv = localStorage.getItem(LS_PREVIEW) === "1";
+    const isAdmin = (profile && profile.Ruolo === "admin");
+    return pv && isAdmin;
   }
 
-  return `<button class="btn btn-ok btnReq" type="button" data-t="${escapeAttr(t)}" data-g="${escapeAttr(gioc||"")}">📝 Richiedi</button>`;
-}
+  function isRevealActiveNow(){
+    if(!config.countdownEnabled) return true;
+    const iso = (config.revealAtIso||"").trim();
+    if(!iso) return true;
+    const t = new Date(iso).getTime();
+    if(!isFinite(t)) return true;
+    return Date.now() >= t;
+  }
 
-/* ===== DataTables + Catalogo ===== */
-function ensureDataTablesLoaded(){
-  if(!window.jQuery) { showError("Errore: jQuery non caricato."); return false; }
-  if(!jQuery.fn || !jQuery.fn.DataTable) { showError("Errore: DataTables non caricato (CDN)."); return false; }
-  return true;
-}
+  function startCountdownShield(){
+    const banner = E("countdownBanner");
+    const timeEl = E("countdownTime");
 
-function escapeHtml(s){
-  return String(s ?? "")
-    .replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;").replace(/'/g,"&#39;");
-}
-function escapeAttr(s){ return escapeHtml(s).replace(/`/g,"&#96;"); }
+    if(countdownTimer) { clearInterval(countdownTimer); countdownTimer = null; }
 
-function statoBadge(stato){
-  stato = (stato || "").toLowerCase().trim();
-  if(stato === "disponibile") return '<span class="badge badge-disponibile">🎄 Disponibile</span>';
-  if(stato === "in prestito") return '<span class="badge badge-prestato">🎁 In prestito</span>';
-  return escapeHtml(stato || "");
-}
+    function tick(){
+      if(canPreview()){
+        document.body.classList.remove("spoiler-hidden");
+        banner.style.display = "none";
+        return;
+      }
 
-function buildDataFromRows(raw){
-  const data = [];
-  raw.forEach(row=>{
-    if(!row["Titolo"]) return;
-    data.push({
-      Titolo: row["Titolo"] || "",
-      Giocatori: row["NumeroGiocatori"] || "",
-      Durata: row["Durata"] || "",
-      Eta: row["Eta"] || "",
-      Editore: row["Editore"] || "",
-      Disponibili: row["CopieDisponibili"] || "",
-      Stato: row["StatoDisponibilita"] || "",
-      BGG: row["BGG"] || ""
-    });
-  });
-  return data;
-}
+      if(isRevealActiveNow()){
+        document.body.classList.remove("spoiler-hidden");
+        banner.style.display = "none";
+        if(countdownTimer) clearInterval(countdownTimer);
+        countdownTimer = null;
+        // sbloccato => carica dati
+        aggiornaTutto(true);
+        return;
+      }
 
-async function caricaCatalogoOptimized(){
-  if(!ensureDataTablesLoaded()) return;
+      document.body.classList.add("spoiler-hidden");
+      banner.style.display = "block";
 
-  setLoading(true, "Scarico e preparo il catalogo…");
+      const target = new Date(config.revealAtIso).getTime();
+      const diff = Math.max(0, target - Date.now());
+      const totalSec = Math.floor(diff / 1000);
+      const h = String(Math.floor(totalSec / 3600)).padStart(2, "0");
+      const m = String(Math.floor((totalSec % 3600) / 60)).padStart(2, "0");
+      const s = String(totalSec % 60).padStart(2, "0");
+      timeEl.textContent = `${h}:${m}:${s}`;
+    }
 
-  const { text, fromCache } = await getCatalogCsvCached();
-  const raw = parseCSVText(text);
-  const data = buildDataFromRows(raw);
+    tick();
+    countdownTimer = setInterval(tick, 1000);
+  }
 
-  setLoading(true, fromCache ? "Uso cache (30s) + preparo tabella…" : "Preparo tabella e filtri…");
+  // =========================
+  // CSV load (no-store) + parse
+  // =========================
+  async function fetchTextNoStore(path){
+    const url = path + "?v=" + Date.now();
+    const res = await fetch(url, { cache:"no-store" });
+    if(!res.ok) throw new Error(`Impossibile caricare ${path} (HTTP ${res.status})`);
+    return await res.text();
+  }
 
-  if(!table){
-    table = $("#tblCatalogo").DataTable({
-      data: data,
-      columns: [
-        { data:"Titolo", render:(d)=> `<strong>${escapeHtml(d)}</strong>${gameBadge(d)}` },
-        { data:"Giocatori", render:(d)=> escapeHtml(d||"") },
-        { data:"Durata", render:(d)=> escapeHtml(d||"") },
-        { data:"Eta", render:(d)=> escapeHtml(d||"") },
-        { data:"Editore", render:(d)=> escapeHtml(d||"") },
-        { data:"Disponibili", render:(d)=> `<strong>${escapeHtml(d ?? "")}</strong>` },
-        { data:"Stato", render:(d)=> statoBadge(d) },
-        { data:"BGG", orderable:false, render:(d)=>{
-            const safe = String(d||"").trim();
-            if(!safe) return "";
-            if(!/^https?:\/\//i.test(safe)) return "";
-            return `<a class="bgg-link" href="${safe}" target="_blank" rel="noopener noreferrer">Scheda</a>`;
+  function parseCSVText(csvText){
+    const parsed = Papa.parse(csvText, { header:true, skipEmptyLines:true });
+    return parsed.data || [];
+  }
+
+  function statoBadge(stato){
+    stato = (stato || "").toLowerCase().trim();
+    if(stato === "disponibile") return '<span class="badge badge-disponibile">🎄 Disponibile</span>';
+    if(stato === "in prestito") return '<span class="badge badge-prestato">🎁 In prestito</span>';
+    return (stato || "");
+  }
+
+  function requestedBadgesForTitle(title){
+    const rec = requestedMap[title];
+    if(!rec) return "";
+    let out = "";
+    if((rec.open||0) > 0) out += ' <span class="badge badge-rich">⏳ Richiesto</span>';
+    if((rec.approved||0) > 0) out += ' <span class="badge badge-pren">✅ Prenotato</span>';
+    return out;
+  }
+
+  function isRequestDisabled(title){
+    const rec = requestedMap[title];
+    if(rec && ((rec.open||0) > 0 || (rec.approved||0) > 0)) return true;
+
+    // fallback locale per evitare doppio click immediato
+    try{
+      const raw = localStorage.getItem(LS_REQ_LOCAL);
+      const obj = raw ? JSON.parse(raw) : {};
+      return !!obj[title];
+    }catch(e){ return false; }
+  }
+
+  function markRequestedLocal(title){
+    try{
+      const raw = localStorage.getItem(LS_REQ_LOCAL);
+      const obj = raw ? JSON.parse(raw) : {};
+      obj[title] = Date.now();
+      localStorage.setItem(LS_REQ_LOCAL, JSON.stringify(obj));
+    }catch(e){}
+  }
+
+  // =========================
+  // LOAD DATA
+  // =========================
+  async function loadConfig(){
+    try{
+      const r = await jsonp(API_URL + "?action=get_config", 15000);
+      if(r && r.ok && r.config) config = r.config;
+    }catch(_){}
+  }
+
+  async function caricaRequestedMap(){
+    try{
+      const r = await jsonp(API_URL + "?action=requested_map", 18000);
+      if(r && r.ok && r.map) requestedMap = r.map;
+    }catch(e){
+      // non bloccare
+      requestedMap = {};
+    }
+  }
+
+  async function caricaStats(){
+    try{
+      const text = await fetchTextNoStore(STATS_BASE_URL);
+      const rows = parseCSVText(text);
+      if(!rows.length) return;
+
+      const s = rows[0];
+      E("cntAttivi").textContent = s["PrestitiAttivi"] || "0";
+      E("cntTotali").textContent = s["PrestitiTotali"] || "0";
+
+      const topList = E("topList");
+      topList.innerHTML = "";
+
+      function addTop(titoloKey, countKey){
+        const titolo = s[titoloKey];
+        const cnt = s[countKey];
+        if(titolo && cnt && Number(cnt) > 0){
+          const li = document.createElement("li");
+          li.textContent = titolo + " (" + cnt + ")";
+          topList.appendChild(li);
+        }
+      }
+
+      addTop("Top1Titolo", "Top1Prestiti");
+      addTop("Top2Titolo", "Top2Prestiti");
+      addTop("Top3Titolo", "Top3Prestiti");
+    }catch(_){}
+  }
+
+  async function caricaCatalogo(){
+    const text = await fetchTextNoStore(CSV_BASE_URL);
+    const raw = parseCSVText(text);
+
+    const data = [];
+    for(const row of raw){
+      if(!row["Titolo"]) continue;
+
+      data.push({
+        Titolo: row["Titolo"] || "",
+        Giocatori: row["NumeroGiocatori"] || "",
+        Durata: row["Durata"] || "",
+        Eta: row["Eta"] || "",
+        Editore: row["Editore"] || "",
+        Disponibili: row["CopieDisponibili"] || "",
+        Stato: row["StatoDisponibilita"] || "",
+        BGG: row["BGG"] || ""
+      });
+    }
+
+    if(!table){
+      table = $("#tblCatalogo").DataTable({
+        data,
+        deferRender: true,
+        pageLength: 50,
+        lengthMenu: [[25,50,100,-1],[25,50,100,"Tutti"]],
+        columns: [
+          {
+            data: "Titolo",
+            render: (d) => {
+              const title = String(d||"");
+              return `<strong>${escapeHtml(title)}</strong>${requestedBadgesForTitle(title)}`;
+            }
+          },
+          { data: "Giocatori" },
+          { data: "Durata" },
+          { data: "Eta" },
+          { data: "Editore" },
+          { data: "Disponibili", render: d => `<strong>${escapeHtml(String(d ?? ""))}</strong>` },
+          { data: "Stato", render: d => statoBadge(d) },
+          {
+            data: "BGG",
+            orderable: false,
+            render: d => {
+              if(!d) return "";
+              const safe = String(d).trim();
+              if(!/^https?:\/\//i.test(safe)) return "";
+              return `<a class="bgg-link" href="${safe}" target="_blank" rel="noopener noreferrer">Scheda</a>`;
+            }
+          },
+          {
+            data: null,
+            orderable: false,
+            render: (row) => {
+              const title = String(row.Titolo||"");
+              const disabled = isRequestDisabled(title) ? "disabled" : "";
+              const label = isRequestDisabled(title) ? "Già richiesto" : "Richiedi";
+              return `<button class="btn-req" ${disabled} data-title="${escapeAttr(title)}" data-gioc="${escapeAttr(String(row.Giocatori||""))}">🎲 ${label}</button>`;
+            }
           }
-        },
-        { data:null, orderable:false, render:(d,t,row)=> requestButtonHtml(row.Titolo, row.Giocatori) }
-      ],
+        ],
+        paging: true,
+        info: true,
+        lengthChange: true,
+        order: [[0, "asc"]],
+        language: { url: "https://cdn.datatables.net/plug-ins/1.13.8/i18n/it-IT.json" },
+        rowCallback: function(row, rowData){
+          row.classList.remove("disponibile-row","prestato-row");
+          const stato = (rowData.Stato || "").toLowerCase().trim();
+          if(stato === "disponibile") row.classList.add("disponibile-row");
+          else if(stato === "in prestito") row.classList.add("prestato-row");
+        }
+      });
 
-      // ===== OPTIMIZZAZIONI =====
-      deferRender: true,
-      processing: true,
-      autoWidth: false,
-      searchDelay: 250,
+      // Filtri custom
+      E("filtroStato").addEventListener("change", function(){
+        table.column(6).search(this.value, false, false).draw();
+      });
+      E("filtroGiocatori").addEventListener("keyup", function(){
+        table.column(1).search(this.value, false, false).draw();
+      });
 
-      paging:false,
-      info:false,
-      lengthChange:false,
-      order:[[0,"asc"]],
-      language:{ url:"https://cdn.datatables.net/plug-ins/1.13.8/i18n/it-IT.json" },
-      createdRow: function(row,rowData){
-        const st = (rowData.Stato||"").toLowerCase().trim();
-        if(st === "disponibile") row.classList.add("disponibile-row");
-        else if(st === "in prestito") row.classList.add("prestato-row");
-      },
-      drawCallback: function(){ renderEmoji(); }
-    });
+      // Delegation per bottoni (datatable rigenera DOM)
+      $("#tblCatalogo tbody").on("click", "button.btn-req", function(){
+        const title = this.getAttribute("data-title") || "";
+        const gioc = this.getAttribute("data-gioc") || "";
 
-    E("filtroStato").addEventListener("change", function(){
-      table.column(6).search(this.value, false, false).draw();
-    });
-    E("filtroGiocatori").addEventListener("keyup", function(){
-      table.column(1).search(this.value, false, false).draw();
-    });
+        // se countdown copre, non spoilerare
+        if(!canPreview() && !isRevealActiveNow()){
+          showError("Catalogo coperto fino allo sblocco ⏳");
+          return;
+        }
 
-    document.addEventListener("click",(e)=>{
-      const btn = e.target.closest(".btnReq");
-      if(!btn) return;
-      openRequestModal(btn.getAttribute("data-t"), btn.getAttribute("data-g"));
-    });
-  } else {
-    table.clear();
-    table.rows.add(data).draw(false);
+        // se già disabilitato, stop
+        if(this.disabled) return;
+
+        openRequestModal(title, gioc);
+      });
+
+    } else {
+      table.clear();
+      table.rows.add(data).draw(false);
+    }
   }
 
-  setLoading(false);
-}
+  function escapeHtml(s){
+    return String(s||"")
+      .replaceAll("&","&amp;").replaceAll("<","&lt;")
+      .replaceAll(">","&gt;").replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+  function escapeAttr(s){ return escapeHtml(s).replaceAll("\n"," "); }
 
-/* ===== Stats ===== */
-async function caricaStats(){
-  try{
-    const text = await fetchTextNoStore(STATS_BASE_URL);
-    const rows = parseCSVText(text);
-    if(!rows.length) return;
+  async function aggiornaTutto(force){
+    clearError(); clearInfo();
 
-    const s = rows[0];
-    E("cntAttivi").textContent = s["PrestitiAttivi"] || "0";
-    E("cntTotali").textContent = s["PrestitiTotali"] || "0";
+    // Se countdown attivo e non admin-preview => non caricare il catalogo
+    if(!canPreview() && !isRevealActiveNow()){
+      // mantieni UI, ma non caricare dati
+      aggiornaTimestamp();
+      return;
+    }
 
-    const topList = E("topList");
-    topList.innerHTML = "";
+    try{
+      // per aggiornare badges e disabilitazioni
+      await Promise.all([
+        caricaRequestedMap(),
+        caricaStats(),
+        caricaCatalogo()
+      ]);
+      aggiornaTimestamp();
+    }catch(e){
+      showError("Errore refresh: " + (e?.message || String(e)));
+    }
+  }
 
-    function addTop(tKey, cKey){
-      const titolo = s[tKey];
-      const cnt = s[cKey];
-      if(titolo && cnt && Number(cnt) > 0){
-        const li = document.createElement("li");
-        li.textContent = `${titolo} (${cnt})`;
-        topList.appendChild(li);
+  // =========================
+  // REQUEST FLOW
+  // =========================
+  let pendingTitle = "";
+  let pendingGioc = "";
+
+  function openRequestModal(title, gioc){
+    pendingTitle = title;
+    pendingGioc = gioc;
+
+    E("reqTitolo").value = title;
+    E("reqGiocatori").value = gioc;
+
+    loadProfileFromLS();
+    E("reqNome").value = profile?.Nome || "";
+    E("reqTel").value  = profile?.Telefono || "";
+    E("reqNote").value = "";
+
+    E("reqMsg").textContent = "";
+    E("btnSendReq").disabled = false;
+
+    openModal("modalRequest");
+  }
+
+  async function sendRequest(){
+    E("reqMsg").textContent = "";
+
+    const titolo = (E("reqTitolo").value||"").trim();
+    const gioc = (E("reqGiocatori").value||"").trim();
+    const nome = (E("reqNome").value||"").trim();
+    const tel  = (E("reqTel").value||"").trim();
+    const note = (E("reqNote").value||"").trim();
+
+    if(!titolo || !nome){
+      E("reqMsg").textContent = "Inserisci almeno il nome.";
+      return;
+    }
+
+    const token = localStorage.getItem(LS_USER_TOKEN) || "";
+
+    // Se configurato “solo registrati” e non loggato => obbliga login
+    if(config.requireLoginForRequest && !token){
+      E("reqMsg").textContent = "Per richiedere devi essere registrato: fai login.";
+      closeModal("modalRequest");
+      openModal("modalLogin");
+      return;
+    }
+
+    E("btnSendReq").disabled = true;
+
+    try{
+      const url = API_URL
+        + "?action=submit"
+        + "&token=" + encodeURIComponent(token)
+        + "&Titolo=" + encodeURIComponent(titolo)
+        + "&Giocatori=" + encodeURIComponent(gioc)
+        + "&Nome=" + encodeURIComponent(nome)
+        + "&Telefono=" + encodeURIComponent(tel)
+        + "&Note=" + encodeURIComponent(note);
+
+      const r = await jsonp(url, 20000);
+      if(!r || !r.ok){
+        E("reqMsg").textContent = "Errore invio: " + (r?.error || "sconosciuto");
+        E("btnSendReq").disabled = false;
+        return;
       }
+
+      // blocco locale immediato (anti doppio click)
+      markRequestedLocal(titolo);
+
+      closeModal("modalRequest");
+      showInfo("Richiesta inviata ✅ (ID: " + r.id + ")");
+      await caricaRequestedMap();
+      await caricaCatalogo(); // ridisegna badge/bottoni
+
+    }catch(e){
+      E("reqMsg").textContent = "Errore invio: " + e.message;
+      E("btnSendReq").disabled = false;
     }
-
-    addTop("Top1Titolo","Top1Prestiti");
-    addTop("Top2Titolo","Top2Prestiti");
-    addTop("Top3Titolo","Top3Prestiti");
-  }catch(e){}
-}
-
-/* ===== Timestamp ===== */
-function aggiornaTimestamp(){
-  const now = new Date();
-  E("lastUpdate").textContent =
-    "Ultimo aggiornamento: " +
-    now.toLocaleTimeString("it-IT", { hour:"2-digit", minute:"2-digit", second:"2-digit" });
-}
-
-/* ===== Auth UI ===== */
-function setProfile(profile){
-  localStorage.setItem(LS_USER_PROFILE, JSON.stringify(profile||{}));
-}
-function getProfile(){
-  try{ return JSON.parse(localStorage.getItem(LS_USER_PROFILE) || "null"); }catch(e){ return null; }
-}
-function refreshAuthUI(){
-  const token = localStorage.getItem(LS_USER_TOKEN) || "";
-  const prof = getProfile();
-  const logged = !!token && !!prof;
-
-  E("btnLogout").style.display = logged ? "inline-flex" : "none";
-  E("btnAdminLink").style.display = (logged && prof && String(prof.Ruolo||"")==="admin") ? "inline-flex" : "none";
-  E("btnLogin").style.display = logged ? "none" : "inline-flex";
-  E("btnRegister").style.display = logged ? "none" : "inline-flex";
-}
-
-function logout(){
-  localStorage.removeItem(LS_USER_TOKEN);
-  localStorage.removeItem(LS_USER_PROFILE);
-  refreshAuthUI();
-  showInfo("Sei uscito.");
-  if(table) table.rows().invalidate().draw(false);
-}
-
-/* ===== SHA256 (compat: no window.crypto needed) ===== */
-function sha256hex(str){
-  function r(n,x){return(x>>>n)|(x<<(32-n));}
-  function ch(x,y,z){return(x&y)^(~x&z);}
-  function maj(x,y,z){return(x&y)^(x&z)^(y&z);}
-  function s0(x){return r(2,x)^r(13,x)^r(22,x);}
-  function s1(x){return r(6,x)^r(11,x)^r(25,x);}
-  function g0(x){return r(7,x)^r(18,x)^(x>>>3);}
-  function g1(x){return r(17,x)^r(19,x)^(x>>>10);}
-  function toBytes(s){
-    const utf8 = unescape(encodeURIComponent(s));
-    const b = [];
-    for(let i=0;i<utf8.length;i++) b.push(utf8.charCodeAt(i));
-    return b;
-  }
-  const K = [0x428a2f98,0x71374491,0xb5c0fbcf,0xe9b5dba5,0x3956c25b,0x59f111f1,0x923f82a4,0xab1c5ed5,
-    0xd807aa98,0x12835b01,0x243185be,0x550c7dc3,0x72be5d74,0x80deb1fe,0x9bdc06a7,0xc19bf174,
-    0xe49b69c1,0xefbe4786,0x0fc19dc6,0x240ca1cc,0x2de92c6f,0x4a7484aa,0x5cb0a9dc,0x76f988da,
-    0x983e5152,0xa831c66d,0xb00327c8,0xbf597fc7,0xc6e00bf3,0xd5a79147,0x06ca6351,0x14292967,
-    0x27b70a85,0x2e1b2138,0x4d2c6dfc,0x53380d13,0x650a7354,0x766a0abb,0x81c2c92e,0x92722c85,
-    0xa2bfe8a1,0xa81a664b,0xc24b8b70,0xc76c51a3,0xd192e819,0xd6990624,0xf40e3585,0x106aa070,
-    0x19a4c116,0x1e376c08,0x2748774c,0x34b0bcb5,0x391c0cb3,0x4ed8aa4a,0x5b9cca4f,0x682e6ff3,
-    0x748f82ee,0x78a5636f,0x84c87814,0x8cc70208,0x90befffa,0xa4506ceb,0xbef9a3f7,0xc67178f2];
-  let H = [0x6a09e667,0xbb67ae85,0x3c6ef372,0xa54ff53a,0x510e527f,0x9b05688c,0x1f83d9ab,0x5be0cd19];
-  const bytes = toBytes(str);
-  const l = bytes.length*8;
-  bytes.push(0x80);
-  while((bytes.length%64)!==56) bytes.push(0);
-  for(let i=7;i>=0;i--) bytes.push((l>>> (i*8)) & 0xff);
-
-  for(let i=0;i<bytes.length;i+=64){
-    const w = new Array(64);
-    for(let t=0;t<16;t++){
-      w[t] = (bytes[i+4*t]<<24)|(bytes[i+4*t+1]<<16)|(bytes[i+4*t+2]<<8)|(bytes[i+4*t+3]);
-    }
-    for(let t=16;t<64;t++){
-      w[t] = (g1(w[t-2]) + w[t-7] + g0(w[t-15]) + w[t-16])|0;
-    }
-    let a=H[0],b=H[1],c=H[2],d=H[3],e=H[4],f=H[5],g=H[6],h=H[7];
-    for(let t=0;t<64;t++){
-      const T1 = (h + s1(e) + ch(e,f,g) + K[t] + w[t])|0;
-      const T2 = (s0(a) + maj(a,b,c))|0;
-      h=g; g=f; f=e; e=(d+T1)|0; d=c; c=b; b=a; a=(T1+T2)|0;
-    }
-    H[0]=(H[0]+a)|0; H[1]=(H[1]+b)|0; H[2]=(H[2]+c)|0; H[3]=(H[3]+d)|0;
-    H[4]=(H[4]+e)|0; H[5]=(H[5]+f)|0; H[6]=(H[6]+g)|0; H[7]=(H[7]+h)|0;
-  }
-  function hex(x){ return ('00000000'+(x>>>0).toString(16)).slice(-8); }
-  return H.map(hex).join('');
-}
-
-/* ===== Login / Register ===== */
-async function doLogin(){
-  const u = (E("loginUser").value||"").trim().toLowerCase();
-  const p = (E("loginPass").value||"");
-  E("loginMsg").textContent = "";
-
-  if(!u || !p){ E("loginMsg").textContent = "Inserisci username e password."; return; }
-
-  const passHash = sha256hex(p);
-
-  const r = await jsonp(
-    API_URL
-    + "?action=login"
-    + "&username=" + encodeURIComponent(u)
-    + "&passhash=" + encodeURIComponent(passHash)
-  );
-
-  if(!r || !r.ok){
-    // MOSTRA l’errore reale (così se c’è qualcosa di strano lo vediamo subito)
-    E("loginMsg").textContent = "Login fallito: " + (r?.error || "sconosciuto");
-    return;
   }
 
-  localStorage.setItem(LS_USER_TOKEN, r.token);
-  setProfile(r.profile);
-  closeModal("modalLogin");
-  refreshAuthUI();
+  // =========================
+  // INIT
+  // =========================
+  document.addEventListener("DOMContentLoaded", async function(){
+    // bottoni top
+    E("btnLogin").addEventListener("click", ()=>openModal("modalLogin"));
+    E("btnRegister").addEventListener("click", ()=>openModal("modalRegister"));
+    E("btnLogout").addEventListener("click", async ()=>{
+      clearAuth();
+      await refreshAuthUI();
+      showInfo("Sei uscito.");
+      await aggiornaTutto(true);
+    });
+    E("btnAdmin").addEventListener("click", ()=>{
+      window.location.href = "admin.html";
+    });
 
-  showInfo("Accesso effettuato.");
-  await aggiornaTutto(true);
-}
+    // carico config + auth role (per bypass preview admin) e poi countdown
+    await refreshAuthUI();
+    await loadConfig();
 
+    // se arrivi con ?preview=1 e sei admin => abilita preview device
+    try{
+      const qs = new URLSearchParams(location.search);
+      if(qs.get("preview") === "1"){
+        loadProfileFromLS();
+        if(profile && profile.Ruolo === "admin"){
+          localStorage.setItem(LS_PREVIEW, "1");
+          showInfo("Modalità preview attiva su questo dispositivo ✅");
+          history.replaceState(null,"",location.pathname);
+        }
+      }
+      if(qs.get("preview") === "0"){
+        localStorage.removeItem(LS_PREVIEW);
+        showInfo("Modalità preview disattivata.");
+        history.replaceState(null,"",location.pathname);
+      }
+    }catch(_){}
 
-async function doRegister(){
-  const u = (E("regUser").value||"").trim().toLowerCase();
-  const nome = (E("regNome").value||"").trim();
-  const tel = (E("regTel").value||"").trim();
-  const p = (E("regPass").value||"");
-  E("regMsg").textContent = "";
+    startCountdownShield();
 
-  if(!u || !nome || !p){ E("regMsg").textContent = "Compila username, nome e password."; return; }
-  if(!/^[a-z0-9]{4,}$/.test(u)){ E("regMsg").textContent = "Username non valido (min 4, solo a-z 0-9)."; return; }
+    // refresh manuale
+    E("btnRefresh").addEventListener("click", ()=>aggiornaTutto(true));
 
-  const passhash = sha256hex(p);
-
-  const url = API_URL + "?action=register"
-    + "&username=" + encodeURIComponent(u)
-    + "&nome=" + encodeURIComponent(nome)
-    + "&telefono=" + encodeURIComponent(tel)
-    + "&passhash=" + encodeURIComponent(passhash);
-
-  const r = await jsonp(url);
-  if(!r || !r.ok){
-    E("regMsg").textContent = "Errore registrazione: " + (r?.error || "sconosciuto");
-    return;
-  }
-
-  closeModal("modalRegister");
-  showInfo("Account creato! Ora puoi fare login.");
-}
-
-/* ===== Richiesta prestito ===== */
-function openRequestModal(titolo, gioc){
-  const info = requestedMap[String(titolo||"").trim()];
-  if(info && (Number(info.open||0) > 0 || Number(info.approved||0) > 0)){
-    showInfo("Questo gioco è già stato richiesto/prenotato.");
-    return;
-  }
-  if(!canRequest()){
-    showInfo("Devi effettuare l’accesso per richiedere.");
-    return;
-  }
-
-  REQ_TITLE = String(titolo||"").trim();
-  REQ_GIOC = String(gioc||"").trim();
-  E("reqTitoloLabel").textContent = REQ_TITLE;
-  E("reqGiocatori").value = REQ_GIOC;
-  E("reqMsg").textContent = "";
-
-  const prof = getProfile();
-  if(prof){
-    E("reqNome").value = prof.Nome || "";
-    E("reqTel").value = prof.Telefono || "";
-  } else {
-    E("reqNome").value = "";
-    E("reqTel").value = "";
-  }
-  E("reqNote").value = "";
-
-  openModal("modalReq");
-}
-
-async function sendRequest(){
-  E("reqMsg").textContent = "";
-  const nome = (E("reqNome").value||"").trim();
-  const tel  = (E("reqTel").value||"").trim();
-  const note = (E("reqNote").value||"").trim();
-
-  if(!REQ_TITLE || !nome){ E("reqMsg").textContent = "Inserisci almeno il nome."; return; }
-
-  const token = localStorage.getItem(LS_USER_TOKEN) || "";
-
-  const url = API_URL + "?action=submit"
-    + "&Titolo=" + encodeURIComponent(REQ_TITLE)
-    + "&Giocatori=" + encodeURIComponent(REQ_GIOC)
-    + "&Nome=" + encodeURIComponent(nome)
-    + "&Telefono=" + encodeURIComponent(tel)
-    + "&Note=" + encodeURIComponent(note)
-    + (token ? ("&token=" + encodeURIComponent(token)) : "");
-
-  const r = await jsonp(url);
-
-  if(r && r.ok){
-    closeModal("modalReq");
-    showInfo("✅ Richiesta inviata!");
-
-    // disabilita subito (UX immediata)
-    const t = REQ_TITLE.trim();
-    requestedMap[t] = requestedMap[t] || { open:0, approved:0 };
-    requestedMap[t].open = Number(requestedMap[t].open||0) + 1;
-    if(table) table.rows().invalidate().draw(false);
-
-    // riallinea da server (cache breve, molto veloce)
-    await caricaRequestedMap();
-    if(table) table.rows().invalidate().draw(false);
-    return;
-  }
-
-  E("reqMsg").textContent = "Errore invio. Controlla connessione.";
-}
-
-/* ===== Aggiorna tutto (optimized parallel) ===== */
-async function aggiornaTutto(force=false){
-  clearError(); clearInfo();
-
-  // config sempre prima (controllo countdown)
-  await caricaConfig();
-
-  if(!isUnlocked()){
-    renderEmoji();
-    return;
-  }
-
-  // parallelo: requested_map + stats + catalogo
-  setLoading(true, "Recupero richieste e dati…");
-
-  const pMap = caricaRequestedMap();
-  const pStats = caricaStats();
-
-  // catalogo: usa cache 30s
-  await pMap; // serve per bottoni/badge corretti
-  await Promise.all([pStats, caricaCatalogoOptimized()]);
-
-  aggiornaTimestamp();
-  setLoading(false);
-  renderEmoji();
-}
-
-/* ===== Boot ===== */
-document.addEventListener("DOMContentLoaded", async ()=>{
-  await caricaConfig();
-  startCountdownShield();
-
-  refreshAuthUI();
-
-  E("btnLogin").addEventListener("click", ()=> openModal("modalLogin"));
-  E("btnRegister").addEventListener("click", ()=> openModal("modalRegister"));
-  E("btnDoLogin").addEventListener("click", doLogin);
-  E("btnDoRegister").addEventListener("click", doRegister);
-  E("btnLogout").addEventListener("click", logout);
-
-  E("btnSendReq").addEventListener("click", sendRequest);
-
-  E("btnRefresh").addEventListener("click", ()=> aggiornaTutto(true));
-
-  setInterval(()=> aggiornaTutto(false), AUTO_REFRESH_MS);
-
-  await aggiornaTutto(true);
-});
+    // auto refresh (solo se sbloccato o preview)
+    setInterval(()=>{ aggiornaTutto(false); }, 30000);
+  });
 </script>
 
 </body>
