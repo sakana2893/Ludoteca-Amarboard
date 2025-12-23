@@ -2,131 +2,160 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Admin Prenotazioni – AmarBoard</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <title>Admin – Prenotazioni AmarBoard</title>
 
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
 
-  <!-- jQuery -->
-  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
   <style>
-    :root {
-      --rosso-natale: #b02030;
-      --verde-natale: #1f7a3a;
-      --oro-soft:    #f3d08a;
+    :root{
+      --rosso: #b02030;
+      --verde: #1f7a3a;
+      --oro: #f3d08a;
     }
     *{ box-sizing:border-box; }
     body{
-      font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Noto Color Emoji", "Apple Color Emoji", sans-serif;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
       margin:0; padding:0;
       background: radial-gradient(circle at top, #ffe9e9, #fdf5e6 45%, #e4f5ea 100%);
       min-height:100vh;
-      overflow-x:hidden;
     }
-    .garland {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 60px;
-      background: radial-gradient(circle at center, rgba(31,122,58,0.7), rgba(0,0,0,0.3));
-      display:flex; align-items:center; justify-content:center;
-      gap:10px; color:#ffe;
-      font-size: 1.1rem;
-      z-index:2;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-      padding: 0 10px;
-    }
-    #wrapper{
+    .wrap{
       max-width: 1200px;
-      margin: 90px auto 40px;
-      padding: 24px 26px 30px;
+      margin: 20px auto;
+      padding: 18px;
+    }
+    .card{
       background: rgba(255,250,243,0.96);
-      border-radius: 20px;
-      box-shadow: 0 0 0 3px rgba(255,255,255,0.8),
-                  0 0 18px rgba(176,32,48,0.4);
+      border: 2px solid rgba(176,32,48,0.25);
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      padding: 14px;
       position: relative;
-      z-index: 3;
-      border: 2px solid rgba(176,32,48,0.35);
-    }
-    #wrapper::before{
-      content:"";
-      position:absolute; inset:8px;
-      border-radius:16px;
-      border:2px dashed rgba(243,208,138,0.7);
-      pointer-events:none;
-    }
-
-    .topbar{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      align-items:center;
-      justify-content:space-between;
-      margin-bottom: 10px;
-      position:relative;
     }
     h1{
-      margin:0;
-      color: var(--rosso-natale);
-      font-size: 1.55rem;
-      text-shadow: 0 1px 0 #fff, 0 0 6px rgba(176,32,48,0.35);
+      margin: 6px 0 12px;
+      text-align:center;
+      color: var(--rosso);
+      text-shadow: 0 1px 0 #fff;
+    }
+    .topbar{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items:center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: linear-gradient(90deg, #fffdf7, #f7fff7);
+      border: 1px solid rgba(31,122,58,0.18);
+      margin-bottom: 12px;
     }
     .btn{
-      padding: 8px 12px;
+      padding: 7px 10px;
       border-radius: 10px;
-      border:1px solid rgba(31,122,58,0.35);
-      background:#f7fff7;
-      color:#1f7a3a;
-      font-weight:900;
+      border: 1px solid rgba(0,0,0,0.12);
+      background:#fff;
       cursor:pointer;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-      white-space:nowrap;
+      font-weight:800;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      white-space: nowrap;
     }
-    .btn.red{
-      border-color: rgba(176,32,48,0.35);
-      background:#fff7f7;
-      color:#b02030;
-    }
-    .btn:disabled{ opacity:.6; cursor:not-allowed; }
+    .btn-green{ border-color: rgba(31,122,58,0.35); background:#e9fff0; color: var(--verde); }
+    .btn-red{ border-color: rgba(176,32,48,0.35); background:#fff0f0; color: var(--rosso); }
+    .btn-gray{ border-color: rgba(0,0,0,0.12); background:#f6f6f6; color:#444; }
+    .btn:disabled{ opacity:.55; cursor:not-allowed; }
 
-    .card{
-      background: linear-gradient(135deg,#fff,#fffdf7);
-      border-radius: 12px;
-      padding: 12px 12px;
-      border: 1px solid rgba(176,32,48,0.2);
-      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-      margin: 12px 0;
+    .pill{
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 900;
+      border: 1px solid rgba(0,0,0,0.10);
+      display:inline-block;
+      white-space: nowrap;
     }
+    .pill-inv{ background:#fff3cd; color:#856404; border-color:#ffeeba; }
+    .pill-app{ background:#cce5ff; color:#004085; border-color:#b8daff; }
+    .pill-rif{ background:#f8d7da; color:#721c24; border-color:#f1b0b7; }
+    .pill-can{ background:#e2e3e5; color:#383d41; border-color:#d6d8db; }
+
     .grid{
       display:grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap: 12px;
+      grid-template-columns: 1fr 1fr 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
     }
-    .field{
+    .box{
+      background: #fff;
+      border: 1px solid rgba(0,0,0,0.10);
+      border-radius: 14px;
+      padding: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+    .label{ font-size: .8rem; color:#555; font-weight:700; }
+    .value{ font-size: 1.1rem; font-weight: 900; color: var(--rosso); }
+
+    .row{
       display:flex;
-      flex-direction:column;
-      gap:6px;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items:center;
+      justify-content: space-between;
+      margin: 10px 0 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: #fff;
+      border: 1px solid rgba(0,0,0,0.10);
     }
-    label{
-      font-weight:900;
-      font-size:0.85rem;
-      color:#444;
-    }
-    input, select{
-      padding: 8px 10px;
+    input[type="text"]{
+      padding: 7px 10px;
       border-radius: 10px;
-      border:1px solid #ccc;
-      font-size: 0.95rem;
+      border: 1px solid #ccc;
+      min-width: 220px;
+      font-size: .95rem;
+    }
+    select{
+      padding: 7px 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      font-size: .95rem;
+      min-width: 170px;
       background:#fff;
     }
-    .note{
-      font-size:0.85rem;
-      color:#555;
-      line-height:1.35;
+
+    table{
+      width:100%;
+      border-collapse: collapse;
+      background:#fff;
+      border: 1px solid rgba(0,0,0,0.10);
+      border-radius: 14px;
+      overflow:hidden;
     }
-    #infoBox, #errorBox{
+    th, td{
+      text-align:left;
+      padding: 10px 10px;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+      vertical-align: top;
+      font-size: .95rem;
+    }
+    th{
+      background: linear-gradient(180deg,#f7f7f7,#e3e3e3);
+      border-bottom: 2px solid var(--rosso);
+      font-weight: 900;
+    }
+
+    .actions{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 6px;
+    }
+
+    #errorBox{
       display:none;
       margin: 10px 0 12px;
       padding: 10px 12px;
@@ -134,607 +163,524 @@
       border: 1px solid rgba(176,32,48,0.35);
       background: rgba(255, 231, 231, 0.85);
       color: #7a0f1a;
-      font-size: 0.9rem;
+      font-size: .95rem;
       line-height: 1.35;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-    }
-    #infoBox{
-      border-color: rgba(31,122,58,0.28);
-      background: rgba(233, 255, 240, 0.85);
-      color:#145c2a;
-    }
-
-    table{
-      width:100%;
-      border-collapse: collapse;
-      margin-top: 8px;
-      font-size: 0.92rem;
-    }
-    th, td{
-      border-bottom: 1px solid rgba(0,0,0,0.08);
-      padding: 10px 8px;
-      vertical-align: top;
-    }
-    th{
-      text-align:left;
-      background: linear-gradient(180deg,#f7f7f7,#e3e3e3);
-      border-bottom: 2px solid var(--rosso-natale);
-      position: sticky;
-      top: 60px;
-      z-index: 1;
-    }
-
-    .pill{
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-weight: 900;
-      font-size: 0.75rem;
-      display:inline-block;
-      white-space:nowrap;
-      border: 1px solid rgba(0,0,0,0.08);
-    }
-    .pill.new{ background:#fff3cd; color:#856404; border-color:#ffeeba; }
-    .pill.appr{ background:#d1ecf1; color:#0c5460; border-color:#bee5eb; }
-    .pill.rej{ background:#f8d7da; color:#721c24; border-color:#f1b0b7; }
-    .pill.del{ background:#e2e3e5; color:#383d41; border-color:#d6d8db; }
-
-    .actions{
-      display:flex;
-      gap:8px;
-      flex-wrap:wrap;
     }
 
     .pager{
       display:flex;
-      justify-content:space-between;
+      gap: 8px;
       align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
+      justify-content:flex-end;
       margin-top: 10px;
+      flex-wrap: wrap;
     }
-    .pager .meta{
-      font-weight:900;
-      color:#444;
-      font-size:0.9rem;
-    }
+    .muted{ color:#666; font-size: .9rem; font-weight:700; }
 
-    /* MODAL login */
+    /* Login modal */
     .modal-backdrop{
-      position:fixed; inset:0;
-      background: rgba(0,0,0,0.45);
-      display:none;
-      align-items:center;
-      justify-content:center;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      align-items: center;
+      justify-content: center;
       z-index: 10000;
       padding: 14px;
     }
     .modal{
-      width: min(520px, 100%);
+      width: min(560px, 100%);
       background: rgba(255,250,243,0.98);
-      border: 2px solid rgba(176,32,48,0.28);
-      border-radius: 16px;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+      border: 2px solid rgba(176,32,48,0.25);
+      border-radius: 18px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
       padding: 14px 14px 12px;
-      position:relative;
     }
-    .modal h2{ margin:6px 0 10px; font-size:1.2rem; color:#7a0f1a; }
-    .modal .row{ display:flex; gap:10px; flex-wrap:wrap; }
-    .modal .msg{ margin-top:8px; font-size:0.9rem; font-weight:900; color:#7a0f1a; }
-    .closeX{
-      position:absolute; top:10px; right:10px;
-      border:none; background:transparent; cursor:pointer;
-      font-size:1.2rem; line-height:1;
+    .modal h3{
+      margin: 6px 8px 10px;
+      color: var(--rosso);
+      text-shadow: 0 1px 0 #fff;
+    }
+    .modal .row2{
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 8px;
+    }
+    .modal .row2 > div{ flex:1 1 180px; }
+    .modal .actions2{
+      display:flex;
+      justify-content:flex-end;
+      gap: 8px;
+      padding: 8px;
+    }
+    input[type="password"]{
+      padding: 7px 10px;
+      border-radius: 10px;
+      border: 1px solid #ccc;
+      min-width: 220px;
+      font-size: .95rem;
     }
 
-    @media(max-width: 900px){
+    @media (max-width: 900px){
+      .grid{ grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px){
       .grid{ grid-template-columns: 1fr; }
-      th{ top: 60px; }
+      input[type="text"]{ min-width: 100%; }
+      select{ min-width: 100%; }
     }
   </style>
 </head>
 <body>
+  <div class="wrap">
+    <div class="card">
+      <h1>🛠️ Admin – Prenotazioni</h1>
 
-<div class="garland">
-  <span>✨</span><span>🎄</span><span>⭐</span><span>🎲 Admin AmarBoard 🎲</span><span>⭐</span><span>🎄</span><span>✨</span>
-</div>
+      <div class="topbar">
+        <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+          <span id="whoami" class="muted">👤 …</span>
+          <span id="onlyRegPill" class="pill" style="display:none;">🔒 Solo utenti registrati</span>
+        </div>
 
-<div id="wrapper">
-  <div class="topbar">
-    <h1>Admin Prenotazioni</h1>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;">
-      <button class="btn" id="btnBack">← Torna al catalogo</button>
-      <button class="btn" id="btnPreview">Apri catalogo in preview</button>
-      <button class="btn red" id="btnLogout" style="display:none;">Esci</button>
-      <button class="btn" id="btnLogin">Accedi</button>
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <button class="btn btn-gray" id="btnBack">⬅️ Catalogo</button>
+          <button class="btn btn-green" id="btnToggleOnlyReg">🔒 Toggle registrati</button>
+          <button class="btn btn-green" id="btnPreview">👁️ Preview</button>
+          <button class="btn btn-green" id="btnRefresh">🔄 Aggiorna</button>
+          <button class="btn btn-red" id="btnLogout">🚪 Logout</button>
+        </div>
+      </div>
+
+      <div id="errorBox"></div>
+
+      <div class="grid">
+        <div class="box">
+          <div class="label">Tot richieste</div>
+          <div class="value" id="cntAll">–</div>
+        </div>
+        <div class="box">
+          <div class="label">Inviate</div>
+          <div class="value" id="cntInv">–</div>
+        </div>
+        <div class="box">
+          <div class="label">Approvate</div>
+          <div class="value" id="cntApp">–</div>
+        </div>
+        <div class="box">
+          <div class="label">Rifiutate/Cancellate</div>
+          <div class="value" id="cntOther">–</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+          <input id="q" type="text" placeholder="Cerca (titolo/nome/telefono)…">
+          <select id="fStato">
+            <option value="">Tutti</option>
+            <option value="Inviata">Inviata</option>
+            <option value="Approvata">Approvata</option>
+            <option value="Rifiutata">Rifiutata</option>
+            <option value="Cancellata">Cancellata</option>
+          </select>
+          <select id="pageSize">
+            <option value="10">10 / pagina</option>
+            <option value="25" selected>25 / pagina</option>
+            <option value="50">50 / pagina</option>
+            <option value="100">100 / pagina</option>
+          </select>
+        </div>
+
+        <div class="muted" id="pagerInfo">–</div>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Quando</th>
+            <th>Titolo</th>
+            <th>Richiedente</th>
+            <th>Note</th>
+            <th>Stato</th>
+            <th>Azioni</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+
+      <div class="pager">
+        <button class="btn btn-gray" id="prev">◀</button>
+        <span class="muted" id="pageLabel">Pagina 1</span>
+        <button class="btn btn-gray" id="next">▶</button>
+      </div>
     </div>
   </div>
 
-  <div id="infoBox"></div>
-  <div id="errorBox"></div>
-
-  <div class="card">
-    <div class="grid">
-      <div class="field">
-        <label>Solo utenti registrati possono richiedere</label>
-        <select id="cfgRequireLogin">
-          <option value="0">No (chiunque può richiedere)</option>
-          <option value="1">Sì (serve login)</option>
-        </select>
-        <div class="note">Se attivi questa opzione, su <strong>index</strong> il tasto “Richiedi” richiederà login.</div>
+  <!-- LOGIN MODAL -->
+  <div class="modal-backdrop" id="loginModal">
+    <div class="modal">
+      <h3>🔑 Login Admin</h3>
+      <div class="row2">
+        <div>
+          <div class="label">Username</div>
+          <input id="loginUser" type="text" placeholder="es. sacha">
+        </div>
+        <div>
+          <div class="label">Password</div>
+          <input id="loginPass" type="password" placeholder="••••••••">
+        </div>
       </div>
-
-      <div class="field">
-        <label>Countdown (spoiler shield)</label>
-        <select id="cfgCountdown">
-          <option value="0">Disattivo</option>
-          <option value="1">Attivo</option>
-        </select>
-        <div class="note">Se attivo e <strong>RevealAt</strong> è nel futuro, il catalogo resta coperto.</div>
-      </div>
-
-      <div class="field">
-        <label>RevealAt (ISO) – esempio</label>
-        <input id="cfgRevealAt" placeholder="2025-12-24T09:00:00+01:00">
-        <div class="note">Lascia vuoto per “sempre visibile”.</div>
-      </div>
-
-      <div class="field">
-        <label>Salva configurazione</label>
-        <button class="btn" id="btnSaveCfg">Salva</button>
-        <div class="note">Dopo il salvataggio, ricarica index (o aspetta l’auto refresh).</div>
+      <div class="actions2">
+        <button class="btn btn-gray" id="btnLoginCancel">Annulla</button>
+        <button class="btn btn-green" id="btnLoginGo">Entra</button>
       </div>
     </div>
   </div>
-
-  <div class="card">
-    <div class="pager">
-      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
-        <button class="btn" id="btnPrev">◀ Prev</button>
-        <button class="btn" id="btnNext">Next ▶</button>
-        <select id="pageSize">
-          <option value="10">10</option>
-          <option value="25" selected>25</option>
-          <option value="50">50</option>
-          <option value="100">100</option>
-        </select>
-      </div>
-      <div class="meta" id="pageMeta">Pagina –</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;">
-        <button class="btn" id="btnRefresh">🔄 Aggiorna</button>
-      </div>
-    </div>
-
-    <table>
-      <thead>
-        <tr>
-          <th style="width:120px;">Data</th>
-          <th>Gioco</th>
-          <th style="width:140px;">Nome</th>
-          <th style="width:130px;">Telefono</th>
-          <th>Note</th>
-          <th style="width:140px;">Stato</th>
-          <th style="width:240px;">Azioni</th>
-        </tr>
-      </thead>
-      <tbody id="rowsBody"></tbody>
-    </table>
-  </div>
-</div>
-
-<!-- LOGIN MODAL -->
-<div class="modal-backdrop" id="modalLogin">
-  <div class="modal" role="dialog" aria-modal="true">
-    <button class="closeX" type="button" onclick="closeModal('modalLogin')">✖</button>
-    <h2>Accedi (admin)</h2>
-    <div class="row">
-      <div class="field" style="flex:1 1 200px;">
-        <label>Username</label>
-        <input id="loginUser" autocomplete="username">
-      </div>
-      <div class="field" style="flex:1 1 200px;">
-        <label>Password</label>
-        <input id="loginPass" type="password" autocomplete="current-password">
-      </div>
-    </div>
-    <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:8px;flex-wrap:wrap;">
-      <button class="btn" type="button" onclick="doLogin()">Accedi</button>
-      <button class="btn red" type="button" onclick="closeModal('modalLogin')">Annulla</button>
-    </div>
-    <div class="msg" id="loginMsg"></div>
-  </div>
-</div>
 
 <script>
-  const API_URL = "https://script.google.com/macros/s/AKfycbyoQBfaYvxQBTS_EnK1-IOlPjLoFT0sWn1jcHPuDg5t0nUkwrvKPY-x8Qg8ii5BmtLDYg/exec";
-  const LS_USER_TOKEN = "AB_USER_TOKEN";
-  const LS_PROFILE    = "AB_PROFILE";
-  const LS_PREVIEW    = "AB_PREVIEW";
+const API_URL = "https://script.google.com/macros/s/AKfycbyoQBfaYvxQBTS_EnK1-IOlPjLoFT0sWn1jcHPuDg5t0nUkwrvKPY-x8Qg8ii5BmtLDYg/exec";
 
-  let token = "";
-  let profile = null;
+const LS = { TOKEN:"AB_TOKEN", PROFILE:"AB_PROFILE", PREVIEW_UNTIL:"AB_PREVIEW_UNTIL" };
+const PREVIEW_MINUTES = 180;
 
-  let page = 1;
-  let pageSize = 25;
-  let totalPages = 1;
+let items = [];
+let page = 1;
 
-  function E(id){ return document.getElementById(id); }
+function E(id){ return document.getElementById(id); }
+function showError(msg){ const b=E("errorBox"); b.style.display="block"; b.textContent=msg; }
+function clearError(){ const b=E("errorBox"); b.style.display="none"; b.textContent=""; }
 
-  function showError(msg){ const b=E("errorBox"); b.style.display="block"; b.textContent=msg; }
-  function clearError(){ const b=E("errorBox"); b.style.display="none"; b.textContent=""; }
-  function showInfo(msg){ const b=E("infoBox"); b.style.display="block"; b.textContent=msg; }
-  function clearInfo(){ const b=E("infoBox"); b.style.display="none"; b.textContent=""; }
+function jsonp(url, params={}, timeoutMs=12000){
+  return new Promise((resolve, reject) => {
+    const cbName = "cb_" + Math.random().toString(36).slice(2);
+    const qs = new URLSearchParams({ ...params, callback: cbName }).toString();
+    const full = url + (url.includes("?") ? "&" : "?") + qs;
 
-  function openModal(id){ E(id).style.display="flex"; }
-  function closeModal(id){
-    E(id).style.display="none";
-    const m=E("loginMsg"); if(m) m.textContent="";
+    const script = document.createElement("script");
+    let done = false;
+
+    window[cbName] = (data) => { done=true; cleanup(); resolve(data); };
+
+    const t = setTimeout(() => {
+      if (done) return;
+      done = true;
+      cleanup();
+      reject(new Error("JSONP timeout"));
+    }, timeoutMs);
+
+    function cleanup(){
+      clearTimeout(t);
+      delete window[cbName];
+      if (script.parentNode) script.parentNode.removeChild(script);
+    }
+    script.onerror = () => { if(done) return; done=true; cleanup(); reject(new Error("JSONP load error")); };
+    script.src = full;
+    document.body.appendChild(script);
+  });
+}
+
+async function sha256hex(text){
+  if (window.crypto && crypto.subtle && window.isSecureContext){
+    const enc = new TextEncoder().encode(text);
+    const buf = await crypto.subtle.digest("SHA-256", enc);
+    return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,"0")).join("");
   }
-
-  function jsonp(url, timeoutMs=18000){
-    return new Promise((resolve,reject)=>{
-      const cb = "cb_" + Math.random().toString(36).slice(2);
-      const sep = url.includes("?") ? "&" : "?";
-      const full = url + sep + "callback=" + cb;
-
-      const s = document.createElement("script");
-      let done=false;
-
-      const timer=setTimeout(()=>{
-        if(done) return;
-        done=true;
-        cleanup();
-        reject(new Error("JSONP timeout"));
-      }, timeoutMs);
-
-      window[cb] = (data)=>{
-        if(done) return;
-        done=true;
-        clearTimeout(timer);
-        cleanup();
-        resolve(data);
-      };
-
-      function cleanup(){
-        try{ delete window[cb]; }catch(e){ window[cb]=undefined; }
-        if(s && s.parentNode) s.parentNode.removeChild(s);
-      }
-
-      s.src = full;
-      s.onerror = ()=>{
-        if(done) return;
-        done=true;
-        clearTimeout(timer);
-        cleanup();
-        reject(new Error("JSONP load error"));
-      };
-      document.head.appendChild(s);
-    });
-  }
-
-  async function sha256hex_async(text){
-    if(window.crypto && window.crypto.subtle){
-      const enc = new TextEncoder();
-      const buf = await crypto.subtle.digest("SHA-256", enc.encode(text));
-      return [...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,"0")).join("");
-    }
-    return sha256hex_fallback(text);
-  }
-  function sha256hex_fallback(ascii){
-    function rightRotate(v,a){ return (v>>>a)|(v<<(32-a)); }
-    var m=Math.pow, M=m(2,32), l="length", i,j,res="";
-    var words=[], bitLen=ascii[l]*8;
-    var h=sha256hex_fallback.h=sha256hex_fallback.h||[];
-    var k=sha256hex_fallback.k=sha256hex_fallback.k||[];
-    var pc=k[l];
-    var comp={};
-    for(var cand=2; pc<64; cand++){
-      if(!comp[cand]){
-        for(i=0;i<313;i+=cand) comp[i]=cand;
-        h[pc]=(m(cand,.5)*M)|0;
-        k[pc++]=(m(cand,1/3)*M)|0;
-      }
-    }
-    ascii+="\x80";
-    while(ascii[l]%64-56) ascii+="\x00";
-    for(i=0;i<ascii[l];i++){
-      j=ascii.charCodeAt(i);
-      words[i>>2]|=j<<((3-i)%4)*8;
-    }
-    words[words[l]]=((bitLen/M)|0);
-    words[words[l]]=bitLen;
-    for(j=0;j<words[l];){
-      var w=words.slice(j,j+=16), old=h.slice(0);
-      for(i=0;i<64;i++){
-        var w15=w[i-15], w2=w[i-2];
-        var a=h[0], e=h[4];
-        var t1=h[7]
-          + (rightRotate(e,6)^rightRotate(e,11)^rightRotate(e,25))
-          + ((e&h[5])^((~e)&h[6]))
-          + k[i]
-          + (w[i]=(i<16)?w[i]:(w[i-16]
-            + (rightRotate(w15,7)^rightRotate(w15,18)^(w15>>>3))
-            + w[i-7]
-            + (rightRotate(w2,17)^rightRotate(w2,19)^(w2>>>10))
-          )|0);
-        var t2=(rightRotate(a,2)^rightRotate(a,13)^rightRotate(a,22))
-          + ((a&h[1])^(a&h[2])^(h[1]&h[2]));
-        h=[(t1+t2)|0].concat(h); h[4]=(h[4]+t1)|0; h.pop();
-      }
-      for(i=0;i<8;i++) h[i]=(h[i]+old[i])|0;
-    }
-    for(i=0;i<8;i++){
-      for(j=3;j+1;j--){
-        var b=(h[i]>>(j*8))&255;
-        res+=((b<16)?0:"")+b.toString(16);
-      }
-    }
-    return res;
-  }
-
-  function loadProfile(){
-    try{
-      const raw = localStorage.getItem(LS_PROFILE);
-      profile = raw ? JSON.parse(raw) : null;
-    }catch(e){ profile=null; }
-  }
-
-  async function refreshAuth(){
-    token = localStorage.getItem(LS_USER_TOKEN) || "";
-    loadProfile();
-
-    E("btnLogout").style.display = token ? "inline-flex" : "none";
-    E("btnLogin").style.display  = token ? "none" : "inline-flex";
-
-    if(!token){
-      showInfo("Accedi come admin per gestire le richieste.");
-      return false;
-    }
-
-    try{
-      const r = await jsonp(API_URL + "?action=me&token=" + encodeURIComponent(token), 12000);
-      if(r && r.ok && r.profile){
-        profile = r.profile;
-        localStorage.setItem(LS_PROFILE, JSON.stringify(profile));
-        if(profile.Ruolo !== "admin"){
-          showError("Questo account non è admin.");
-          return false;
-        }
-        return true;
-      }
-    }catch(e){
-      showError("Token non valido o scaduto. Fai login.");
-      return false;
-    }
-    return false;
-  }
-
-  async function doLogin(){
-    E("loginMsg").textContent = "";
-    const u = (E("loginUser").value||"").trim().toLowerCase();
-    const p = (E("loginPass").value||"");
-    if(!u || !p){ E("loginMsg").textContent = "Inserisci username e password."; return; }
-
-    const passhash = await sha256hex_async(p);
-
-    try{
-      const r = await jsonp(API_URL + "?action=login&username=" + encodeURIComponent(u) + "&passhash=" + encodeURIComponent(passhash), 18000);
-      if(!r || !r.ok){
-        E("loginMsg").textContent = "Login fallito: " + (r?.error || "sconosciuto");
-        return;
-      }
-      localStorage.setItem(LS_USER_TOKEN, r.token);
-      localStorage.setItem(LS_PROFILE, JSON.stringify(r.profile || null));
-      closeModal("modalLogin");
-      clearError(); clearInfo();
-      await initPage(true);
-    }catch(e){
-      E("loginMsg").textContent = "Errore rete: " + e.message;
+  return sha256_fallback_(text);
+}
+function sha256_fallback_(ascii){
+  function rightRotate(value, amount){ return (value>>>amount) | (value<<(32-amount)); }
+  var mathPow=Math.pow; var maxWord=mathPow(2,32); var lengthProperty='length';
+  var i,j; var result=''; var words=[]; var asciiBitLength=ascii[lengthProperty]*8;
+  var hash=sha256_fallback_.h=sha256_fallback_.h||[]; var k=sha256_fallback_.k=sha256_fallback_.k||[];
+  var primeCounter=k[lengthProperty]; var isComposite={};
+  for (var candidate=2; primeCounter<64; candidate++){
+    if(!isComposite[candidate]){
+      for(i=0;i<313;i+=candidate) isComposite[i]=candidate;
+      hash[primeCounter]=(mathPow(candidate,.5)*maxWord)|0;
+      k[primeCounter++]=(mathPow(candidate,1/3)*maxWord)|0;
     }
   }
-
-  function doLogout(){
-    localStorage.removeItem(LS_USER_TOKEN);
-    localStorage.removeItem(LS_PROFILE);
-    profile=null; token="";
-    showInfo("Sei uscito.");
+  ascii+='\x80';
+  while(ascii[lengthProperty]%64-56) ascii+='\x00';
+  for(i=0;i<ascii[lengthProperty];i++){
+    j=ascii.charCodeAt(i);
+    words[i>>2]|=j<<((3-i)%4)*8;
   }
-
-  function fmtDate(iso){
-    if(!iso) return "";
-    const d = new Date(iso);
-    if(!isFinite(d.getTime())) return iso;
-    return d.toLocaleString("it-IT",{day:"2-digit",month:"2-digit",hour:"2-digit",minute:"2-digit"});
-  }
-
-  function pill(st){
-    const s = String(st||"").toLowerCase().trim();
-    if(s==="nuova" || s==="richiesta") return '<span class="pill new">⏳ Nuova</span>';
-    if(s==="approvata" || s==="prenotata") return '<span class="pill appr">✅ Approvata</span>';
-    if(s==="rifiutata") return '<span class="pill rej">❌ Rifiutata</span>';
-    if(s==="eliminata" || s==="cancellata") return '<span class="pill del">🗑️ Eliminata</span>';
-    return '<span class="pill">'+escapeHtml(st)+'</span>';
-  }
-
-  function escapeHtml(s){
-    return String(s||"").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
-      .replaceAll('"',"&quot;").replaceAll("'","&#039;");
-  }
-
-  async function loadConfig(){
-    const r = await jsonp(API_URL + "?action=get_config", 15000);
-    if(r && r.ok && r.config){
-      const c = r.config;
-      E("cfgRequireLogin").value = c.requireLoginForRequest ? "1":"0";
-      E("cfgCountdown").value = c.countdownEnabled ? "1":"0";
-      E("cfgRevealAt").value = c.revealAtIso || "";
+  words[words[lengthProperty]]=((asciiBitLength/maxWord)|0);
+  words[words[lengthProperty]]=(asciiBitLength);
+  for(j=0;j<words[lengthProperty];){
+    var w=words.slice(j,j+=16); var oldHash=hash.slice(0);
+    for(i=0;i<64;i++){
+      var w15=w[i-15], w2=w[i-2];
+      var a=hash[0], e=hash[4];
+      var temp1=hash[7]+(rightRotate(e,6)^rightRotate(e,11)^rightRotate(e,25))+((e&hash[5])^((~e)&hash[6]))+k[i]+
+        (w[i]=(i<16)?w[i]:(w[i-16]+(rightRotate(w15,7)^rightRotate(w15,18)^(w15>>>3))+w[i-7]+(rightRotate(w2,17)^rightRotate(w2,19)^(w2>>>10)))|0);
+      var temp2=(rightRotate(a,2)^rightRotate(a,13)^rightRotate(a,22))+((a&hash[1])^(a&hash[2])^(hash[1]&hash[2]));
+      hash=[(temp1+temp2)|0].concat(hash); hash[4]=(hash[4]+temp1)|0; hash.pop();
     }
+    for(i=0;i<8;i++) hash[i]=(hash[i]+oldHash[i])|0;
   }
-
-  async function saveConfig(){
-    clearError(); clearInfo();
-    const req = E("cfgRequireLogin").value;
-    const cd  = E("cfgCountdown").value;
-    const ra  = (E("cfgRevealAt").value||"").trim();
-
-    try{
-      const r = await jsonp(
-        API_URL + "?action=set_config"
-          + "&token=" + encodeURIComponent(token)
-          + "&requireLoginForRequest=" + encodeURIComponent(req)
-          + "&countdownEnabled=" + encodeURIComponent(cd)
-          + "&revealAtIso=" + encodeURIComponent(ra),
-        18000
-      );
-      if(!r || !r.ok){
-        showError("Errore salvataggio: " + (r?.error || "sconosciuto"));
-        return;
-      }
-      showInfo("Config salvata ✅");
-    }catch(e){
-      showError("Errore rete: " + e.message);
-    }
+  for(i=0;i<8;i++) for(j=3;j+1;j--){
+    var b=(hash[i]>>(j*8))&255; result+=((b<16)?0:'')+b.toString(16);
   }
+  return result;
+}
 
-  async function loadPageData(){
-    clearError(); clearInfo();
+function getToken(){ return localStorage.getItem(LS.TOKEN) || ""; }
+function setSession(token, profile){
+  localStorage.setItem(LS.TOKEN, token);
+  localStorage.setItem(LS.PROFILE, JSON.stringify(profile || {}));
+}
+function clearSession(){
+  localStorage.removeItem(LS.TOKEN);
+  localStorage.removeItem(LS.PROFILE);
+}
+function getProfile(){ try{ return JSON.parse(localStorage.getItem(LS.PROFILE)||"{}"); }catch{ return {}; } }
 
-    const ps = parseInt(E("pageSize").value,10) || 25;
-    pageSize = ps;
+function openModal(id){ E(id).style.display="flex"; }
+function closeModal(id){ E(id).style.display="none"; }
 
-    try{
-      const r = await jsonp(
-        API_URL + "?action=admin_list"
-          + "&token=" + encodeURIComponent(token)
-          + "&page=" + encodeURIComponent(page)
-          + "&pageSize=" + encodeURIComponent(pageSize),
-        20000
-      );
+function enablePreviewBypass(){
+  const until = Date.now() + PREVIEW_MINUTES*60*1000;
+  localStorage.setItem(LS.PREVIEW_UNTIL, String(until));
+}
 
-      if(!r || !r.ok){
-        showError("Errore caricamento: " + (r?.error || "sconosciuto"));
-        return;
-      }
+function pillForStatus(s){
+  const st = String(s||"");
+  if (st==="Inviata") return `<span class="pill pill-inv">⏳ Inviata</span>`;
+  if (st==="Approvata") return `<span class="pill pill-app">✅ Approvata</span>`;
+  if (st==="Rifiutata") return `<span class="pill pill-rif">❌ Rifiutata</span>`;
+  if (st==="Cancellata") return `<span class="pill pill-can">🗑️ Cancellata</span>`;
+  return `<span class="pill">${st}</span>`;
+}
 
-      totalPages = r.totalPages || 1;
-      page = r.page || 1;
+function fmtIso(iso){
+  const d = new Date(String(iso||""));
+  if (!isFinite(d.getTime())) return String(iso||"");
+  return d.toLocaleString("it-IT", { year:"2-digit", month:"2-digit", day:"2-digit", hour:"2-digit", minute:"2-digit" });
+}
 
-      E("pageMeta").textContent = `Pagina ${page}/${totalPages} • Totale richieste: ${r.total || 0}`;
+function matchesFilter(it, q, stato){
+  if (stato && String(it.Stato||"") !== stato) return false;
+  if (!q) return true;
+  const hay = [
+    it.Titolo, it.Nome, it.Telefono, it.Note, it.Giocatori, it.Stato
+  ].map(v=>String(v||"").toLowerCase()).join(" | ");
+  return hay.includes(q.toLowerCase());
+}
 
-      renderRows(r.rows || []);
+function pageSize(){ return Number(E("pageSize").value || "25"); }
 
-      E("btnPrev").disabled = (page <= 1);
-      E("btnNext").disabled = (page >= totalPages);
+function render(){
+  const q = E("q").value.trim();
+  const stato = E("fStato").value;
 
-    }catch(e){
-      showError("Errore: " + e.message);
-    }
-  }
+  const filtered = items.filter(it => matchesFilter(it, q, stato));
+  const ps = pageSize();
+  const pages = Math.max(1, Math.ceil(filtered.length / ps));
+  if (page > pages) page = pages;
+  if (page < 1) page = 1;
 
-  function renderRows(rows){
-    const tb = E("rowsBody");
-    tb.innerHTML = "";
+  const start = (page-1)*ps;
+  const slice = filtered.slice(start, start+ps);
 
-    for(const it of rows){
-      const tr = document.createElement("tr");
+  E("pagerInfo").textContent = `Mostro ${slice.length} su ${filtered.length} (pagina ${page}/${pages})`;
+  E("pageLabel").textContent = `Pagina ${page} / ${pages}`;
 
-      const titolo = escapeHtml(it.Titolo||"");
-      const gioc = escapeHtml(it.Giocatori||"");
-      const nome = escapeHtml(it.Nome||"");
-      const tel  = escapeHtml(it.Telefono||"");
-      const note = escapeHtml(it.Note||"");
-      const stato = it.Stato || "";
+  const tb = E("tbody");
+  tb.innerHTML = "";
 
-      tr.innerHTML = `
-        <td><strong>${fmtDate(it.DataISO)}</strong><br><small>${escapeHtml(it.ID||"")}</small></td>
-        <td><strong>${titolo}</strong><br><small>Giocatori: ${gioc}</small></td>
-        <td>${nome}</td>
-        <td>${tel}</td>
-        <td>${note}</td>
-        <td>${pill(stato)}<br><small>${escapeHtml(it.GestitoDa||"")} ${it.GestitoIl?("• "+fmtDate(it.GestitoIl)):""}</small></td>
-        <td>
-          <div class="actions">
-            <button class="btn" data-act="approve" data-id="${escapeHtml(it.ID||"")}">✅ Approva</button>
-            <button class="btn red" data-act="reject" data-id="${escapeHtml(it.ID||"")}">❌ Rifiuta</button>
-            <button class="btn red" data-act="delete" data-id="${escapeHtml(it.ID||"")}">🗑️ Elimina</button>
-          </div>
-        </td>
-      `;
-      tb.appendChild(tr);
-    }
+  slice.forEach(it => {
+    const tr = document.createElement("tr");
 
-    // bind azioni
-    tb.querySelectorAll("button[data-act]").forEach(btn=>{
-      btn.addEventListener("click", async ()=>{
-        const act = btn.getAttribute("data-act");
-        const id = btn.getAttribute("data-id");
-        await doAdminAction(act, id);
-      });
-    });
-  }
+    tr.innerHTML = `
+      <td><div style="font-weight:900;">${fmtIso(it.DataISO)}</div><div class="muted" style="font-size:.85rem;">ID: ${escapeHtml(it.ID)}</div></td>
+      <td><div style="font-weight:900;">${escapeHtml(it.Titolo)}</div><div class="muted" style="font-size:.85rem;">Giocatori: ${escapeHtml(it.Giocatori||"")}</div></td>
+      <td><div style="font-weight:900;">${escapeHtml(it.Nome)}</div><div class="muted" style="font-size:.85rem;">${escapeHtml(it.Telefono||"")}</div></td>
+      <td>${escapeHtml(it.Note||"")}</td>
+      <td>${pillForStatus(it.Stato)}</td>
+      <td>
+        <div class="actions">
+          <button class="btn btn-green" data-act="approve" data-id="${escapeHtml(it.ID)}">✅ Approva</button>
+          <button class="btn btn-red" data-act="reject" data-id="${escapeHtml(it.ID)}">❌ Rifiuta</button>
+          <button class="btn btn-gray" data-act="cancel" data-id="${escapeHtml(it.ID)}">🗑️ Cancella</button>
+        </div>
+      </td>
+    `;
 
-  async function doAdminAction(act, id){
-    clearError(); clearInfo();
-    if(!id) return;
+    tb.appendChild(tr);
+  });
 
-    let action = "";
-    if(act==="approve") action = "admin_approve";
-    if(act==="reject")  action = "admin_reject";
-    if(act==="delete")  action = "admin_delete";
-    if(!action) return;
+  E("prev").disabled = (page <= 1);
+  E("next").disabled = (page >= pages);
+}
 
-    try{
-      const r = await jsonp(
-        API_URL + "?action=" + action
-          + "&token=" + encodeURIComponent(token)
-          + "&id=" + encodeURIComponent(id),
-        18000
-      );
-      if(!r || !r.ok){
-        showError("Errore azione: " + (r?.error || "sconosciuto"));
-        return;
-      }
-      showInfo("Operazione completata ✅");
-      await loadPageData();
-    }catch(e){
-      showError("Errore rete: " + e.message);
-    }
-  }
+function escapeHtml(s){
+  return String(s||"").replace(/[&<>"']/g, m => ({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" }[m]));
+}
 
-  async function initPage(first){
-    const ok = await refreshAuth();
-    if(!ok){
-      // se non loggato => apri login
-      openModal("modalLogin");
+async function refresh(){
+  clearError();
+  try{
+    const tok = getToken();
+    if (!tok){
+      openModal("loginModal");
       return;
     }
 
-    // ok admin
-    await loadConfig();
-    await loadPageData();
-    showInfo("Benvenuto admin ✅");
+    const me = await jsonp(API_URL, { action:"me", token: tok });
+    if (!me.ok){
+      clearSession();
+      openModal("loginModal");
+      return;
+    }
+    if (String(me.profile.Ruolo||"") !== "admin"){
+      showError("Non sei admin.");
+      return;
+    }
+
+    localStorage.setItem(LS.PROFILE, JSON.stringify(me.profile||{}));
+    E("whoami").textContent = `👤 ${me.profile.Username} (admin)`;
+
+    const r = await jsonp(API_URL, { action:"admin_list", token: tok });
+    if (!r.ok) throw new Error(r.error || "admin_list failed");
+
+    items = (r.items || []);
+    const inv = items.filter(x => x.Stato === "Inviata").length;
+    const app = items.filter(x => x.Stato === "Approvata").length;
+    const oth = items.length - inv - app;
+
+    E("cntAll").textContent = items.length;
+    E("cntInv").textContent = inv;
+    E("cntApp").textContent = app;
+    E("cntOther").textContent = oth;
+
+    const onlyReg = !!r.onlyRegistered;
+    E("onlyRegPill").style.display = onlyReg ? "inline-block" : "none";
+    E("onlyRegPill").className = "pill " + (onlyReg ? "pill-app" : "");
+    E("onlyRegPill").textContent = onlyReg ? "🔒 Solo utenti registrati" : "";
+
+    page = 1;
+    render();
+
+  } catch(e){
+    showError("Errore: " + (e?.message || String(e)));
   }
+}
 
-  document.addEventListener("DOMContentLoaded", async ()=>{
-    E("btnBack").addEventListener("click", ()=>{ window.location.href = "index.html"; });
-    E("btnPreview").addEventListener("click", ()=>{
-      // preview device (solo se admin)
-      localStorage.setItem(LS_PREVIEW, "1");
-      window.location.href = "index.html?preview=1";
-    });
+async function setStatus(id, stato){
+  clearError();
+  try{
+    const tok = getToken();
+    const r = await jsonp(API_URL, { action:"admin_set_status", token: tok, id, stato });
+    if (!r.ok) throw new Error(r.error || "set_status failed");
+    await refresh();
+  } catch(e){
+    showError("Errore: " + (e?.message || String(e)));
+  }
+}
 
-    E("btnLogin").addEventListener("click", ()=>openModal("modalLogin"));
-    E("btnLogout").addEventListener("click", ()=>{ doLogout(); openModal("modalLogin"); });
+async function deleteReq(id){
+  clearError();
+  try{
+    const tok = getToken();
+    const r = await jsonp(API_URL, { action:"admin_delete", token: tok, id });
+    if (!r.ok) throw new Error(r.error || "delete failed");
+    await refresh();
+  } catch(e){
+    showError("Errore: " + (e?.message || String(e)));
+  }
+}
 
-    E("btnSaveCfg").addEventListener("click", saveConfig);
+document.addEventListener("DOMContentLoaded", () => {
+  // Back to catalogo
+  E("btnBack").addEventListener("click", () => location.href = "index.html");
 
-    E("btnRefresh").addEventListener("click", loadPageData);
-    E("pageSize").addEventListener("change", ()=>{ page=1; loadPageData(); });
-    E("btnPrev").addEventListener("click", ()=>{ if(page>1){ page--; loadPageData(); } });
-    E("btnNext").addEventListener("click", ()=>{ if(page<totalPages){ page++; loadPageData(); } });
-
-    await initPage(true);
+  // Preview
+  E("btnPreview").addEventListener("click", () => {
+    enablePreviewBypass();
+    alert("👁️ Preview abilitata sul catalogo (bypass countdown temporaneo).");
   });
-</script>
 
+  // Toggle only registered
+  E("btnToggleOnlyReg").addEventListener("click", async () => {
+    clearError();
+    try{
+      const tok = getToken();
+      const r = await jsonp(API_URL, { action:"admin_list", token: tok });
+      if (!r.ok) throw new Error(r.error || "admin_list failed");
+
+      const newVal = !(!!r.onlyRegistered);
+      const set = await jsonp(API_URL, { action:"admin_set_only_registered", token: tok, value: newVal ? "true" : "false" });
+      if (!set.ok) throw new Error(set.error || "toggle failed");
+
+      alert("Impostazione aggiornata: " + (set.onlyRegistered ? "SOLO registrati" : "anche ospiti"));
+      await refresh();
+    } catch(e){
+      showError("Errore: " + (e?.message || String(e)));
+    }
+  });
+
+  // Refresh
+  E("btnRefresh").addEventListener("click", () => refresh());
+
+  // Search filters
+  E("q").addEventListener("input", () => { page = 1; render(); });
+  E("fStato").addEventListener("change", () => { page = 1; render(); });
+  E("pageSize").addEventListener("change", () => { page = 1; render(); });
+
+  // Pager
+  E("prev").addEventListener("click", () => { page--; render(); });
+  E("next").addEventListener("click", () => { page++; render(); });
+
+  // Table actions (event delegation)
+  E("tbody").addEventListener("click", (ev) => {
+    const btn = ev.target.closest("button[data-act]");
+    if (!btn) return;
+    const act = btn.getAttribute("data-act");
+    const id = btn.getAttribute("data-id");
+
+    if (act === "approve") setStatus(id, "Approvata");
+    else if (act === "reject") setStatus(id, "Rifiutata");
+    else if (act === "cancel") deleteReq(id);
+  });
+
+  // Logout
+  E("btnLogout").addEventListener("click", async () => {
+    const tok = getToken();
+    localStorage.removeItem(LS.TOKEN);
+    localStorage.removeItem(LS.PROFILE);
+    try{ if (tok) await jsonp(API_URL, { action:"logout", token: tok }); } catch {}
+    alert("Logout effettuato");
+    openModal("loginModal");
+  });
+
+  // Login modal
+  E("btnLoginCancel").addEventListener("click", () => closeModal("loginModal"));
+  E("loginModal").addEventListener("click", (ev) => { if (ev.target === E("loginModal")) closeModal("loginModal"); });
+
+  E("btnLoginGo").addEventListener("click", async () => {
+    clearError();
+    const u = E("loginUser").value.trim().toLowerCase();
+    const p = E("loginPass").value;
+    if (!u || !p){ showError("Inserisci username e password."); return; }
+
+    try{
+      const passhash = await sha256hex(p);
+      const r = await jsonp(API_URL, { action:"login", username:u, passhash });
+      if (!r.ok) throw new Error(r.error || "Login fallito");
+
+      setSession(r.token, r.profile);
+      closeModal("loginModal");
+      await refresh();
+    } catch(e){
+      showError("Login: " + (e?.message || String(e)));
+    }
+  });
+
+  // Auto start
+  refresh();
+});
+</script>
 </body>
 </html>
