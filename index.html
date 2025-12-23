@@ -2,6 +2,7 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
   <title>Catalogo Giochi – AmarBoard Natale</title>
 
   <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0">
@@ -11,10 +12,10 @@
   <!-- DataTables CSS -->
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.8/css/jquery.dataTables.min.css">
 
-  <!-- jQuery (prima di DataTables) -->
+  <!-- jQuery (PRIMA) -->
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 
-  <!-- DataTables JS -->
+  <!-- DataTables JS (DOPO jQuery) -->
   <script src="https://cdn.datatables.net/1.13.8/js/jquery.dataTables.min.js"></script>
 
   <!-- PapaParse -->
@@ -27,7 +28,6 @@
       --oro-soft:    #f3d08a;
       --bg-chiaro:   #fffaf3;
     }
-
     * { box-sizing: border-box; }
 
     body {
@@ -81,8 +81,6 @@
       font-size: 1.4rem;
       z-index: 2;
       box-shadow: 0 2px 8px rgba(0,0,0,0.3);
-      padding: 0 10px;
-      text-align: center;
     }
     .garland span { animation: blink 2.2s linear infinite; }
     .garland span:nth-child(odd) { animation-delay: 0.7s; }
@@ -104,7 +102,6 @@
       z-index: 3;
       border: 2px solid rgba(176,32,48,0.35);
     }
-
     #wrapper::before {
       content: "";
       position: absolute;
@@ -129,8 +126,6 @@
       border-radius: 999px;
       box-shadow: 0 0 6px rgba(0,0,0,0.25);
       background: #fff;
-      display:block;
-      margin: 0 auto;
     }
 
     h1 {
@@ -149,6 +144,48 @@
     }
     .subtitle span { color: var(--verde-natale); font-weight: 600; }
 
+    .topbar {
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 10px;
+      margin-bottom: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: linear-gradient(90deg, #fffdf7, #f7fff7);
+      border: 1px solid rgba(31,122,58,0.18);
+    }
+
+    .topbar-left{
+      display:flex;
+      align-items:center;
+      flex-wrap: wrap;
+      gap: 8px;
+      color:#333;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .btn {
+      padding: 7px 10px;
+      border-radius: 10px;
+      border: 1px solid rgba(0,0,0,0.12);
+      background: #fff;
+      cursor: pointer;
+      font-weight: 700;
+      color: #333;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+      white-space: nowrap;
+    }
+    .btn:hover { filter: brightness(0.98); }
+    .btn-green { border-color: rgba(31,122,58,0.35); background:#e9fff0; color: var(--verde-natale); }
+    .btn-red { border-color: rgba(176,32,48,0.35); background:#fff0f0; color: var(--rosso-natale); }
+    .btn-gray { border-color: rgba(0,0,0,0.12); background:#f6f6f6; color:#444; }
+    .btn:disabled{ opacity:.55; cursor:not-allowed; }
+
     .stats-bar {
       display: grid;
       grid-template-columns: repeat(3, minmax(0,1fr));
@@ -164,7 +201,6 @@
       box-shadow: 0 2px 6px rgba(0,0,0,0.06);
       font-size: 0.85rem;
     }
-
     .stat-label {
       text-transform: uppercase;
       color: #666;
@@ -172,19 +208,16 @@
       letter-spacing: 0.05em;
       margin-bottom: 4px;
     }
-
     .stat-value {
       font-size: 1.4rem;
-      font-weight: 700;
+      font-weight: 800;
       color: var(--rosso-natale);
     }
-
     .stat-note {
       font-size: 0.75rem;
       color: #777;
       margin-top: 3px;
     }
-
     .stat-top ol {
       margin: 0;
       padding-left: 18px;
@@ -212,59 +245,17 @@
     }
 
     .filter-block { display: flex; flex-direction: column; gap: 4px; }
-
-    .filter-label {
-      color: #444;
-      font-size: 0.8rem;
-    }
+    .filter-label { color: #444; font-size: 0.8rem; }
 
     select, input[type="text"], input[type="password"], textarea {
-      padding: 7px 10px;
+      padding: 6px 8px;
       border-radius: 8px;
       border: 1px solid #ccc;
       font-size: 0.9rem;
       min-width: 140px;
       background: #fff;
-      outline: none;
     }
-    textarea { min-width: 100%; resize: vertical; }
-
-    .btn {
-      padding: 8px 12px;
-      border-radius: 10px;
-      border: 1px solid rgba(176,32,48,0.35);
-      background: #fff;
-      color: #7a0f1a;
-      font-weight: 700;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
-      white-space: nowrap;
-    }
-    .btn:hover { filter: brightness(0.98); }
-
-    .btn-green {
-      border-color: rgba(31,122,58,0.35);
-      color: #165b2b;
-      background: #e9fff0;
-    }
-    .btn-green:hover { background: #d6ffe5; }
-
-    .btn-danger {
-      border-color: rgba(176,32,48,0.35);
-      color: #7a0f1a;
-      background: #ffecec;
-    }
-
-    .top-actions {
-      display:flex;
-      gap:10px;
-      justify-content:center;
-      margin: 10px 0 4px;
-      flex-wrap: wrap;
-    }
+    textarea { min-width: 220px; resize: vertical; }
 
     #tblCatalogo_wrapper { margin-top: 6px; }
 
@@ -273,43 +264,28 @@
       border-bottom: 2px solid var(--rosso-natale);
     }
     table.dataTable tbody tr:nth-child(even) { background-color: #fffaf5; }
-
-    table.dataTable tbody tr.disponibile-row {
-      background: linear-gradient(90deg, #f7fff7, #ffffff);
-    }
-    table.dataTable tbody tr.prestato-row {
-      background: linear-gradient(90deg, #fff7f7, #ffffff);
-    }
+    table.dataTable tbody tr.disponibile-row { background: linear-gradient(90deg, #f7fff7, #ffffff); }
+    table.dataTable tbody tr.prestato-row { background: linear-gradient(90deg, #fff7f7, #ffffff); }
 
     .badge {
-      padding: 5px 10px;
+      padding: 4px 10px;
       border-radius: 999px;
       font-size: 0.75rem;
       font-weight: 800;
       display: inline-block;
       white-space: nowrap;
+      border: 1px solid rgba(0,0,0,0.08);
     }
-    .badge-ok {
-      background: #d4edda;
-      color: #155724;
-      border: 1px solid #b1dfbb;
-    }
-    .badge-warn {
-      background: #fff3cd;
-      color: #6b4e00;
-      border: 1px solid #ffe49a;
-    }
-    .badge-bad {
-      background: #f8d7da;
-      color: #721c24;
-      border: 1px solid #f1b0b7;
-    }
+    .badge-disponibile { background:#d4edda; color:#155724; border-color:#b1dfbb; }
+    .badge-prestato    { background:#f8d7da; color:#721c24; border-color:#f1b0b7; }
+    .badge-rich        { background:#fff3cd; color:#856404; border-color:#ffeeba; }
+    .badge-pren        { background:#cce5ff; color:#004085; border-color:#b8daff; }
 
     a.bgg-link {
       color: var(--rosso-natale);
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       text-decoration: none;
-      font-weight: 700;
+      font-weight: 800;
     }
     a.bgg-link:hover { text-decoration: underline; }
 
@@ -320,6 +296,7 @@
       text-align: right;
     }
 
+    /* Error box */
     #errorBox {
       display: none;
       margin: 10px 0 12px;
@@ -332,7 +309,7 @@
       line-height: 1.35;
     }
 
-    /* COUNTDOWN / SPOILER */
+    /* COUNTDOWN */
     #countdownBanner{
       position: fixed;
       inset: 70px 16px auto 16px;
@@ -347,12 +324,11 @@
       text-align: center;
       color: #7a0f1a;
       font-weight: 800;
-      display:none;
     }
     #countdownBanner small{
       display:block;
       margin-top:6px;
-      font-weight: 600;
+      font-weight: 700;
       color:#444;
     }
     #countdownTime{
@@ -377,765 +353,908 @@
       color: rgba(122,15,26,0.85);
     }
 
-    /* MODAL */
+    /* Modal */
     .modal-backdrop{
-      position:fixed;
-      inset:0;
-      background: rgba(0,0,0,0.45);
-      display:none;
-      z-index:10000;
-      align-items:center;
-      justify-content:center;
-      padding: 16px;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      padding: 14px;
     }
     .modal{
-      width: min(520px, 100%);
+      width: min(560px, 100%);
       background: rgba(255,250,243,0.98);
-      border-radius: 18px;
       border: 2px solid rgba(176,32,48,0.25);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+      border-radius: 18px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.25);
       padding: 14px 14px 12px;
+      position: relative;
     }
     .modal h3{
-      margin: 4px 0 10px;
-      color: #7a0f1a;
-      font-size: 1.05rem;
+      margin: 6px 8px 10px;
+      color: var(--rosso-natale);
+      text-shadow: 0 1px 0 #fff;
     }
     .modal .row{
       display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-      margin-bottom: 10px;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 8px;
     }
     .modal .row > div{ flex: 1 1 180px; }
-    .modal label{
-      display:block;
-      font-size:0.82rem;
-      color:#444;
-      margin-bottom:4px;
-      font-weight:700;
-    }
     .modal .actions{
       display:flex;
       justify-content:flex-end;
-      gap:10px;
-      margin-top: 10px;
-      flex-wrap:wrap;
+      gap: 8px;
+      padding: 8px;
     }
-
-    .mini{
-      font-size:0.85rem;
-      color:#555;
-      margin-top:4px;
-    }
+    .smallmuted{ font-size: 0.8rem; color:#555; padding: 0 8px 10px; }
 
     @media(max-width: 900px) {
       .stats-bar { grid-template-columns: 1fr; }
     }
     @media(max-width: 768px) {
-      #wrapper {
-        margin: 80px 10px 20px;
-        padding: 14px;
-      }
+      #wrapper { margin: 80px 10px 20px; padding: 14px; }
       .filters { flex-direction: column; align-items: stretch; }
       .header-flex { flex-direction: column; }
       .logo-amar { height: 70px; }
+      .topbar { flex-direction: column; align-items: stretch; }
+      .topbar-left { justify-content: center; }
     }
   </style>
 </head>
 
 <body>
-
-<div id="countdownBanner">
-  🎁 La pagina della nostra Ludoteca si sbloccherà tra <span id="countdownTime">--:--:--</span>
-  <small>Fino a quell’ora la pagina resta “coperta”. (Gli admin possono entrare in anteprima.)</small>
-</div>
-
-<div class="garland">
-  <span>✨</span><span>🎄</span><span>⭐</span><span>🕯️</span>
-  <span>🎲 AmarBoard Romagna 🎲</span>
-  <span>⭐</span><span>🎄</span><span>✨</span>
-</div>
-
-<!-- Fiocchi di neve -->
-<div class="snowflake">❄</div>
-<div class="snowflake">✻</div>
-<div class="snowflake">❅</div>
-<div class="snowflake">❆</div>
-<div class="snowflake">❄</div>
-<div class="snowflake">✵</div>
-<div class="snowflake">❄</div>
-
-<div id="wrapper">
-  <div class="header-flex">
-    <span class="xmas-icon">🎄</span>
-
-    <img class="logo-amar"
-         src="logo_amarboard.png"
-         alt="AmarBoard Romagna">
-
-    <span class="xmas-icon">🎲</span>
+  <div id="countdownBanner" style="display:none;">
+    🎁 La pagina della nostra Ludoteca si sbloccherà tra <span id="countdownTime">--:--:--</span>
+    <small>Stiamo “intavolando” la pagina…</small>
   </div>
 
-  <h1>Catalogo Giochi – AmarBoard</h1>
-
-  <div class="subtitle">
-    <span>Speciale Natale:</span> trova il gioco giusto (o fatti suggerire dai nostri Volontari) da intavolare con gli amici sui nostri tavoli.
+  <div class="garland">
+    <span>✨</span><span>🎄</span><span>⭐</span><span>🕯️</span>
+    <span>🎲 AmarBoard Romagna 🎲</span>
+    <span>⭐</span><span>🎄</span><span>✨</span>
   </div>
 
-  <div class="top-actions">
-    <button class="btn btn-green" id="btnLogin">🔐 Accedi</button>
-    <button class="btn" id="btnLogout" style="display:none;">🚪 Logout</button>
-    <a class="btn" href="./register.html">🧾 Registrati</a>
-    <a class="btn" id="btnAdmin" href="./admin.html" style="display:none;">🛠️ Admin</a>
-  </div>
-  <div class="mini" style="text-align:center;" id="whoami">Non autenticato</div>
+  <!-- Fiocchi di neve -->
+  <div class="snowflake">❄</div>
+  <div class="snowflake">✻</div>
+  <div class="snowflake">❅</div>
+  <div class="snowflake">❆</div>
+  <div class="snowflake">❄</div>
+  <div class="snowflake">✵</div>
+  <div class="snowflake">❄</div>
 
-  <div class="stats-bar">
-    <div class="stat-box">
-      <div class="stat-label">Stato giochi</div>
-      <div class="stat-value" id="cntBlocked">–</div>
-      <div class="stat-note">Giochi con richiesta/prenotazione attiva (badge automatici).</div>
+  <div id="wrapper">
+    <div class="header-flex">
+      <span class="xmas-icon">🎄</span>
+      <img class="logo-amar" src="logo_amarboard.png" alt="AmarBoard Romagna">
+      <span class="xmas-icon">🎲</span>
     </div>
-    <div class="stat-box">
-      <div class="stat-label">Solo utenti registrati</div>
-      <div class="stat-value" id="onlyReg">–</div>
-      <div class="stat-note">Impostazione controllata dagli admin.</div>
-    </div>
-    <div class="stat-box stat-top">
-      <div class="stat-label">Suggerimento</div>
-      <div class="stat-note">Clicca “🎁 Richiedi” sul gioco che ti interessa.</div>
-    </div>
-  </div>
 
-  <div class="filters">
-    <div class="filters-left">
-      <div class="filter-block">
-        <span class="filter-label">Stato</span>
-        <select id="filtroStato">
-          <option value="">Tutti</option>
-          <option value="Disponibile">Disponibile</option>
-          <option value="In prestito">In prestito</option>
-        </select>
+    <h1>Catalogo Giochi – AmarBoard</h1>
+
+    <div class="subtitle">
+      <span>Speciale Natale:</span> trova il gioco giusto (o fatti suggerire dai nostri Volontari) da intavolare con gli amici sui nostri tavoli.
+    </div>
+
+    <div class="topbar">
+      <div class="topbar-left">
+        <span id="whoami">👤 Ospite</span>
+        <span id="onlyRegHint" style="display:none;">• 🔒 Solo utenti registrati</span>
       </div>
 
-      <div class="filter-block">
-        <span class="filter-label">Giocatori (contiene)</span>
-        <input type="text" id="filtroGiocatori" placeholder="es. 2-4">
+      <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end;">
+        <button class="btn btn-gray" id="btnLogin">🔑 Login</button>
+        <button class="btn btn-gray" id="btnRegister" onclick="location.href='register.html'">📝 Registrati</button>
+        <button class="btn btn-red"  id="btnLogout" style="display:none;">🚪 Logout</button>
+
+        <button class="btn btn-green" id="btnPreview" style="display:none;">👁️ Preview</button>
+        <button class="btn btn-red"  id="btnAdmin" style="display:none;">🛠️ Admin</button>
       </div>
     </div>
 
-    <button class="btn btn-green" id="btnRefresh" type="button">🔄 Aggiorna dati</button>
-  </div>
-
-  <div id="errorBox"></div>
-
-  <table id="tblCatalogo" class="display" style="width:100%">
-    <thead>
-    <tr>
-      <th>Titolo</th>
-      <th>Giocatori</th>
-      <th>Durata</th>
-      <th>Età</th>
-      <th>Editore</th>
-      <th>Disponibili</th>
-      <th>Stato</th>
-      <th>Richiesta</th>
-      <th>BGG</th>
-      <th>Azioni</th>
-    </tr>
-    </thead>
-    <tbody></tbody>
-  </table>
-
-  <div class="footer-note">
-    🎅 Catalogo generato dalla ludoteca AmarBoard – versione natalizia
-  </div>
-</div>
-
-<!-- MODAL LOGIN -->
-<div class="modal-backdrop" id="loginBackdrop">
-  <div class="modal">
-    <h3>🔐 Accesso</h3>
-    <div class="row">
-      <div>
-        <label>Username</label>
-        <input id="loginUser" type="text" autocomplete="username" placeholder="es. mario">
+    <!-- STATS -->
+    <div class="stats-bar">
+      <div class="stat-box">
+        <div class="stat-label">Giochi attualmente in prestito</div>
+        <div class="stat-value" id="cntAttivi">–</div>
+        <div class="stat-note">Numero di prestiti attivi in questo momento.</div>
       </div>
-      <div>
-        <label>Password</label>
-        <input id="loginPass" type="password" autocomplete="current-password" placeholder="••••••••">
+      <div class="stat-box">
+        <div class="stat-label">Prestiti totali effettuati</div>
+        <div class="stat-value" id="cntTotali">–</div>
+        <div class="stat-note">Conteggio cumulativo dei prestiti registrati.</div>
       </div>
-    </div>
-    <div class="mini" id="loginMsg"></div>
-    <div class="actions">
-      <button class="btn" id="btnLoginCancel">Annulla</button>
-      <button class="btn btn-green" id="btnLoginGo">Accedi</button>
-    </div>
-  </div>
-</div>
-
-<!-- MODAL RICHIESTA -->
-<div class="modal-backdrop" id="reqBackdrop">
-  <div class="modal">
-    <h3>🎁 Richiedi prestito</h3>
-
-    <div class="row">
-      <div style="flex:1 1 100%;">
-        <label>Gioco</label>
-        <input id="reqTitolo" type="text" readonly>
-      </div>
-      <div>
-        <label>Giocatori</label>
-        <input id="reqGiocatori" type="text" readonly>
+      <div class="stat-box stat-top">
+        <div class="stat-label">Top 3 giochi più prestati ora</div>
+        <ol id="topList"></ol>
       </div>
     </div>
 
-    <div class="row">
-      <div>
-        <label>Nome</label>
-        <input id="reqNome" type="text" placeholder="Il tuo nome">
+    <!-- FILTRI -->
+    <div class="filters">
+      <div class="filters-left">
+        <div class="filter-block">
+          <span class="filter-label">Stato</span>
+          <select id="filtroStato">
+            <option value="">Tutti</option>
+            <option value="Disponibile">Disponibile</option>
+            <option value="In prestito">In prestito</option>
+          </select>
+        </div>
+
+        <div class="filter-block">
+          <span class="filter-label">Giocatori (contiene)</span>
+          <input type="text" id="filtroGiocatori" placeholder="es. 2-4">
+        </div>
       </div>
-      <div>
-        <label>Telefono</label>
-        <input id="reqTelefono" type="text" placeholder="Es. 3331234567">
-      </div>
+
+      <button class="btn btn-green" id="btnRefresh" type="button">🔄 Aggiorna dati</button>
     </div>
 
-    <div class="row">
-      <div style="flex:1 1 100%;">
-        <label>Note</label>
-        <textarea id="reqNote" rows="3" placeholder="Opzionale: info utili (orario, tavolo, ecc.)"></textarea>
-      </div>
-    </div>
+    <div id="errorBox"></div>
 
-    <div class="mini" id="reqMsg"></div>
-    <div class="actions">
-      <button class="btn" id="btnReqCancel">Annulla</button>
-      <button class="btn btn-green" id="btnReqSend">Invia richiesta</button>
+    <table id="tblCatalogo" class="display" style="width:100%">
+      <thead>
+        <tr>
+          <th>Titolo</th>
+          <th>Giocatori</th>
+          <th>Durata</th>
+          <th>Età</th>
+          <th>Editore</th>
+          <th>Disponibili</th>
+          <th>Stato</th>
+          <th>BGG</th>
+          <th>Richiedi</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <div class="footer-note">
+      🎅 Catalogo generato dalla ludoteca AmarBoard – versione natalizia
     </div>
   </div>
-</div>
+
+  <!-- MODAL LOGIN -->
+  <div class="modal-backdrop" id="loginModal">
+    <div class="modal">
+      <h3>🔑 Login</h3>
+      <div class="smallmuted">Se sei admin, dopo login comparirà il tasto “Admin”.</div>
+      <div class="row">
+        <div>
+          <div class="filter-label">Username</div>
+          <input id="loginUser" type="text" placeholder="es. sacha">
+        </div>
+        <div>
+          <div class="filter-label">Password</div>
+          <input id="loginPass" type="password" placeholder="••••••••">
+        </div>
+      </div>
+      <div class="actions">
+        <button class="btn btn-gray" id="btnLoginCancel">Annulla</button>
+        <button class="btn btn-green" id="btnLoginGo">Entra</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL RICHIESTA -->
+  <div class="modal-backdrop" id="reqModal">
+    <div class="modal">
+      <h3>🎁 Richiedi prestito</h3>
+      <div class="smallmuted">
+        Titolo: <b id="reqTitle">–</b>
+        <span id="reqHints" style="display:block; margin-top:6px;"></span>
+      </div>
+
+      <div class="row">
+        <div>
+          <div class="filter-label">Nome</div>
+          <input id="reqNome" type="text" placeholder="Nome e cognome">
+        </div>
+        <div>
+          <div class="filter-label">Telefono</div>
+          <input id="reqTel" type="text" placeholder="393...">
+        </div>
+      </div>
+
+      <div class="row">
+        <div style="flex:1 1 100%;">
+          <div class="filter-label">Note (opzionali)</div>
+          <textarea id="reqNote" rows="2" placeholder="Es. passo alle 17:00"></textarea>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn btn-gray" id="btnReqCancel">Annulla</button>
+        <button class="btn btn-green" id="btnReqSend">Invia richiesta</button>
+      </div>
+    </div>
+  </div>
 
 <script>
-  /***** CONFIG *****/
-  const API_URL = "https://script.google.com/macros/s/AKfycbyoQBfaYvxQBTS_EnK1-IOlPjLoFT0sWn1jcHPuDg5t0nUkwrvKPY-x8Qg8ii5BmtLDYg/exec";
+/* =========================
+   CONFIG
+========================= */
+const API_URL = "https://script.google.com/macros/s/AKfycbyoQBfaYvxQBTS_EnK1-IOlPjLoFT0sWn1jcHPuDg5t0nUkwrvKPY-x8Qg8ii5BmtLDYg/exec";
 
-  // CSV in root (GitHub Pages)
-  const CSV_BASE_URL = "/catalogo_ludoteca.csv";
+// CSV
+const CSV_BASE_URL   = "/catalogo_ludoteca.csv";
+const STATS_BASE_URL = "/stats_ludoteca.csv";
 
-  // COUNTDOWN: metti qui la data/ora di sblocco (Europe/Rome)
-  const COUNTDOWN_ENABLED = true;
-  const REVEAL_AT = new Date("2026-01-01T09:00:00+01:00").getTime(); // <-- cambia quando vuoi
-  // Bypass locale (solo browser admin): localStorage AB_PREVIEW = "1"
-  /******************/
+// COUNTDOWN: imposta data/ora sblocco.
+// Per DISATTIVARE countdown: metti REVEAL_AT = 0
+// Esempio: "2025-12-12T09:00:00+01:00"
+const REVEAL_AT = 0; // <--- metti la tua data/ora, oppure 0 per niente countdown
 
-  const LS_TOKEN = "AB_TOKEN";
-  const LS_PROFILE = "AB_PROFILE";
-  const LS_PREVIEW = "AB_PREVIEW";
+// Preview bypass (quando admin clicca "Preview"), durata in minuti
+const PREVIEW_MINUTES = 180;
 
-  let table = null;
-  let statusMap = {};     // titoloLower -> "Inviata"/"Approvata"
-  let onlyRegistered = false;
+/* =========================
+   STATE
+========================= */
+let table = null;
+let onlyRegistered = false;
 
-  const E = (id) => document.getElementById(id);
+// titoloLower -> "requested" | "reserved"
+let bookingStateByTitle = new Map();
 
-  function showError(msg){
-    const box = E("errorBox");
-    box.style.display = "block";
-    box.textContent = msg;
-  }
-  function clearError(){
-    const box = E("errorBox");
-    box.style.display = "none";
-    box.textContent = "";
-  }
+let countdownTimer = null;
 
-  /***** JSONP helper (niente CORS / niente failed fetch) *****/
-  function apiCall(action, params = {}, timeoutMs = 12000) {
-    return new Promise((resolve, reject) => {
-      const cb = "__abcb_" + Date.now() + "_" + Math.random().toString(16).slice(2);
-      const script = document.createElement("script");
+const LS = {
+  TOKEN: "AB_TOKEN",
+  PROFILE: "AB_PROFILE",
+  PREVIEW_UNTIL: "AB_PREVIEW_UNTIL"
+};
 
-      const cleanup = () => {
-        try { delete window[cb]; } catch(_) {}
-        if (script && script.parentNode) script.parentNode.removeChild(script);
-      };
+function E(id){ return document.getElementById(id); }
+function showError(msg){
+  const box = E("errorBox");
+  box.style.display = "block";
+  box.textContent = msg;
+}
+function clearError(){
+  const box = E("errorBox");
+  box.style.display = "none";
+  box.textContent = "";
+}
 
-      window[cb] = (data) => { cleanup(); resolve(data); };
+/* =========================
+   JSONP helper (no CORS)
+========================= */
+function jsonp(url, params={}, timeoutMs=12000){
+  return new Promise((resolve, reject) => {
+    const cbName = "cb_" + Math.random().toString(36).slice(2);
+    const qs = new URLSearchParams({ ...params, callback: cbName }).toString();
+    const full = url + (url.includes("?") ? "&" : "?") + qs;
 
-      const q = new URLSearchParams();
-      q.set("callback", cb);
-      q.set("action", action);
-      q.set("_", String(Date.now()));
-      Object.keys(params).forEach(k => q.set(k, String(params[k] ?? "")));
+    const script = document.createElement("script");
+    let done = false;
 
-      script.src = API_URL + "?" + q.toString();
-      script.onerror = () => { cleanup(); reject(new Error("JSONP load error")); };
+    window[cbName] = (data) => {
+      done = true;
+      cleanup();
+      resolve(data);
+    };
 
-      document.body.appendChild(script);
+    const t = setTimeout(() => {
+      if (done) return;
+      done = true;
+      cleanup();
+      reject(new Error("JSONP timeout"));
+    }, timeoutMs);
 
-      setTimeout(() => {
-        if (window[cb]) { cleanup(); reject(new Error("JSONP timeout")); }
-      }, timeoutMs);
-    });
-  }
-
-  /***** SHA-256 pure JS (fallback per browser vecchi) *****/
-  function sha256(ascii) {
-    function rightRotate(value, amount) { return (value>>>amount) | (value<<(32-amount)); }
-    const mathPow = Math.pow; const maxWord = mathPow(2, 32);
-    let result = '';
-    const words = [];
-    let asciiBitLength = ascii.length*8;
-    let hash = sha256.h = sha256.h || [];
-    let k = sha256.k = sha256.k || [];
-    let primeCounter = k.length;
-    const isComposite = {};
-    for (let candidate = 2; primeCounter < 64; candidate++) {
-      if (!isComposite[candidate]) {
-        for (let i = 0; i < 313; i += candidate) isComposite[i] = candidate;
-        hash[primeCounter] = (mathPow(candidate, .5)*maxWord)|0;
-        k[primeCounter++] = (mathPow(candidate, 1/3)*maxWord)|0;
-      }
-    }
-    ascii += '\x80';
-    while (ascii.length%64 - 56) ascii += '\x00';
-    for (let i = 0; i < ascii.length; i++) {
-      const j = ascii.charCodeAt(i);
-      words[i>>2] |= j << ((3 - i)%4)*8;
-    }
-    words[words.length] = ((asciiBitLength/maxWord)|0);
-    words[words.length] = (asciiBitLength);
-    for (let j = 0; j < words.length;) {
-      const w = words.slice(j, j += 16);
-      const oldHash = hash.slice(0);
-      for (let i = 0; i < 64; i++) {
-        const w15 = w[i - 15], w2 = w[i - 2];
-        const a = hash[0], e = hash[4];
-        const temp1 = (hash[7]
-          + (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25))
-          + ((e&hash[5]) ^ ((~e)&hash[6]))
-          + k[i]
-          + (w[i] = (i < 16) ? w[i] : (
-              w[i - 16]
-              + (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15>>>3))
-              + w[i - 7]
-              + (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2>>>10))
-            )|0
-          )
-        )|0;
-        const temp2 = ((rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22))
-          + ((a&hash[1]) ^ (a&hash[2]) ^ (hash[1]&hash[2]))
-        )|0;
-        hash = [(temp1 + temp2)|0].concat(hash);
-        hash[4] = (hash[4] + temp1)|0;
-        hash.pop();
-      }
-      for (let i = 0; i < 8; i++) hash[i] = (hash[i] + oldHash[i])|0;
-    }
-    for (let i = 0; i < 8; i++) {
-      for (let j = 3; j + 1; j--) {
-        const b = (hash[i] >> (j * 8)) & 255;
-        result += ((b < 16) ? 0 : '') + b.toString(16);
-      }
-    }
-    return result;
-  }
-
-  function getToken(){ return localStorage.getItem(LS_TOKEN) || ""; }
-  function setSession(token, profile){
-    localStorage.setItem(LS_TOKEN, token);
-    localStorage.setItem(LS_PROFILE, JSON.stringify(profile || {}));
-  }
-  function clearSession(){
-    localStorage.removeItem(LS_TOKEN);
-    localStorage.removeItem(LS_PROFILE);
-  }
-  function getProfile(){
-    try { return JSON.parse(localStorage.getItem(LS_PROFILE) || "{}"); } catch { return {}; }
-  }
-
-  function openModal(backdropId){ E(backdropId).style.display = "flex"; }
-  function closeModal(backdropId){ E(backdropId).style.display = "none"; }
-
-  function isPreviewBypass(){
-    return localStorage.getItem(LS_PREVIEW) === "1";
-  }
-
-  async function refreshMeUI(){
-    const tok = getToken();
-    if (!tok) {
-      E("btnLogin").style.display = "inline-flex";
-      E("btnLogout").style.display = "none";
-      E("btnAdmin").style.display = "none";
-      E("whoami").textContent = "Non autenticato";
-      return;
+    function cleanup(){
+      clearTimeout(t);
+      delete window[cbName];
+      if (script.parentNode) script.parentNode.removeChild(script);
     }
 
-    const r = await apiCall("me", { token: tok }).catch(() => null);
-    if (!r || !r.ok) {
-      clearSession();
-      E("btnLogin").style.display = "inline-flex";
-      E("btnLogout").style.display = "none";
-      E("btnAdmin").style.display = "none";
-      E("whoami").textContent = "Non autenticato";
-      return;
+    script.onerror = () => {
+      if (done) return;
+      done = true;
+      cleanup();
+      reject(new Error("JSONP load error"));
+    };
+
+    script.src = full;
+    document.body.appendChild(script);
+  });
+}
+
+/* =========================
+   SHA-256 (crypto.subtle or fallback)
+========================= */
+async function sha256hex(text){
+  if (window.crypto && crypto.subtle && window.isSecureContext) {
+    const enc = new TextEncoder().encode(text);
+    const buf = await crypto.subtle.digest("SHA-256", enc);
+    return [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2,"0")).join("");
+  }
+  return sha256_fallback_(text);
+}
+
+/* Minimal SHA256 fallback */
+function sha256_fallback_(ascii) {
+  function rightRotate(value, amount){ return (value>>>amount) | (value<<(32-amount)); }
+
+  var mathPow = Math.pow; var maxWord = mathPow(2, 32);
+  var lengthProperty = 'length';
+  var i, j; var result = '';
+
+  var words = [];
+  var asciiBitLength = ascii[lengthProperty]*8;
+
+  var hash = sha256_fallback_.h = sha256_fallback_.h || [];
+  var k = sha256_fallback_.k = sha256_fallback_.k || [];
+  var primeCounter = k[lengthProperty];
+
+  var isComposite = {};
+  for (var candidate = 2; primeCounter < 64; candidate++) {
+    if (!isComposite[candidate]) {
+      for (i = 0; i < 313; i += candidate) isComposite[i] = candidate;
+      hash[primeCounter] = (mathPow(candidate, .5)*maxWord)|0;
+      k[primeCounter++] = (mathPow(candidate, 1/3)*maxWord)|0;
+    }
+  }
+
+  ascii += '\x80';
+  while (ascii[lengthProperty]%64 - 56) ascii += '\x00';
+  for (i = 0; i < ascii[lengthProperty]; i++) {
+    j = ascii.charCodeAt(i);
+    words[i>>2] |= j << ((3 - i)%4)*8;
+  }
+  words[words[lengthProperty]] = ((asciiBitLength/maxWord)|0);
+  words[words[lengthProperty]] = (asciiBitLength);
+
+  for (j = 0; j < words[lengthProperty];) {
+    var w = words.slice(j, j += 16);
+    var oldHash = hash.slice(0);
+
+    for (i = 0; i < 64; i++) {
+      var w15 = w[i - 15], w2 = w[i - 2];
+
+      var a = hash[0], e = hash[4];
+      var temp1 = hash[7]
+        + (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25))
+        + ((e&hash[5])^((~e)&hash[6]))
+        + k[i]
+        + (w[i] = (i < 16) ? w[i] : (
+            w[i - 16]
+            + (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15>>>3))
+            + w[i - 7]
+            + (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2>>>10))
+          )|0
+        );
+
+      var temp2 = (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22))
+        + ((a&hash[1])^(a&hash[2])^(hash[1]&hash[2]));
+
+      hash = [(temp1+temp2)|0].concat(hash);
+      hash[4] = (hash[4]+temp1)|0;
+      hash.pop();
     }
 
-    onlyRegistered = !!r.onlyRegistered;
-    E("onlyReg").textContent = onlyRegistered ? "Sì" : "No";
+    for (i = 0; i < 8; i++) hash[i] = (hash[i]+oldHash[i])|0;
+  }
 
-    const p = r.profile || {};
-    localStorage.setItem(LS_PROFILE, JSON.stringify(p));
+  for (i = 0; i < 8; i++) {
+    for (j = 3; j + 1; j--) {
+      var b = (hash[i]>>(j*8))&255;
+      result += ((b < 16) ? 0 : '') + b.toString(16);
+    }
+  }
+  return result;
+}
 
+/* =========================
+   AUTH UI
+========================= */
+function getToken(){ return localStorage.getItem(LS.TOKEN) || ""; }
+function setSession(token, profile){
+  localStorage.setItem(LS.TOKEN, token);
+  localStorage.setItem(LS.PROFILE, JSON.stringify(profile || {}));
+}
+function clearSession(){
+  localStorage.removeItem(LS.TOKEN);
+  localStorage.removeItem(LS.PROFILE);
+}
+function getProfile(){
+  try { return JSON.parse(localStorage.getItem(LS.PROFILE) || "{}"); } catch { return {}; }
+}
+function isAdmin(){
+  const p = getProfile();
+  return String(p.Ruolo||"").toLowerCase() === "admin";
+}
+
+function setWhoami(){
+  const tok = getToken();
+  const p = getProfile();
+
+  if (tok && p && p.Username){
+    E("whoami").textContent = `👤 ${p.Username}${isAdmin() ? " (admin)" : ""}`;
     E("btnLogin").style.display = "none";
+    E("btnRegister").style.display = "none";
     E("btnLogout").style.display = "inline-flex";
-    E("whoami").textContent = `Loggato: ${p.Nome || p.Username || "utente"}${p.Ruolo ? " ("+p.Ruolo+")" : ""}`;
+    E("btnAdmin").style.display = isAdmin() ? "inline-flex" : "none";
+    E("btnPreview").style.display = isAdmin() ? "inline-flex" : "none";
+  } else {
+    E("whoami").textContent = "👤 Ospite";
+    E("btnLogin").style.display = "inline-flex";
+    E("btnRegister").style.display = "inline-flex";
+    E("btnLogout").style.display = "none";
+    E("btnAdmin").style.display = "none";
+    E("btnPreview").style.display = "none";
+  }
+}
 
-    const isAdmin = String(p.Ruolo || "").toLowerCase() === "admin";
-    E("btnAdmin").style.display = isAdmin ? "inline-flex" : "none";
+function openModal(id){ E(id).style.display = "flex"; }
+function closeModal(id){ E(id).style.display = "none"; }
+
+/* =========================
+   COUNTDOWN / PREVIEW
+========================= */
+function hasPreviewBypass(){
+  const until = Number(localStorage.getItem(LS.PREVIEW_UNTIL) || "0");
+  return until && Date.now() < until;
+}
+function enablePreviewBypass(){
+  const until = Date.now() + PREVIEW_MINUTES*60*1000;
+  localStorage.setItem(LS.PREVIEW_UNTIL, String(until));
+}
+function clearPreviewBypass(){
+  localStorage.removeItem(LS.PREVIEW_UNTIL);
+}
+
+function startCountdownShield(){
+  const banner = E("countdownBanner");
+  const timeEl = E("countdownTime");
+
+  if (!REVEAL_AT || REVEAL_AT === 0){
+    document.body.classList.remove("spoiler-hidden");
+    banner.style.display = "none";
+    return;
   }
 
-  function badgeForRequest(titolo){
-    const key = String(titolo||"").trim().toLowerCase();
-    const s = statusMap[key];
-    if (!s) return "";
-    const sLow = String(s).toLowerCase();
-    if (sLow === "approvata") return '<span class="badge badge-ok">✅ Prenotato</span>';
-    if (sLow === "inviata")   return '<span class="badge badge-warn">⏳ Richiesto</span>';
-    return `<span class="badge badge-warn">${s}</span>`;
-  }
+  function tick(){
+    const now = Date.now();
 
-  function canRequestTitle(titolo){
-    const key = String(titolo||"").trim().toLowerCase();
-    return !statusMap[key]; // se c'è status attivo: blocca
-  }
-
-  async function loadStatusMap(){
-    const r = await apiCall("catalog_status", {});
-    if (!r.ok) throw new Error(r.error || "Errore status");
-    statusMap = r.map || {};
-    E("cntBlocked").textContent = String(Object.keys(statusMap).length);
-  }
-
-  async function fetchTextNoStore(path){
-    const url = path + "?v=" + Date.now();
-    const res = await fetch(url, { cache: "no-store" });
-    if (!res.ok) throw new Error(`Impossibile caricare ${path} (HTTP ${res.status})`);
-    return await res.text();
-  }
-
-  function parseCSVText(csvText) {
-    const parsed = Papa.parse(csvText, { header: true, skipEmptyLines: true });
-    return parsed.data || [];
-  }
-
-  function statoDisponibilitaBadge(stato){
-    const s = String(stato||"").trim().toLowerCase();
-    if (s === "disponibile") return '<span class="badge badge-ok">🎄 Disponibile</span>';
-    if (s === "in prestito") return '<span class="badge badge-bad">🎁 In prestito</span>';
-    return stato || "";
-  }
-
-  async function loadCatalogo(){
-    const text = await fetchTextNoStore(CSV_BASE_URL);
-    const raw = parseCSVText(text);
-
-    const data = [];
-    raw.forEach(row => {
-      if (!row["Titolo"]) return;
-      data.push({
-        Titolo: row["Titolo"] || "",
-        Giocatori: row["NumeroGiocatori"] || "",
-        Durata: row["Durata"] || "",
-        Eta: row["Eta"] || "",
-        Editore: row["Editore"] || "",
-        Disponibili: row["CopieDisponibili"] || "",
-        Stato: row["StatoDisponibilita"] || "",
-        BGG: row["BGG"] || ""
-      });
-    });
-
-    if (!window.jQuery || !window.jQuery.fn || !window.jQuery.fn.DataTable) {
-      throw new Error("DataTables non caricato (controlla connessione / CDN).");
-    }
-
-    if (!table) {
-      table = $("#tblCatalogo").DataTable({
-        data,
-        columns: [
-          { data: "Titolo" },
-          { data: "Giocatori" },
-          { data: "Durata" },
-          { data: "Eta" },
-          { data: "Editore" },
-          { data: "Disponibili", render: d => `<strong>${d ?? ""}</strong>` },
-          { data: "Stato", render: d => statoDisponibilitaBadge(d) },
-          { data: "Titolo", orderable:false, render: t => badgeForRequest(t) },
-          {
-            data: "BGG",
-            orderable: false,
-            render: d => {
-              if (!d) return "";
-              const safe = String(d).trim();
-              if (!/^https?:\/\//i.test(safe)) return "";
-              return `<a class="bgg-link" href="${safe}" target="_blank" rel="noopener noreferrer">Scheda</a>`;
-            }
-          },
-          {
-            data: null,
-            orderable:false,
-            render: (row) => {
-              const titolo = row.Titolo || "";
-              const allowed = canRequestTitle(titolo);
-              if (!allowed) return `<span class="badge badge-warn">🔒 Bloccato</span>`;
-              return `<button class="btn btn-green btnReq" data-titolo="${escapeHtml(titolo)}" data-gioc="${escapeHtml(row.Giocatori||"")}">🎁 Richiedi</button>`;
-            }
-          }
-        ],
-        pageLength: 25,
-        lengthChange: false,
-        order: [[0,"asc"]],
-        language: { url: "https://cdn.datatables.net/plug-ins/1.13.8/i18n/it-IT.json" },
-        rowCallback: function (row, rowData) {
-          row.classList.remove("disponibile-row", "prestato-row");
-          const s = String(rowData.Stato||"").trim().toLowerCase();
-          if (s === "disponibile") row.classList.add("disponibile-row");
-          else if (s === "in prestito") row.classList.add("prestato-row");
-        }
-      });
-
-      // Filtri
-      E("filtroStato").addEventListener("change", function(){
-        table.column(6).search(this.value, false, false).draw();
-      });
-      E("filtroGiocatori").addEventListener("keyup", function(){
-        table.column(1).search(this.value, false, false).draw();
-      });
-
-      // Delegation per pulsanti Richiedi
-      $("#tblCatalogo tbody").on("click", "button.btnReq", function(){
-        const titolo = this.getAttribute("data-titolo") || "";
-        const gioc = this.getAttribute("data-gioc") || "";
-        openRequestModal(titolo, gioc);
-      });
-
-    } else {
-      table.clear();
-      table.rows.add(data).draw(false);
-    }
-  }
-
-  function escapeHtml(s){
-    return String(s||"")
-      .replaceAll("&","&amp;")
-      .replaceAll("<","&lt;")
-      .replaceAll(">","&gt;")
-      .replaceAll('"',"&quot;")
-      .replaceAll("'","&#039;");
-  }
-
-  function openRequestModal(titolo, giocatori){
-    E("reqTitolo").value = titolo;
-    E("reqGiocatori").value = giocatori;
-
-    const p = getProfile();
-    E("reqNome").value = p.Nome || "";
-    E("reqTelefono").value = p.Telefono || "";
-    E("reqNote").value = "";
-    E("reqMsg").textContent = "";
-
-    if (onlyRegistered && !getToken()) {
-      E("reqMsg").textContent = "Serve l’accesso: la prenotazione è abilitata solo per utenti registrati.";
-      E("reqMsg").style.color = "#7a0f1a";
-      openModal("reqBackdrop");
-      // disabilito invio finché non logga
-      E("btnReqSend").disabled = true;
-      E("btnReqSend").style.opacity = "0.6";
-    } else {
-      E("btnReqSend").disabled = false;
-      E("btnReqSend").style.opacity = "1";
-      openModal("reqBackdrop");
-    }
-  }
-
-  async function submitRequest(){
-    const titolo = E("reqTitolo").value.trim();
-    const gioc = E("reqGiocatori").value.trim();
-    const nome = E("reqNome").value.trim();
-    const tel  = E("reqTelefono").value.trim();
-    const note = E("reqNote").value.trim();
-
-    if (!titolo || !nome) {
-      E("reqMsg").textContent = "Compila almeno il Nome.";
-      E("reqMsg").style.color = "#7a0f1a";
+    // bypass per admin preview
+    if (hasPreviewBypass()){
+      document.body.classList.remove("spoiler-hidden");
+      banner.style.display = "none";
       return;
     }
 
-    E("btnReqSend").disabled = true;
-
-    try {
-      const tok = getToken();
-      const r = await apiCall("submit_request", {
-        token: tok,
-        titolo: titolo,
-        giocatori: gioc,
-        nome: nome,
-        telefono: tel,
-        note: note
-      });
-
-      if (!r.ok) throw new Error(r.error || "Errore invio");
-
-      // aggiorna localmente: segna come Richiesto
-      statusMap[titolo.toLowerCase()] = "Inviata";
-      E("cntBlocked").textContent = String(Object.keys(statusMap).length);
-
-      // aggiorna tabella senza ricaricare tutto
-      if (table) table.rows().invalidate().draw(false);
-
-      E("reqMsg").textContent = "✅ Richiesta inviata!";
-      E("reqMsg").style.color = "#165b2b";
-
-      setTimeout(() => {
-        closeModal("reqBackdrop");
-      }, 600);
-
-    } catch (e) {
-      E("reqMsg").textContent = "Errore invio: " + (e?.message || String(e));
-      E("reqMsg").style.color = "#7a0f1a";
-    } finally {
-      E("btnReqSend").disabled = false;
-    }
-  }
-
-  // COUNTDOWN con bypass admin / preview
-  let countdownTimer = null;
-  function startCountdownShield(canBypass){
-    const banner = E("countdownBanner");
-    const timeEl = E("countdownTime");
-
-    function tick(){
-      if (!COUNTDOWN_ENABLED) {
-        document.body.classList.remove("spoiler-hidden");
-        banner.style.display = "none";
-        if (countdownTimer) clearInterval(countdownTimer);
-        return;
-      }
-
-      // bypass locale: preview oppure admin
-      if (canBypass || isPreviewBypass()) {
-        document.body.classList.remove("spoiler-hidden");
-        banner.style.display = "none";
-        if (countdownTimer) clearInterval(countdownTimer);
-        return;
-      }
-
-      const now = Date.now();
-      const diff = REVEAL_AT - now;
-
-      if (diff <= 0) {
-        document.body.classList.remove("spoiler-hidden");
-        banner.style.display = "none";
-        if (countdownTimer) clearInterval(countdownTimer);
-        return;
-      }
-
-      document.body.classList.add("spoiler-hidden");
-      banner.style.display = "block";
-
-      const totalSec = Math.floor(diff / 1000);
-      const h = String(Math.floor(totalSec / 3600)).padStart(2,"0");
-      const m = String(Math.floor((totalSec % 3600)/60)).padStart(2,"0");
-      const s = String(totalSec % 60).padStart(2,"0");
-      timeEl.textContent = `${h}:${m}:${s}`;
+    const diff = new Date(REVEAL_AT).getTime() - now;
+    if (diff <= 0){
+      document.body.classList.remove("spoiler-hidden");
+      banner.style.display = "none";
+      if (countdownTimer) clearInterval(countdownTimer);
+      return;
     }
 
-    tick();
-    countdownTimer = setInterval(tick, 1000);
+    document.body.classList.add("spoiler-hidden");
+    banner.style.display = "block";
+
+    const totalSec = Math.floor(diff/1000);
+    const h = String(Math.floor(totalSec/3600)).padStart(2,"0");
+    const m = String(Math.floor((totalSec%3600)/60)).padStart(2,"0");
+    const s = String(totalSec%60).padStart(2,"0");
+    timeEl.textContent = `${h}:${m}:${s}`;
   }
 
-  async function refreshAll(){
+  tick();
+  countdownTimer = setInterval(tick, 1000);
+}
+
+/* =========================
+   CSV load (no-store)
+========================= */
+async function fetchTextNoStore(path){
+  const url = path + "?v=" + Date.now();
+  const res = await fetch(url, { cache:"no-store" });
+  if (!res.ok) throw new Error(`Impossibile caricare ${path} (HTTP ${res.status})`);
+  return await res.text();
+}
+function parseCSVText(csvText){
+  const parsed = Papa.parse(csvText, { header:true, skipEmptyLines:true });
+  return parsed.data || [];
+}
+
+/* =========================
+   Badges
+========================= */
+function statoBadge(stato){
+  const s = String(stato||"").toLowerCase().trim();
+  if (s === "disponibile") return '<span class="badge badge-disponibile">🎄 Disponibile</span>';
+  if (s === "in prestito") return '<span class="badge badge-prestato">🎁 In prestito</span>';
+  return (stato || "");
+}
+
+function bookingBadgeForTitle(titolo){
+  const key = String(titolo||"").trim().toLowerCase();
+  const st = bookingStateByTitle.get(key) || "";
+  if (st === "requested") return '<span class="badge badge-rich">⏳ Richiesto</span>';
+  if (st === "reserved")  return '<span class="badge badge-pren">✅ Prenotato</span>';
+  return "";
+}
+
+/* =========================
+   API: me + settings
+========================= */
+async function refreshMeAndSettings(){
+  const tok = getToken();
+  if (!tok){
+    onlyRegistered = false;
+    E("onlyRegHint").style.display = "none";
+    setWhoami();
+    return;
+  }
+
+  try {
+    const r = await jsonp(API_URL, { action:"me", token: tok });
+    if (!r.ok){
+      clearSession();
+      onlyRegistered = false;
+      E("onlyRegHint").style.display = "none";
+      setWhoami();
+      return;
+    }
+    localStorage.setItem(LS.PROFILE, JSON.stringify(r.profile || {}));
+    onlyRegistered = !!r.onlyRegistered;
+    E("onlyRegHint").style.display = onlyRegistered ? "inline" : "none";
+    setWhoami();
+  } catch (e){
+    setWhoami();
+  }
+}
+
+/* =========================
+   PRENOTAZIONI: status per titolo (NUOVO)
+========================= */
+async function refreshTitleStatus(){
+  try{
+    const r = await jsonp(API_URL, { action:"title_status" });
+    if (!r.ok) return;
+
+    bookingStateByTitle = new Map();
+    const m = r.map || {};
+    Object.keys(m).forEach(k => {
+      const st = String(m[k]||"").trim();
+      if (st === "requested" || st === "reserved"){
+        bookingStateByTitle.set(String(k).trim().toLowerCase(), st);
+      }
+    });
+
+    if (table) table.rows().invalidate().draw(false);
+  } catch {}
+}
+
+/* =========================
+   Carica stats + catalogo
+========================= */
+async function caricaStats(){
+  try{
+    const text = await fetchTextNoStore(STATS_BASE_URL);
+    const rows = parseCSVText(text);
+    if (!rows.length) return;
+
+    const s = rows[0];
+    E("cntAttivi").textContent = s["PrestitiAttivi"] || "0";
+    E("cntTotali").textContent = s["PrestitiTotali"] || "0";
+
+    const topList = E("topList");
+    topList.innerHTML = "";
+
+    function addTop(titoloKey, countKey){
+      const titolo = s[titoloKey];
+      const cnt = s[countKey];
+      if (titolo && cnt && Number(cnt) > 0){
+        const li = document.createElement("li");
+        li.textContent = `${titolo} (${cnt})`;
+        topList.appendChild(li);
+      }
+    }
+    addTop("Top1Titolo", "Top1Prestiti");
+    addTop("Top2Titolo", "Top2Prestiti");
+    addTop("Top3Titolo", "Top3Prestiti");
+  } catch {
+    // stats opzionali
+  }
+}
+
+async function caricaCatalogo(){
+  const text = await fetchTextNoStore(CSV_BASE_URL);
+  const raw = parseCSVText(text);
+
+  const data = [];
+  raw.forEach(row => {
+    if (!row["Titolo"]) return;
+    data.push({
+      Titolo: row["Titolo"] || "",
+      Giocatori: row["NumeroGiocatori"] || "",
+      Durata: row["Durata"] || "",
+      Eta: row["Eta"] || "",
+      Editore: row["Editore"] || "",
+      Disponibili: row["CopieDisponibili"] || "",
+      Stato: row["StatoDisponibilita"] || "",
+      BGG: row["BGG"] || ""
+    });
+  });
+
+  if (!table){
+    table = $("#tblCatalogo").DataTable({
+      data,
+      deferRender: true,
+      pageLength: 50,
+      lengthMenu: [25, 50, 100, 200],
+      columns: [
+        { data:"Titolo" },
+        { data:"Giocatori" },
+        { data:"Durata" },
+        { data:"Eta" },
+        { data:"Editore" },
+        { data:"Disponibili", render: d => `<strong>${d ?? ""}</strong>` },
+        { data:"Stato", render: d => statoBadge(d) },
+        {
+          data:"BGG",
+          orderable:false,
+          render: d => {
+            const s = String(d||"").trim();
+            if (!s) return "";
+            if (!/^https?:\/\//i.test(s)) return "";
+            return `<a class="bgg-link" href="${s}" target="_blank" rel="noopener noreferrer">Scheda</a>`;
+          }
+        },
+        {
+          data:null,
+          orderable:false,
+          searchable:false,
+          render: (row) => {
+            const titolo = row.Titolo || "";
+            const key = String(titolo).trim().toLowerCase();
+            const badge = bookingBadgeForTitle(titolo);
+
+            // se countdown attivo e non bypass -> blocca
+            const spoilerBlocked = (REVEAL_AT && REVEAL_AT !== 0 && !hasPreviewBypass() && Date.now() < new Date(REVEAL_AT).getTime());
+            if (spoilerBlocked){
+              return `<span style="opacity:.7;">—</span>`;
+            }
+
+            const st = bookingStateByTitle.get(key) || "";
+            const can = !st; // se requested/reserved -> no
+            const disabled = can ? "" : "disabled";
+            const label = can ? "Richiedi" : "Non disponibile";
+            const btn = `<button class="btn btn-green" style="padding:6px 9px;border-radius:999px;" data-action="req" data-title="${escapeHtml_(titolo)}" ${disabled}>🎁 ${label}</button>`;
+            return `${badge} ${btn}`;
+          }
+        }
+      ],
+      order: [[0,"asc"]],
+      language: { url:"https://cdn.datatables.net/plug-ins/1.13.8/i18n/it-IT.json" },
+      createdRow: function(row, rowData){
+        row.setAttribute("data-title", rowData.Titolo || "");
+        row.classList.remove("disponibile-row","prestato-row");
+        const s = String(rowData.Stato||"").toLowerCase().trim();
+        if (s === "disponibile") row.classList.add("disponibile-row");
+        else if (s === "in prestito") row.classList.add("prestato-row");
+      }
+    });
+
+    // Filtri
+    E("filtroStato").addEventListener("change", function(){
+      table.column(6).search(this.value, false, false).draw();
+    });
+    E("filtroGiocatori").addEventListener("keyup", function(){
+      table.column(1).search(this.value, false, false).draw();
+    });
+
+    // Click su Richiedi
+    $("#tblCatalogo tbody").on("click", "button[data-action='req']", function(){
+      if (this.disabled) return;
+      const titolo = this.getAttribute("data-title") || "";
+      openRequestModal(titolo);
+    });
+
+  } else {
+    table.clear();
+    table.rows.add(data).draw(false);
+  }
+}
+
+function escapeHtml_(s){
+  return String(s||"").replace(/[&<>"']/g, m => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"
+  }[m]));
+}
+
+/* =========================
+   Request modal logic
+========================= */
+let currentReqTitle = "";
+let currentReqGiocatori = "";
+
+function openRequestModal(titolo){
+  currentReqTitle = String(titolo||"");
+  E("reqTitle").textContent = currentReqTitle;
+
+  // precompila se loggato
+  const p = getProfile();
+  if (p && p.Nome) E("reqNome").value = p.Nome;
+  if (p && p.Telefono) E("reqTel").value = p.Telefono;
+
+  // hint se solo registrati
+  E("reqHints").textContent = onlyRegistered ? "🔒 Richiesta consentita solo a utenti registrati (sei ok se sei loggato)." : "";
+
+  // trova giocatori dalla tabella (se disponibile)
+  if (table){
+    const row = table.rows().data().toArray().find(r => String(r.Titolo||"") === currentReqTitle);
+    currentReqGiocatori = row ? String(row.Giocatori||"") : "";
+  } else {
+    currentReqGiocatori = "";
+  }
+
+  openModal("reqModal");
+}
+
+async function sendRequest(){
+  const nome = E("reqNome").value.trim();
+  const tel  = E("reqTel").value.trim();
+  const note = E("reqNote").value.trim();
+
+  if (!nome){
+    showError("Inserisci il tuo nome.");
+    return;
+  }
+
+  // se onlyRegistered -> devi essere loggato
+  if (onlyRegistered && !getToken()){
+    showError("Accesso richiesto: fai login prima di inviare la richiesta.");
+    closeModal("reqModal");
+    openModal("loginModal");
+    return;
+  }
+
+  clearError();
+
+  try{
+    const r = await jsonp(API_URL, {
+      action: "submit_request",
+      token: getToken(),
+      titolo: currentReqTitle,
+      giocatori: currentReqGiocatori,
+      nome,
+      telefono: tel,
+      note
+    });
+
+    if (!r.ok) throw new Error(r.error || "Errore invio");
+
+    // segna localmente come requested
+    bookingStateByTitle.set(currentReqTitle.trim().toLowerCase(), "requested");
+    if (table) table.rows().invalidate().draw(false);
+
+    closeModal("reqModal");
+    alert("✅ Richiesta inviata!");
+
+  } catch (e){
+    showError("Errore invio: " + (e?.message || String(e)));
+  }
+}
+
+/* =========================
+   Full refresh
+========================= */
+async function aggiornaTutto(){
+  clearError();
+
+  // blocco se countdown attivo e non bypass
+  if (REVEAL_AT && REVEAL_AT !== 0 && !hasPreviewBypass() && Date.now() < new Date(REVEAL_AT).getTime()){
+    return;
+  }
+
+  try{
+    // 1) prima aggiorno i badge richiesto/prenotato
+    await refreshTitleStatus();
+    // 2) poi stats e catalogo
+    await Promise.all([caricaStats(), caricaCatalogo()]);
+    // 3) ridisegno con badge aggiornati (se la tabella è appena nata)
+    if (table) table.rows().invalidate().draw(false);
+  } catch (e){
+    showError("Errore refresh: " + (e?.message || String(e)));
+  }
+}
+
+/* =========================
+   Events
+========================= */
+document.addEventListener("DOMContentLoaded", async () => {
+  startCountdownShield();
+
+  // inizializza sessione UI
+  setWhoami();
+  await refreshMeAndSettings();
+
+  // se countdown non blocca -> carica
+  await aggiornaTutto();
+
+  // auto refresh (solo se sbloccato o bypass)
+  setInterval(() => {
+    const blocked = (REVEAL_AT && REVEAL_AT !== 0 && !hasPreviewBypass() && Date.now() < new Date(REVEAL_AT).getTime());
+    if (!blocked) aggiornaTutto();
+  }, 30000);
+
+  // refresh button
+  E("btnRefresh").addEventListener("click", () => aggiornaTutto());
+
+  // login modal controls
+  E("btnLogin").addEventListener("click", () => openModal("loginModal"));
+  E("btnLoginCancel").addEventListener("click", () => closeModal("loginModal"));
+  E("loginModal").addEventListener("click", (ev) => { if (ev.target === E("loginModal")) closeModal("loginModal"); });
+
+  E("btnLoginGo").addEventListener("click", async () => {
     clearError();
-    try {
-      await refreshMeUI();
-      await loadStatusMap();    // una chiamata, aggiorna badge
-      await loadCatalogo();     // poi il csv
-    } catch (e) {
-      showError("Errore refresh: " + (e?.message || String(e)));
-    }
-  }
-
-  async function doLogin(){
     const u = E("loginUser").value.trim().toLowerCase();
     const p = E("loginPass").value;
-    if (!u || !p) {
-      E("loginMsg").textContent = "Inserisci username e password.";
-      E("loginMsg").style.color = "#7a0f1a";
-      return;
-    }
+    if (!u || !p){ showError("Inserisci username e password."); return; }
 
-    E("loginMsg").textContent = "Accesso in corso…";
-    E("loginMsg").style.color = "#444";
+    try{
+      const passhash = await sha256hex(p);
+      const r = await jsonp(API_URL, { action:"login", username:u, passhash });
 
-    try {
-      const passhash = sha256(p);
-      const r = await apiCall("login", { username: u, passhash: passhash });
       if (!r.ok) throw new Error(r.error || "Login fallito");
 
-      setSession(r.token, r.profile || {});
-      closeModal("loginBackdrop");
-      await refreshMeUI();
+      setSession(r.token, r.profile);
+      closeModal("loginModal");
+      await refreshMeAndSettings();
 
-      const isAdmin = String((r.profile||{}).Ruolo||"").toLowerCase() === "admin";
-      startCountdownShield(isAdmin);
+      setWhoami();
+      alert("✅ Login ok");
 
-      await refreshAll();
-    } catch(e) {
-      E("loginMsg").textContent = "Errore: " + (e?.message || String(e));
-      E("loginMsg").style.color = "#7a0f1a";
+    } catch (e){
+      showError("Login: " + (e?.message || String(e)));
     }
-  }
-
-  async function doLogout(){
-    const tok = getToken();
-    try { if (tok) await apiCall("logout", { token: tok }); } catch(_) {}
-    clearSession();
-    await refreshMeUI();
-    await refreshAll();
-  }
-
-  document.addEventListener("DOMContentLoaded", async () => {
-    // modali
-    E("btnLogin").addEventListener("click", () => { E("loginMsg").textContent = ""; openModal("loginBackdrop"); });
-    E("btnLoginCancel").addEventListener("click", () => closeModal("loginBackdrop"));
-    E("btnLoginGo").addEventListener("click", doLogin);
-
-    E("btnLogout").addEventListener("click", doLogout);
-
-    E("btnReqCancel").addEventListener("click", () => closeModal("reqBackdrop"));
-    E("btnReqSend").addEventListener("click", submitRequest);
-
-    E("btnRefresh").addEventListener("click", refreshAll);
-
-    // primo load
-    await refreshMeUI();
-
-    const p = getProfile();
-    const isAdmin = String(p.Ruolo||"").toLowerCase() === "admin";
-    startCountdownShield(isAdmin);
-
-    await refreshAll();
-
-    // auto-refresh leggero
-    setInterval(async () => {
-      // se countdown attivo e non bypassato, non spoilero
-      if (COUNTDOWN_ENABLED && !isAdmin && !isPreviewBypass() && Date.now() < REVEAL_AT) return;
-      await refreshAll();
-    }, 45000);
   });
-</script>
 
+  // logout
+  E("btnLogout").addEventListener("click", async () => {
+    const tok = getToken();
+    clearSession();
+    clearPreviewBypass();
+    setWhoami();
+    onlyRegistered = false;
+    E("onlyRegHint").style.display = "none";
+    try { if (tok) await jsonp(API_URL, { action:"logout", token: tok }); } catch {}
+    alert("Logout effettuato");
+  });
+
+  // admin link
+  E("btnAdmin").addEventListener("click", () => {
+    location.href = "admin.html";
+  });
+
+  // preview bypass
+  E("btnPreview").addEventListener("click", () => {
+    if (!isAdmin()){
+      alert("Solo admin può attivare preview.");
+      return;
+    }
+    enablePreviewBypass();
+    startCountdownShield();
+    aggiornaTutto();
+    alert("👁️ Preview attivata (bypass countdown temporaneo).");
+  });
+
+  // request modal controls
+  E("btnReqCancel").addEventListener("click", () => closeModal("reqModal"));
+  E("btnReqSend").addEventListener("click", () => sendRequest());
+  E("reqModal").addEventListener("click", (ev) => { if (ev.target === E("reqModal")) closeModal("reqModal"); });
+});
+</script>
 </body>
 </html>
