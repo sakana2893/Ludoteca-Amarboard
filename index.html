@@ -488,8 +488,8 @@
         </div>
 
         <div class="filter-block">
-          <span class="filter-label">Giocatori (contiene)</span>
-          <input type="text" id="filtroGiocatori" placeholder="es. 2-4">
+          <span class="filter-label">Giocatori (numero compreso)</span>
+          <input type="text" id="filtroGiocatori" placeholder="es. 3">
         </div>
       </div>
 
@@ -528,7 +528,7 @@
       <div class="row">
         <div>
           <div class="filter-label">Username</div>
-          <input id="loginUser" type="text" placeholder="es. marius99">
+          <input id="loginUser" type="text" placeholder="es. sacha">
         </div>
         <div>
           <div class="filter-label">Password</div>
@@ -602,6 +602,9 @@ let onlyRegistered = false;
 
 // titoloLower -> "requested" | "reserved"
 let bookingStateByTitle = new Map();
+
+// valore corrente del filtro giocatori
+let playerFilterValue = "";
 
 let countdownTimer = null;
 
@@ -1050,8 +1053,15 @@ async function caricaCatalogo(){
     E("filtroStato").addEventListener("change", function(){
       table.column(6).search(this.value, false, false).draw();
     });
+
+    // 🔢 Filtro giocatori: numero compreso nell'intervallo (2-4 ecc.)
     E("filtroGiocatori").addEventListener("keyup", function(){
-      table.column(1).search(this.value, false, false).draw();
+      playerFilterValue = this.value.trim();
+      table.draw();
+    });
+    E("filtroGiocatori").addEventListener("change", function(){
+      playerFilterValue = this.value.trim();
+      table.draw();
     });
 
     // Click su Richiedi
@@ -1072,6 +1082,41 @@ function escapeHtml_(s){
     "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"
   }[m]));
 }
+
+/* =========================
+   FILTRO GIOCATORI (numero compreso nell'intervallo)
+========================= */
+$.fn.dataTable.ext.search.push(function(settings, data, dataIndex) {
+  // Applica solo alla nostra tabella catalogo
+  if (settings.nTable && settings.nTable.id !== "tblCatalogo") return true;
+
+  const val = (playerFilterValue || "").trim();
+  if (!val) return true; // nessun filtro inserito
+
+  const text = (data[1] || "").toString(); // colonna "Giocatori"
+  if (!text) return false;
+
+  const num = parseInt(val, 10);
+  // Se l'utente non mette un numero, fallback a "contiene"
+  if (isNaN(num)) {
+    return text.toLowerCase().includes(val.toLowerCase());
+  }
+
+  // Esempi di text: "2-4", "1-5", "3", "2–4"
+  const parts = text.split(/[-–]/).map(p => parseInt(p, 10)).filter(n => !isNaN(n));
+
+  if (parts.length === 1) {
+    // Tipo "3" -> match solo se uguale
+    return num === parts[0];
+  }
+  if (parts.length >= 2) {
+    const min = Math.min(parts[0], parts[1]);
+    const max = Math.max(parts[0], parts[1]);
+    return num >= min && num <= max; // numero compreso tra estremi
+  }
+
+  return false;
+});
 
 /* =========================
    Request modal logic
